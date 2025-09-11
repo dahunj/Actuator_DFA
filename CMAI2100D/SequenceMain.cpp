@@ -2330,11 +2330,15 @@ BOOL CSequenceMain::Run_Elevator2()
 			m_nElevator2Case++; m_tElevator2Loop.Set_LoopTime(5000);
 		break;
 	case 3:
-		if (!m_pDX00->iElevator2Clamp1On && m_pDX00->iElevator2Clamp1Off && !m_pDX00->iElevator2Clamp2On && m_pDX00->iElevator2Clamp2Off) {
-			if (m_pEquipData->bElevatorAlign) {
+		if (!m_pDX00->iElevator2Clamp1On && m_pDX00->iElevator2Clamp1Off && !m_pDX00->iElevator2Clamp2On && m_pDX00->iElevator2Clamp2Off)
+		{
+			if (m_pEquipData->bElevatorAlign) 
+			{
 				if (m_bElvCarDown) g_objAJinAXL.Move_Relative(nElevZAxisNo, m_pEquipData->dEleCarDown*-1.0);
 				m_nElevator2Case++; m_tElevator2Loop.Set_LoopTime(5000);
-			} else {
+			} 
+			else
+			{
 				m_nElevator2Case = 10; m_tElevator2Loop.Set_LoopTime(5000);
 			}
 		}
@@ -2458,7 +2462,8 @@ BOOL CSequenceMain::Run_Elevator2()
 		return TRUE;
 
 	case 21:	//Carrier Down
-		if (g_objAJinAXL.Is_Done(nElevZAxisNo)) {
+		if (g_objAJinAXL.Is_Done(nElevZAxisNo)) 
+		{
 			gData.dElevatorZPos[0][1] = g_objAJinAXL.Get_Position(nElevZAxisNo);
 			if (!m_pDX00->iElevator2TrayExist) gData.dElevatorZPos[0][1] = 0.0;
 			m_bElvCarDown = TRUE;
@@ -2475,7 +2480,8 @@ BOOL CSequenceMain::Run_Elevator2()
 		break;
 
 	case 30:
-		if (g_objAJinAXL.Is_Done(nElevZAxisNo)) {
+		if (g_objAJinAXL.Is_Done(nElevZAxisNo)) 
+		{
 			g_objCommon.Move_Position(nElevZAxisNo, 0);
 			m_nElevator2Case++; m_tElevator2Loop.Set_LoopTime(30000);
 		}

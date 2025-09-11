@@ -2825,8 +2825,10 @@ void CCommon::Save_Motion(int nAxis, int nMoveIdx, double dTraget)
 
 	}
 
-	if (nMoveIdx != -1) {	// Check_Position 
-		switch(nAxis) {
+	if (nMoveIdx != -1) // Check_Position
+	{	 
+		switch(nAxis)
+		{
 		case  0: dCheckPos = pMoveData->dElevatorZ1[nMoveIdx];		break;
 		case  1: dCheckPos = pMoveData->dElevatorZ2[nMoveIdx];		break;
 		case  2: dCheckPos = pMoveData->dElevatorZ3[nMoveIdx];		break;
