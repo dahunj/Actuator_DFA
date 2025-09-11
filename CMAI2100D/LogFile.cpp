@@ -579,11 +579,15 @@ void CLogFile::Save_OutTray(CString strLotID, CString strOut, int nPosX, int nPo
 
 void CLogFile::Save_TestLog(CString sLog)
 {
+	CString strPath = gsCurrentDir + "\\LOG\\Test";
+
+	Create_Folder(strPath);
+
 	SYSTEMTIME time;
 	GetLocalTime(&time);
 
 	CString strFile, strSave;
-	strFile.Format("Test\\%04d%02d%02d_000000_Test.csv", time.wYear, time.wMonth, time.wDay);
+	strFile.Format("%s\\%04d%02d%02d_Test.csv", strPath, time.wYear, time.wMonth, time.wDay);
 
 	CFile file;
 	if (file.Open(strFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone)) {

@@ -148,40 +148,40 @@ private:
 	CLoopTimer	m_tUnloadConveyorLoop;	// 32. (Error : 2950)
 
 private:
-	BOOL Run_Elevator1();				//  1. (Error : 2100)
-	BOOL Run_Elevator2();				//  2. (Error : 2200)
-	BOOL Run_Elevator3();				//  3. (Error : 2300)
-	BOOL Run_Elevator4();				//  4. (Error : 2400)
-	BOOL Run_Elevator5();				//  5. (Error : 2500)
-	BOOL Run_Elevator6();				//  6. (Error : 2600)
-	BOOL Run_Elevator7();				//  7. (Error : 2700)
-	BOOL Run_Transfer1();				//  8. (Error : 3000)
-	BOOL Run_Transfer2();				//  9. (Error : 3500)
-	BOOL Run_LoadStage1();				// 10. (Error : 4000)
-	BOOL Run_LoadStage2();				// 11. (Error : 4500)
-	BOOL Run_LoadPicker1();				// 12. (Error : 5000)
-	BOOL Run_LoadPicker2();				// 13. (Error : 5500)
-	BOOL Run_VisionStage1();			// 14. (Error : 6000)
-	BOOL Run_VisionStage2();			// 15. (Error : 6200)
-	BOOL Run_VisionStage3();			// 16. (Error : 6400)
-	BOOL Run_VisionStage4();			// 17. (Error : 6600)
-	BOOL Run_UnloadPicker1();			// 18. (Error : 7000)
-	BOOL Run_UnloadPicker2();			// 19. (Error : 7500)
-	BOOL Run_NGStage1();				// 20. (Error : 8000)
-	BOOL Run_NGStage2();				// 21. (Error : 8200)
-	BOOL Run_GoodStage1();				// 22. (Error : 8400)
-	BOOL Run_GoodStage2();				// 23. (Error : 8600)
-	BOOL Run_ShipAlign();				// 24. (Error : 8800)
+	BOOL Run_Elevator1();				//  1. (Error : 2100) zone : 1
+	BOOL Run_Elevator2();				//  2. (Error : 2200) zone : 2
+	BOOL Run_Elevator3();				//  3. (Error : 2300) zone : 3
+	BOOL Run_Elevator4();				//  4. (Error : 2400) zone : 4
+	BOOL Run_Elevator5();				//  5. (Error : 2500) zone : 5
+	BOOL Run_Elevator6();				//  6. (Error : 2600) zone : 6
+	BOOL Run_Elevator7();				//  7. (Error : 2700) zone : 7
+	BOOL Run_Transfer1();				//  8. (Error : 3000) zone : 8
+	BOOL Run_Transfer2();				//  9. (Error : 3500) zone : 9
+	BOOL Run_LoadStage1();				// 10. (Error : 4000) zone : 10
+	BOOL Run_LoadStage2();				// 11. (Error : 4500) zone : 11
+	BOOL Run_LoadPicker1();				// 12. (Error : 5000) zone : 12
+	BOOL Run_LoadPicker2();				// 13. (Error : 5500) zone : 13
+	BOOL Run_VisionStage1();			// 14. (Error : 6000) zone : 14
+	BOOL Run_VisionStage2();			// 15. (Error : 6200) zone : 15
+	BOOL Run_VisionStage3();			// 16. (Error : 6400) zone : 16
+	BOOL Run_VisionStage4();			// 17. (Error : 6600) zone : 17
+	BOOL Run_UnloadPicker1();			// 18. (Error : 7000) zone : 18
+	BOOL Run_UnloadPicker2();			// 19. (Error : 7500) zone : 19
+	BOOL Run_NGStage1();				// 20. (Error : 8000) zone : 20
+	BOOL Run_NGStage2();				// 21. (Error : 8200) zone : 21
+	BOOL Run_GoodStage1();				// 22. (Error : 8400) zone : 22
+	BOOL Run_GoodStage2();				// 23. (Error : 8600) zone : 23
+	BOOL Run_ShipAlign();				// 24. (Error : 8800) zone : 24
 
-	BOOL Run_MZTransfer();				// 25. (Error : 2200)
-	BOOL Run_LDCVElevator();			// 26. (Error : 2300)
-	BOOL Run_ULCVElevator();			// 27. (Error : 2400)
-	BOOL Run_LDMZElevator();			// 28. (Error : 2500)
-	BOOL Run_NGMZElevator();			// 29. (Error : 2600)
-	BOOL Run_GDMZElevator();			// 30. (Error : 2700)
-	BOOL Run_LD1FConveyor();			// 31. (Error : 2800)
-	BOOL Run_LD2FConveyor();			// 32. (Error : 2900)
-	BOOL Run_UnloadConveyor();			// 33. (Error : 2950)
+	BOOL Run_MZTransfer();				// 25. (Error : 2200) zone : 25
+	BOOL Run_LDCVElevator();			// 26. (Error : 2300) zone : 26
+	BOOL Run_ULCVElevator();			// 27. (Error : 2400) zone : 27
+	BOOL Run_LDMZElevator();			// 28. (Error : 2500) zone : 28
+	BOOL Run_NGMZElevator();			// 29. (Error : 2600) zone : 29
+	BOOL Run_GDMZElevator();			// 30. (Error : 2700) zone : 30
+	BOOL Run_LD1FConveyor();			// 31. (Error : 2800) zone : 31
+	BOOL Run_LD2FConveyor();			// 32. (Error : 2900) zone : 32
+	BOOL Run_UnloadConveyor();			// 33. (Error : 2950) zone : 33
 	BOOL Run_Simulation();				// 99.
 
 	BOOL Check_Transfer1(int &nFmTarget, int &nToTarget, int &nPortNo);
