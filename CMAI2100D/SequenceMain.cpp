@@ -13146,13 +13146,14 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 	case 5:	//Barcode Read
 			if (m_pEquipData->bUseMZIDLoad) 
 			{
-				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,5,Barcode Trigger On");
+				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,5-1,Barcode Trigger On");
 
 				g_objBarcodeLot_Cognex.Set_Trigger(2, TRUE);	//1F
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			} 
 			else
 			{
+				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,5-2,Barcode No use so MZ Count add");
 				gLot.nMZCountGD++;
 				sMZID.Format("MZID%02d-LOAD", gLot.nMZCountGD);
 				m_nLD1FConveyorCase = 7; m_tLD1FConveyorLoop.Set_LoopTime(5000);
@@ -13160,33 +13161,50 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		break;
 	case 6:	//Barcode Read End
 			sMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(2);	//1F
-			if (sMZID.GetLength() > 2) {
+			if (sMZID.GetLength() > 2) 
+			{
+				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,6,Barcode Read End");
 				g_objLogFile.Save_RFBarData(0, sMZID);
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			}
 		break;
 	case 7:
 //		if (gData.bCycleStop == FALSE && gData.nCVJobSeq[0] == gData.nCVJobSeq[1] m_nMZTransferCase == 0) {
-		if (gData.bCycleStop == FALSE && m_nLDMZElevatorCase == 0 && m_nMZTransferCase == 0 && !m_pDX15->iLDMZCarrierExist && !m_pDX20->iMZTransExist && (gData.nCVJobSeq[0] == 0 || gData.nCVJobSeq[1] > 0)) {
-			if (sMZID.GetLength() > 2) {
+		if (gData.bCycleStop == FALSE && m_nLDMZElevatorCase == 0 
+			&& m_nMZTransferCase == 0 && !m_pDX15->iLDMZCarrierExist && !m_pDX20->iMZTransExist 
+			&& (gData.nCVJobSeq[0] == 0 || gData.nCVJobSeq[1] > 0))
+		{
+			if (sMZID.GetLength() > 2) 
+			{
 				gData.sMZID[0] = sMZID;
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			}
-		} else {
+		}
+		else 
+		{
 			m_nLD1FConveyorCase = 0; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 		}
 		break;
 
 	case 8:	//MZ ÅõÀÔ Check
-		if (m_nLDMZElevatorCase == 0 && m_nMZTransferCase == 0 && !m_pDX15->iLDMZCarrierExist && !m_pDX20->iMZTransExist && (gData.nCVJobSeq[0] == 0 || gData.nCVJobSeq[1] > 0)) {
-			if (gData.bCycleStop) {
+		if (m_nLDMZElevatorCase == 0 && m_nMZTransferCase == 0 
+			&& !m_pDX15->iLDMZCarrierExist && !m_pDX20->iMZTransExist 
+			&& (gData.nCVJobSeq[0] == 0 || gData.nCVJobSeq[1] > 0))
+		{
+			if (gData.bCycleStop) 
+			{
 				m_nLD1FConveyorCase = 0; m_tLD1FConveyorLoop.Set_LoopTime(5000);
-			} else {
-				if (m_nLDCVElevatorCase == 0 && m_nLDMZElevatorCase == 0 && !m_pDX18->iLDMZElevatorExist) {
+			} 
+			else
+			{
+				if (m_nLDCVElevatorCase == 0 && m_nLDMZElevatorCase == 0 && !m_pDX18->iLDMZElevatorExist)
+				{
 					m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			m_nLD1FConveyorCase = 0; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 		}
 		return TRUE;
@@ -13207,7 +13225,7 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		}
 		break;
 
-	case 11:	//Elevator Wati
+	case 11:	//Elevator Wait
 		if (m_nLDCVElevatorCase == 0) {
 			m_nLDCVElevatorCase = 10; gData.nCVJobSeq[0]++;
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
