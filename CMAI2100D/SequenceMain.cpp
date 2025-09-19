@@ -12135,6 +12135,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 	case 1:
 		if (m_pDX18->iLDMZElevatorExist)
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d,iLDMZElevatorExist Checked and Clamp12 In", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_pDY18->oLDMZElevatorClamp12In = TRUE; m_pDY18->oLDMZElevatorClamp12Out = FALSE;
 			g_objAJinAXL.Write_Output(18);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
@@ -12143,6 +12146,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 	case 2:
 		if (m_pDX18->iLDMZElevatorClamp12In && !m_pDX18->iLDMZElevatorClamp12Out) 
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d,Clamp12 In Done and Clamp34 In", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_pDY18->oLDMZElevatorClamp34In = TRUE; m_pDY18->oLDMZElevatorClamp34Out = FALSE;
 			g_objAJinAXL.Write_Output(18);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
@@ -12151,18 +12157,26 @@ BOOL CSequenceMain::Run_LDMZElevator()
 	case 3:
 		if (m_pDX18->iLDMZElevatorClamp34In && !m_pDX18->iLDMZElevatorClamp34Out) 
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d,Clamp 34 In Done", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 4:
 		if (m_pDX18->iLDMZElevatorExist) 
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d,iLDMZElevatorExist Checked", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(10000);
 		}
 		break;
 	case 5:
 		if (!m_pDX15->iLDRailCarrierChk1 && !m_pDX15->iLDRailCarrierChk2) 
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d,NoCarrier Sensed LDMZ_ELEVATOR_Z Move to Sensing Pre Pos", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Position(AX_LDMZ_ELEVATOR_Z, 1);	//Mapping
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(10000);
 		}
@@ -12170,6 +12184,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 	case 6:
 		if (g_objCommon.Check_Position(AX_LDMZ_ELEVATOR_Z, 1)) 
 		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, LDMZ_ELEVATOR_Z Move Done and Info Initial", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			nSlotNo = nLastSlotNo = 0;
 			for(int i=0; i<8; i++) gLot.nCarrierExist[0][i] = 0;
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
@@ -12184,6 +12201,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			if (nSlotNo >= 7) m_nLDMZElevatorCase = 9;
 			else			  m_nLDMZElevatorCase++;
 			m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Carrier Exist Slot No :%d and Exist : %d", m_nLDMZElevatorCase, nSlotNo, gLot.nCarrierExist[0][nSlotNo]);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 8:
@@ -12191,6 +12211,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			nSlotNo++;
 			g_objAJinAXL.Move_Relative(AX_LDMZ_ELEVATOR_Z, m_pEquipData->dMZPitchZ*-1.0);
 			m_nLDMZElevatorCase--; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, LDMZ_ELEVATOR_Z Pitch Move Slot No: %d", m_nLDMZElevatorCase, nSlotNo);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 9:
@@ -12211,27 +12234,50 @@ BOOL CSequenceMain::Run_LDMZElevator()
 				g_objLogFile.Save_HandlerLog(m_sLog);
 
 				m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+				m_sLog.Format("MCC,28,LDMZElevator,%d, Slot Check", m_nLDMZElevatorCase);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 			}
 		}
 		break;
 
 	case 10:
 		nSlotNo = Check_MZCarrierExit(1);
-		if (nSlotNo > 0) {
-			if (gData.bCycleStop) {
+		if (nSlotNo > 0) 
+		{
+			if (gData.bCycleStop)
+			{
 				m_nLDMZElevatorCase = 40; m_tLDMZElevatorLoop.Set_LoopTime(5000);
-			} else {
+
+				m_sLog.Format("MCC,28,LDMZElevator,%d, Cycle Stop", m_nLDMZElevatorCase);
+				g_objLogFile.Save_TestLog(m_sLog);
+			}
+			else
+			{
 				gData.nMZSlotNo[0] = nSlotNo;
 				dSlotPosZ = m_pMoveData->dLDMZElevatorZ[2] - (m_pEquipData->dMZPitchZ * (nSlotNo-1));
 				g_objAJinAXL.Move_Absolute(AX_LDMZ_ELEVATOR_Z, dSlotPosZ);
 				m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+				m_sLog.Format("MCC,28,LDMZElevator,%d, Load MZ Elev Z Pitch move : %lf & Slot No:%d", m_nLDMZElevatorCase, dSlotPosZ, nSlotNo);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
-		} else {
+		} 
+		else 
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load MZ Elev Z Pitch move", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLDMZElevatorCase = 40; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 11:
-		if (g_objAJinAXL.Is_MoveDone(AX_LDMZ_ELEVATOR_Z, dSlotPosZ)){
+		if (g_objAJinAXL.Is_MoveDone(AX_LDMZ_ELEVATOR_Z, dSlotPosZ))
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load MZ Elev Z move done", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
@@ -12239,79 +12285,129 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(20000);
 		break;
 	case 13:
-		if (!m_pDX15->iLDRailCarrierChk1 && !m_pDX15->iLDRailCarrierChk2) {
+		if (!m_pDX15->iLDRailCarrierChk1 && !m_pDX15->iLDRailCarrierChk2) 
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load Feeder Y Move to Grip", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Override(AX_LOAD_FEEDER_Y, 1, 20.0);	//Grip
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(30000);
 		}
 		break;
 	case 14:
-		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 1)) {
+		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 1)) 
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load Feeder Y Move to Grip done and Grip Close", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_pDY15->oLDGripOpen = FALSE; m_pDY15->oLDGripClose = TRUE;
 			g_objAJinAXL.Write_Output(15);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 15:
-		if (!m_pDX15->iLDGripOpen && m_pDX15->iLDGripClose) {
+		if (!m_pDX15->iLDGripOpen && m_pDX15->iLDGripClose)
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load Grip Close done", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 16:
-		if (m_pDX15->iLDGripCarrierChk) {
+		if (m_pDX15->iLDGripCarrierChk) 
+		{
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load Feeder Y move to pull", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Position(AX_LOAD_FEEDER_Y, 2);	//Pull
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(30000);
 		}
 		break;
 	case 17:
-		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 2)) {
+		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 2)) 
+		{
 			if (!m_tLDMZElevatorLoop.Waiting_Time(300)) break;
 			m_pDY15->oLDGripOpen = TRUE; m_pDY15->oLDGripClose = FALSE;
 			g_objAJinAXL.Write_Output(15);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load Feeder Y move to pull done and Grip Open", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 18:
-		if (m_pDX15->iLDGripOpen && !m_pDX15->iLDGripClose) {
+		if (m_pDX15->iLDGripOpen && !m_pDX15->iLDGripClose) 
+		{
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Grip Open done", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 19:
-		if (!m_pDX15->iLDRailCarrierChk1 && m_pDX15->iLDRailCarrierChk2) {
+		if (!m_pDX15->iLDRailCarrierChk1 && m_pDX15->iLDRailCarrierChk2) 
+		{
 			g_objCommon.Move_Position(AX_LOAD_FEEDER_Y, 0);	//Pull-Next
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, No Carrier checked", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 20:
-		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 0)) {
+		if (g_objCommon.Check_Position(AX_LOAD_FEEDER_Y, 0))
+		{
 			gLot.nCarrierExist[0][nSlotNo-1] = 0;
 			gData.nSlotNo_LDMZ = nSlotNo;
 			if (nSlotNo == nLastSlotNo) gData.nLDMZ_LastCarrier[0] = 1;
 			else						gData.nLDMZ_LastCarrier[0] = 0;
 			m_nLDMZElevatorCase = 30; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Slot NO : %d & Last Carrier Check : %d", m_nLDMZElevatorCase, nSlotNo, gData.nLDMZ_LastCarrier[0]);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 		}
 		break;
 
 	case 30:	// Carrier-Out Wait
 		return TRUE;
 	case 31:
-		if (!m_pDX15->iLDRailCarrierChk1 && !m_pDX15->iLDRailCarrierChk2) {
-			if (Check_MZCarrierExit(1) > 0) m_nLDMZElevatorCase = 10;
-			else							m_nLDMZElevatorCase = 40;
+		if (!m_pDX15->iLDRailCarrierChk1 && !m_pDX15->iLDRailCarrierChk2) 
+		{
+			if (Check_MZCarrierExit(1) > 0)
+			{
+				m_nLDMZElevatorCase = 10;
+			}
+			else
+			{
+				m_nLDMZElevatorCase = 40;
+			}
 			m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, No Carrier Checked", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 40:
-		if (!m_pDX15->iLDRailCarrierChk1) {
+		if (!m_pDX15->iLDRailCarrierChk1)
+		{
 			g_objCommon.Move_Position(AX_LDMZ_ELEVATOR_Z, 0);	//Ready
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Load MZ Elev Z Back to Ready", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 41:
-		if (g_objCommon.Check_Position(AX_LDMZ_ELEVATOR_Z, 0)) {
+		if (g_objCommon.Check_Position(AX_LDMZ_ELEVATOR_Z, 0)) 
+		{
 			m_pDY18->oLDMZElevatorClamp34In = FALSE; m_pDY18->oLDMZElevatorClamp34Out = TRUE;
 			g_objAJinAXL.Write_Output(18);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Clamp34 Out", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 42:
@@ -12319,16 +12415,25 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			m_pDY18->oLDMZElevatorClamp12In = FALSE; m_pDY18->oLDMZElevatorClamp12Out = TRUE;
 			g_objAJinAXL.Write_Output(18);
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Clamp12 Out", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 43:
 		if (!m_pDX18->iLDMZElevatorClamp12In && m_pDX18->iLDMZElevatorClamp12Out) {
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+			
+			m_sLog.Format("MCC,28,LDMZElevator,%d, Clamp12 Out done", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 44:
 		if (m_pDX18->iLDMZElevatorExist) {
 			m_nLDMZElevatorCase = 50; m_tLDMZElevatorLoop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, iLDMZElevatorExist", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -12340,6 +12445,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 //			gData.sLotID_Magazine[0] = "";
 //			gData.nTrayNo_Magazine[0] = gData.nPortNo_Magazine[0] = 0;
 			m_nLDMZElevatorCase = 0; m_tLDMZElevatorLoop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,28,LDMZElevator,%d, iLDMZElevatorExist False", m_nLDMZElevatorCase);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	}

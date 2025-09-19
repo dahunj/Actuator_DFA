@@ -105,6 +105,8 @@
 #define ECM_LOG			"D:\\EVMS\\TP\\LOG\\"
 #define SIM_WAITTIMES	 50		//
 #define SIM_WAITTIMEM	 50		//
+
+#define	VELOCITY_WEIGHT	 25
 //****************************************************************************
 //#define RESULT_TEST		// 비전 FOB 모드에서 전체 양품 처리가 안되어 추가함.
 //#define ALIGN_TEST		// Align 반복 Test.

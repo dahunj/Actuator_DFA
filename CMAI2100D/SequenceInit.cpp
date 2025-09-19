@@ -1436,7 +1436,7 @@ BOOL CSequenceInit::Initial_NGStage()
 		if ((m_pDX11->iNGStage1Up  && !m_pDX11->iNGStage1Down) && 
 			(!m_pDX11->iNGStage2Up && m_pDX11->iNGStage2Down) ) {
 			g_objCommon.Move_Position(AX_NG_STAGE_Y2, 0);
-			m_niNGStageCase++; m_tiNGStageLoop.Set_LoopTime(5000);
+			m_niNGStageCase++; m_tiNGStageLoop.Set_LoopTime(15000);
 		}
 		break;
 	case 17:
@@ -1600,13 +1600,13 @@ BOOL CSequenceInit::Initial_GoodStage()
 		if ((m_pDX12->iGoodStage1Up  && !m_pDX12->iGoodStage1Down) && 
 			(!m_pDX12->iGoodStage2Up && m_pDX12->iGoodStage2Down) ) {
 			g_objCommon.Move_Position(AX_GOOD_STAGE_Y2, 0);
-			m_niGoodStageCase++; m_tiGoodStageLoop.Set_LoopTime(5000);
+			m_niGoodStageCase++; m_tiGoodStageLoop.Set_LoopTime(15000);
 		}
 		break;
 	case 17:
 		if (g_objCommon.Check_Position(AX_GOOD_STAGE_Y1, 0) && g_objCommon.Check_Position(AX_GOOD_STAGE_Y2, 0)) {
 			g_objLogFile.Save_HandlerLog("[Initial Sequence] - Initial_GoodStage Complete");
-			m_niGoodStageCase = 90; m_tiGoodStageLoop.Set_LoopTime(5000);
+			m_niGoodStageCase = 90; m_tiGoodStageLoop.Set_LoopTime(15000);
 		}
 		break;
 
