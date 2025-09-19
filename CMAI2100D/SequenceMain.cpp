@@ -667,7 +667,7 @@ BOOL CSequenceMain::Search_Lot(int nType)
 	return TRUE;
 }
 
-BOOL CSequenceMain::Check_MZTransfer(int &nFmTarget, int &nToTarget)
+BOOL CSequenceMain::Check_MZTransfer(int &nFrom, int &nToTarget)
 {
 	//1순위 MZ-Good(5) -> CV-Unload(6)
 	//2순위 MZ-NG(4)   -> CV-Unload(6)
@@ -677,46 +677,46 @@ BOOL CSequenceMain::Check_MZTransfer(int &nFmTarget, int &nToTarget)
 	//6순위 MZ-Load(2) -> MZ-Good, MZ-Bufer(5,3)
 
 	//1순위 MZ-Good(5) -> CV-Unload(6)
-	nFmTarget = nToTarget = 0;
+	nFrom = nToTarget = 0;
 	if (m_nGDMZElevatorCase == 50) {
-		nFmTarget = 5; nToTarget = 6; return TRUE;
+		nFrom = 5; nToTarget = 6; return TRUE;
 	}
 
 	//2순위 MZ-NG(4)   -> CV-Unload(6)
 	if (m_nNGMZElevatorCase == 50) {
-		nFmTarget = 4; nToTarget = 6; return TRUE;
+		nFrom = 4; nToTarget = 6; return TRUE;
 	}
 
 	//3순위 MZ-Bufer(3)-> MZ-Good(5)
 	if (m_pDX18->iMZBufferExist && m_pDX18->iLDMZElevatorExist) {
 		if (!m_pDX18->iGDMZElevatorExist && m_nGDMZElevatorCase == 0) {
-			nFmTarget = 3; nToTarget = 5; return TRUE;
+			nFrom = 3; nToTarget = 5; return TRUE;
 		}
 	}
 
 	//4순위 CV-Load(1) -> MZ-Load(2)
-	if (gData.nCVElevatorFm == 1 && m_nLDCVElevatorCase == 20 && m_nLDMZElevatorCase == 0) {
-		nFmTarget = 1; nToTarget = 2; return TRUE;
+	if (gData.nCVElevatorFrom == 1 && m_nLDCVElevatorCase == 20 && m_nLDMZElevatorCase == 0) {
+		nFrom = 1; nToTarget = 2; return TRUE;
 	}
 
 	//5순위 CV-Load(1) -> MZ-NG(4)
-	if (gData.nCVElevatorFm == 2 && m_nLDCVElevatorCase == 20) {
+	if (gData.nCVElevatorFrom == 2 && m_nLDCVElevatorCase == 20) {
 		if (!m_pDX18->iNGMZElevatorExist && m_nNGMZElevatorCase == 0) {
-			nFmTarget = 1; nToTarget = 4; return TRUE;
+			nFrom = 1; nToTarget = 4; return TRUE;
 		}
 	}
 
 	//6순위 MZ-Load(2) -> MZ-Good, MZ-Bufer(5,3)
 	if (m_nLDMZElevatorCase == 50) {
 		if (!m_pDX18->iMZBufferExist) {
-			nFmTarget = 2; nToTarget = 3; return TRUE;
+			nFrom = 2; nToTarget = 3; return TRUE;
 		}
 		if (!m_pDX18->iGDMZElevatorExist && m_nGDMZElevatorCase == 0) {
-			nFmTarget = 2; nToTarget = 5; return TRUE;
+			nFrom = 2; nToTarget = 5; return TRUE;
 		}
 	}
 
-	if (nFmTarget > 0 && nToTarget > 0) return TRUE;
+	if (nFrom > 0 && nToTarget > 0) return TRUE;
 	else								return FALSE;
 }
 
@@ -11410,21 +11410,21 @@ BOOL CSequenceMain::Run_ShipAlign()
 // 25. (Error : 2200)
 BOOL CSequenceMain::Run_MZTransfer()
 {
-	static int nPosX, nFm, nTo; 
+	static int nPosX, nFrom, nTo; 
 
 	switch (m_nMZTransferCase) {
 	case 0:	// Wait
-		if (Check_MZTransfer(nFm, nTo)) // 어디에서 어디로 가는지 우선순위 체크     From, To 
+		if (Check_MZTransfer(nFrom, nTo)) // 어디에서 어디로 가는지 우선순위 체크     From, To 
 		{
 			m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(10000);
 		}
 		return TRUE;
 
 	case 1:
-		if (nFm > 0) 
+		if (nFrom > 0) 
 		{
-			nPosX = nFm;
-			if (nFm == 3) 
+			nPosX = nFrom;
+			if (nFrom == 3) 
 			{	//Buffer-MZ
 				m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(5000);
 			} 
@@ -11557,7 +11557,7 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 21:
-		if (!m_pEquipData->bUseLockOpenChk || m_pDX20->iMZLoackBarCheck || nFm < 4)
+		if (!m_pEquipData->bUseLockOpenChk || m_pDX20->iMZLoackBarCheck || nFrom < 4)
 		{	//CloseCheck
 			if (!m_pDX20->iMZTransGrip12Open && m_pDX20->iMZTransGrip12Close) {
 				if (!m_pDX20->iMZTransGrip34Open && m_pDX20->iMZTransGrip34Close) {
@@ -11574,39 +11574,39 @@ BOOL CSequenceMain::Run_MZTransfer()
 		break;
 	case 23:
 		if (m_pDX20->iMZTransExist) {
-			if (nFm == 1 && m_nLDCVElevatorCase == 20) m_nLDCVElevatorCase = 21;
-			if (nFm == 2 && m_nLDMZElevatorCase == 50) m_nLDMZElevatorCase = 51;
-			if (nFm == 4 && m_nNGMZElevatorCase == 50) m_nNGMZElevatorCase = 51;
-			if (nFm == 5 && m_nGDMZElevatorCase == 50) m_nGDMZElevatorCase = 51;
+			if (nFrom == 1 && m_nLDCVElevatorCase == 20) m_nLDCVElevatorCase = 21;
+			if (nFrom == 2 && m_nLDMZElevatorCase == 50) m_nLDMZElevatorCase = 51;
+			if (nFrom == 4 && m_nNGMZElevatorCase == 50) m_nNGMZElevatorCase = 51;
+			if (nFrom == 5 && m_nGDMZElevatorCase == 50) m_nGDMZElevatorCase = 51;
 
 			m_nMZTransferCase = 5; m_tMZTransferLoop.Set_LoopTime(10000);
-			if (nFm == 1) {	//Load-Elevator
+			if (nFrom == 1) {	//Load-Elevator
 				gData.sMZID[3] = gData.sMZID[2]; gData.sMZID[2] = "";
-				if (gData.nCVElevatorFm == 1) {
+				if (gData.nCVElevatorFrom == 1) {
 					m_sLog.Format("[MZTransfer: Up] Load-Elevator(G) => MZID(%s)", gData.sMZID[3]);
 				} else {
 					m_sLog.Format("[MZTransfer: Up] Load-Elevator(N) => MZID(%s)", gData.sMZID[3]);
 				}
 			}
-			if (nFm == 2 || nFm == 3) {	//Load-MZ,Buffer-MZ
-				if (nFm == 2) {
+			if (nFrom == 2 || nFrom == 3) {	//Load-MZ,Buffer-MZ
+				if (nFrom == 2) {
 					gData.sMZID[3] = gData.sMZID[4]; gData.sMZID[4] = "";
 					m_sLog.Format("[MZTransfer: Up] Load-MZ => MZID(%s)", gData.sMZID[3]);
 					m_nMZTransferCase = 24;
 				}
-				if (nFm == 3) {
+				if (nFrom == 3) {
 					gData.sMZID[3] = gData.sMZID[5]; gData.sMZID[5] = "";
 					m_sLog.Format("[MZTransfer: Up] Buffer-MZ => MZID(%s)", gData.sMZID[3]);
 					m_nMZTransferCase = 25;
 				}
 			}
-			if (nFm == 4) {	//NG-MZ
+			if (nFrom == 4) {	//NG-MZ
 				for(int i=0; i<8; i++) gLot.nCarrierExist[1][i] = 0;
 				gData.sMZID[3] = gData.sMZID[6]; gData.sMZID[6] = "";
 				m_sLog.Format("[MZTransfer: Up] NG-MZ => MZID(%s)", gData.sMZID[3]);
 				m_nMZTransferCase = 26;
 			}
-			if (nFm == 5) {	//Good-MZ
+			if (nFrom == 5) {	//Good-MZ
 				gData.sMZID[3] = gData.sMZID[7]; gData.sMZID[7] = "";
 				m_sLog.Format("[MZTransfer: Up] Good-MZ => MZID(%s)", gData.sMZID[3]);
 				m_nMZTransferCase = 27;
@@ -11741,8 +11741,8 @@ BOOL CSequenceMain::Run_MZTransfer()
 			if (nTo == 4 && m_nNGMZElevatorCase == 0) { m_nNGMZElevatorCase = 1; m_tNGMZElevatorLoop.Set_LoopTime(5000); }
 			if (nTo == 5 && m_nGDMZElevatorCase == 0) { m_nGDMZElevatorCase = 1; m_tGDMZElevatorLoop.Set_LoopTime(5000); }
 			if (nTo == 6 && m_nULCVElevatorCase == 0) {
-				if (nFm == 4 && m_nULCVElevatorCase == 0) { m_nULCVElevatorCase = 11; m_tULCVElevatorLoop.Set_LoopTime(5000); }
-				if (nFm == 5 && m_nULCVElevatorCase == 0) { m_nULCVElevatorCase = 21; m_tULCVElevatorLoop.Set_LoopTime(5000); }
+				if (nFrom == 4 && m_nULCVElevatorCase == 0) { m_nULCVElevatorCase = 11; m_tULCVElevatorLoop.Set_LoopTime(5000); }
+				if (nFrom == 5 && m_nULCVElevatorCase == 0) { m_nULCVElevatorCase = 21; m_tULCVElevatorLoop.Set_LoopTime(5000); }
 			}
 
 			m_nMZTransferCase = 50; m_tMZTransferLoop.Set_LoopTime(5000);
@@ -13176,12 +13176,14 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		{
 			if (sMZID.GetLength() > 2) 
 			{
+				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,7-1,empty");
 				gData.sMZID[0] = sMZID;
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			}
 		}
 		else 
 		{
+			g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,7-2,empty");
 			m_nLD1FConveyorCase = 0; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 		}
 		break;
@@ -13232,7 +13234,8 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		}
 		return TRUE;
 	case 12:
-		if (m_nLDCVElevatorCase == 10) {
+		if (m_nLDCVElevatorCase == 10) 
+		{
 			if (gLot.dwJobStart < 1) Set_JobTack(1);
 			g_objCommon.Move_Position(AX_LDCV_ELEVATOR_Z, 1);	//1F
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(10000);
@@ -13325,7 +13328,7 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 	case 24:
 		if (m_pDX17->iLDCVElevatorCVStop) {
 			gData.sMZID[2] = gData.sMZID[0]; gData.sMZID[0] = "";
-			m_nLDCVElevatorCase = 11;	gData.nCVElevatorFm = 1;
+			m_nLDCVElevatorCase = 11;	gData.nCVElevatorFrom = 1;
 
 			m_pDY16->oLDCVStopper1FUp = TRUE; m_pDY16->oLDCVStopper1FDn = FALSE;
 			g_objAJinAXL.Write_Output(16);
@@ -13575,7 +13578,7 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 	case 24:
 		if (m_pDX17->iLDCVElevatorCVStop) {
 			gData.sMZID[2] = gData.sMZID[1]; gData.sMZID[1] = "";
-			m_nLDCVElevatorCase = 11;	gData.nCVElevatorFm = 2;
+			m_nLDCVElevatorCase = 11;	gData.nCVElevatorFrom = 2;
 
 			m_pDY16->oLDCVStopper2FUp = TRUE; m_pDY16->oLDCVStopper2FDn = FALSE;
 			g_objAJinAXL.Write_Output(16);

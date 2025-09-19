@@ -242,7 +242,7 @@ typedef struct {
 
 	int		nVisionNo;
 	double	dElevatorZPos[2][7];
-	int		nCVElevatorFm;		//1:Good, 2:Empty
+	int		nCVElevatorFrom;		//1:Good, 2:Empty
 	int		nCVJobSeq[2];
 	int		nSimCount;
 	int		nCarrierStart;		//0:End,1:Start
