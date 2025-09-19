@@ -1284,12 +1284,18 @@ BOOL CSequenceMain::Check_EmptyLoadTray()
 
 int CSequenceMain::Check_MZCarrierExit(int nMZNo, int nType)	//Type 1:Out-Carrier, 2:In-Carrier, 3:Empty Carrier
 {
-	for(int i=0; i<8; i++) {
-		if (nType == 1 || nType == 2) {
+	for(int i=0; i<8; i++) 
+	{
+		if (nType == 1 || nType == 2) 
+		{
 			if (gLot.nCarrierExist[nMZNo-1][i] == nType) return i+1;
-		} else if (nType == 3) {
+		} 
+		else if (nType == 3)
+		{
 			if (gLot.nCarrierExist[nMZNo-1][i] == 0) return i+1;
-		} else {
+		} 
+		else
+		{
 			if (gLot.nCarrierExist[nMZNo-1][i] > 0) return i+1;
 		}
 	}
@@ -11469,7 +11475,7 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 
-	case 11:	//MZ-Up
+	case 11:	//MZ-Ready Up Check 
 		if (g_objCommon.Check_Position(AX_MZ_TRANSFER_Z, 0)) 
 		{
 			m_pDY20->oMZTransGrip12Open = TRUE; m_pDY20->oMZTransGrip12Close = FALSE;
@@ -11559,8 +11565,10 @@ BOOL CSequenceMain::Run_MZTransfer()
 	case 21:
 		if (!m_pEquipData->bUseLockOpenChk || m_pDX20->iMZLoackBarCheck || nFrom < 4)
 		{	//CloseCheck
-			if (!m_pDX20->iMZTransGrip12Open && m_pDX20->iMZTransGrip12Close) {
-				if (!m_pDX20->iMZTransGrip34Open && m_pDX20->iMZTransGrip34Close) {
+			if (!m_pDX20->iMZTransGrip12Open && m_pDX20->iMZTransGrip12Close)
+			{
+				if (!m_pDX20->iMZTransGrip34Open && m_pDX20->iMZTransGrip34Close)
+				{
 					g_objCommon.Move_Position(AX_MZ_TRANSFER_Z, 0);
 					m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(10000);
 				}
@@ -11568,12 +11576,14 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 22:
-		if (g_objCommon.Check_Position(AX_MZ_TRANSFER_Z, 0)) {
+		if (g_objCommon.Check_Position(AX_MZ_TRANSFER_Z, 0))
+		{
 			m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(10000);
 		}
 		break;
 	case 23:
-		if (m_pDX20->iMZTransExist) {
+		if (m_pDX20->iMZTransExist) 
+		{
 			if (nFrom == 1 && m_nLDCVElevatorCase == 20) m_nLDCVElevatorCase = 21;
 			if (nFrom == 2 && m_nLDMZElevatorCase == 50) m_nLDMZElevatorCase = 51;
 			if (nFrom == 4 && m_nNGMZElevatorCase == 50) m_nNGMZElevatorCase = 51;
@@ -11671,18 +11681,23 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 34:
-		if (g_objCommon.Check_Position(AX_MZ_TRANSFER_Z, nPosX)) {
-			if (nTo == 2 || nTo == 4) {	//Load-MZ,NG-MZ
+		if (g_objCommon.Check_Position(AX_MZ_TRANSFER_Z, nPosX)) 
+		{
+			if (nTo == 2 || nTo == 4) //Load-MZ,NG-MZ 
+			{	
 				m_pDY20->oMZTransLockBarOpen = FALSE; m_pDY20->oMZTransLockBarClose = TRUE;
 				g_objAJinAXL.Write_Output(20);
 				m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(10000);
-			} else {
+			} 
+			else
+			{
 				m_nMZTransferCase = 38; m_tMZTransferLoop.Set_LoopTime(10000);
 			}
 		}
 		break;
 	case 35:
-		if (!m_pDX20->iMZTransLockBarOpen && m_pDX20->iMZTransLockBarClose) {
+		if (!m_pDX20->iMZTransLockBarOpen && m_pDX20->iMZTransLockBarClose) 
+		{
 			if (!m_tMZTransferLoop.Waiting_Time(500)) break;
 			m_pDY20->oMZTransLockBarUp  = FALSE; m_pDY20->oMZTransLockBarDn = TRUE;
 			g_objAJinAXL.Write_Output(20);
@@ -11690,7 +11705,8 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 36:
-		if (!m_pDX20->iMZTransLockBarUp && m_pDX20->iMZTransLockBarDn) {
+		if (!m_pDX20->iMZTransLockBarUp && m_pDX20->iMZTransLockBarDn) 
+		{
 			if (!m_tMZTransferLoop.Waiting_Time(500)) break;
 			m_pDY20->oMZTransLockBarOpen = TRUE; m_pDY20->oMZTransLockBarClose = FALSE;
 			g_objAJinAXL.Write_Output(20);
@@ -11698,7 +11714,8 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 37:
-		if (m_pDX20->iMZTransLockBarOpen && !m_pDX20->iMZTransLockBarClose) {
+		if (m_pDX20->iMZTransLockBarOpen && !m_pDX20->iMZTransLockBarClose) 
+		{
 			if (!m_tMZTransferLoop.Waiting_Time(500)) break;
 			m_pDY20->oMZTransLockBarUp  = TRUE; m_pDY20->oMZTransLockBarDn = FALSE;
 			g_objAJinAXL.Write_Output(20);
@@ -11706,7 +11723,8 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 38:
-		if (m_pDX20->iMZTransLockBarUp && !m_pDX20->iMZTransLockBarDn) {
+		if (m_pDX20->iMZTransLockBarUp && !m_pDX20->iMZTransLockBarDn)
+		{
 			m_pDY20->oMZTransGrip34Open = TRUE; m_pDY20->oMZTransGrip34Close = FALSE;
 			g_objAJinAXL.Write_Output(20);
 			m_nMZTransferCase++; m_tMZTransferLoop.Set_LoopTime(10000);
@@ -12150,14 +12168,16 @@ BOOL CSequenceMain::Run_LDMZElevator()
 		}
 		break;
 	case 6:
-		if (g_objCommon.Check_Position(AX_LDMZ_ELEVATOR_Z, 1)) {
+		if (g_objCommon.Check_Position(AX_LDMZ_ELEVATOR_Z, 1)) 
+		{
 			nSlotNo = nLastSlotNo = 0;
 			for(int i=0; i<8; i++) gLot.nCarrierExist[0][i] = 0;
 			m_nLDMZElevatorCase++; m_tLDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 7:
-		if (g_objAJinAXL.Is_Done(AX_LDMZ_ELEVATOR_Z)) {
+		if (g_objAJinAXL.Is_Done(AX_LDMZ_ELEVATOR_Z)) 
+		{
 			if (!m_tLDMZElevatorLoop.Waiting_Time(500)) break;
 			if (m_pDX15->iLDMZCarrierExist) gLot.nCarrierExist[0][nSlotNo] = 1;
 
@@ -12176,7 +12196,8 @@ BOOL CSequenceMain::Run_LDMZElevator()
 	case 9:
 		if (Check_MZCarrierExit(1) > 0) {
 			gData.nMZSlotNo[3] = nLastSlotNo = 0;
-			for(int i=7; i>=0; i--) {
+			for(int i=7; i>=0; i--) 
+			{
 //			for(int i=0; i<8; i++) {
 				if (gLot.nCarrierExist[0][i] == 1) {
 					nLastSlotNo = i + 1; break;
