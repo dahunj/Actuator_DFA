@@ -184,7 +184,7 @@ private:
 	BOOL Run_UnloadConveyor();			// 33. (Error : 2950) zone : 33
 	BOOL Run_Simulation();				// 99.
 
-	BOOL Check_Transfer1(int &nFmTarget, int &nToTarget, int &nPortNo);
+	BOOL Check_Transfer1(int &nFrom, int &nTo, int &nPortNo);
 	BOOL Check_Transfer2(int &nFmTarget, int &nToTarget, int &nPortNo);
 	BOOL Check_MZTransfer(int &nFmTarget, int &nToTarget);
 	BOOL Check_TrayEmpty();
