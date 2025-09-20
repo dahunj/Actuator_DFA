@@ -5007,66 +5007,109 @@ BOOL CSequenceMain::Run_LoadStage1()
 		return TRUE;
 
 	case 1:
-		if (m_pDX04->iLoadStage1TrayExist) {
-			if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) {
+		if (m_pDX04->iLoadStage1TrayExist) 
+		{
+			if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) 
+			{
 				if (!m_tLoadStage1Loop.Waiting_Time(200)) break;
 				gNG->nTrayOX[0][0] = 1;
 				m_tLoadStage1Loop.Takt_Start();
 				m_pDY04->oLoadStage1SlaveIn = TRUE; m_pDY04->oLoadStage1SlaveOut = FALSE;
 				g_objAJinAXL.Write_Output(4);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+				m_sLog.Format("MCC,10,LoadStage1,%d, oLoadStage1SlaveIn ", m_nLoadStage1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
 	case 2:
-		if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) {
-			if (m_pDX04->iLoadStage1SlaveIn && !m_pDX04->iLoadStage1SlaveOut) {
-				if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) {
+		if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut)
+		{
+			if (m_pDX04->iLoadStage1SlaveIn && !m_pDX04->iLoadStage1SlaveOut)
+			{
+				if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) 
+				{
 					m_tLoadStage1Loop.Takt_Save(10, 1); m_tLoadStage1Loop.Takt_Start();
 					m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+					m_sLog.Format("MCC,10,LoadStage1,%d, iLoadStage1Up Check ", m_nLoadStage1Case);
+					g_objLogFile.Save_TestLog(m_sLog);
 				}
 			}
 		}
 		break;
 	case 3:	//RFID Wait
-		if (m_nLoadStage2Case >= 30) {
+		if (m_nLoadStage2Case >= 30)
+		{
 			m_tLoadStage1Loop.Takt_Save(10, 2); m_tLoadStage1Loop.Takt_Start();
 			m_nRFRetray[0][0] = 0;
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 6);	//RFID
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,8,Transfer1,%d, AX_LOAD_STAGE_Y1 move to RFID Pos ", m_nTransfer1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 
 	case 4:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 6)) {
-			if (m_pEquipData->bUseRFIDLoad) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 6)) 
+		{
+			if (m_pEquipData->bUseRFIDLoad)
+			{
 				g_objCarrierRFID_Load.Send_RFIDRead();
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
-			} else {
-				if (Search_Lot()) { m_nLoadStage1Case = 10; m_tLoadStage1Loop.Set_LoopTime(5000); }
+
+				m_sLog.Format("MCC,8,Transfer1,%d, Send_RFIDRead ", m_nTransfer1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+			} 
+			else 
+			{
+				if (Search_Lot()) 
+				{
+					m_nLoadStage1Case = 10; m_tLoadStage1Loop.Set_LoopTime(5000);
+					m_sLog.Format("MCC,8,Transfer1,%d, Search_Lot ", m_nTransfer1Case);
+					g_objLogFile.Save_TestLog(m_sLog);
+				}
 			}
 		}
 		break;
 	case 5:
-		if (g_objCarrierRFID_Load.Is_RecvComplete()) {
+		if (g_objCarrierRFID_Load.Is_RecvComplete())
+		{
 			gData.sCarID_LoadStage[nStageNo1] = g_objCarrierRFID_Load.Get_CarrierID();
-			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) {
+			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) 
+			{
 				g_objMesAgent.Set_CarrierOutMGZ(gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1], gData.nSlotNo_LoadStage[nStageNo1]);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+				m_sLog.Format("MCC,8,Transfer1,%d, RFID recv done and Set_CarrierOutMGZ ", m_nTransfer1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
 	case 6:
-		if (m_pEquipData->bUseMES) {
-			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) {
+		if (m_pEquipData->bUseMES) 
+		{
+			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) 
+			{
 				gMes.nCarConfirm[0] = 1;
 				g_objMesAgent.Set_CarrierIDReport("L", gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+				m_sLog.Format("MCC,8,Transfer1,%d, Set_CarrierIDReport MzID:%s  CarrierID:%s ", m_nTransfer1Case, gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
-		} else {
-			if (Search_Lot()) {	
+		} 
+		else 
+		{
+			if (Search_Lot()) 
+			{	
 				g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo1], gLot.nCmCount[gLot.nJobCycle-1]);
 				m_nLoadStage1Case = 10; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+				m_sLog.Format("MCC,8,Transfer1,%d, Save_RFBarData ", m_nTransfer1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
