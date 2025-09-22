@@ -1442,24 +1442,34 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 						gData.InfoUnloadPick[nPNo-1][i] = nNGType[i];
 						if (gData.InfoUnloadPick[nPNo-1][i] == 15) gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "VMAC000003";
 						else									   gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "NG-Code";
-						for(int j=0; j<20; j++) {
+						for(int j=0; j<20; j++) 
+						{
 							gNG->sNGCode[nPortNo-1][0][i+nCno][2][j] = "NG-Code"; 
 						}
-					} else {
+					} 
+					else 
+					{
 						gLot.nMarginal[nPNo-1][i+nCno] = nMargin[i];
 					}
-					//gjc-Test(OCAP)
-/*					if (gData.InfoUnloadPick[nPNo-1][i] != 2) {
+					//gjc-Test (OCAP)
+					if (gData.InfoUnloadPick[nPNo-1][i] != 2)
+					{
 						if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
 						if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }
 						if (i >=4 && i <=5) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-44"; }
 						if (i >=6 && i <=7) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "FDFAI-44"; }
-						if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") {
+
+						
+						if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") 
+						{
 							gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Right(gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].GetLength()-1);
 							gLot.nFOcapExist[nPortNo-1][nTrayNo-1][i+nCno] = 1;
-						}
+
+							g_dlgOCAP.Set_AddDEFECT(gData.sLotID_UnloadPicker[nPNo-1], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3]);
+
+						}						
 					}
-*/
+					
 				}
 			}
 		}
@@ -2014,6 +2024,8 @@ BOOL CSequenceMain::Set_LotStart(CString sLotID, int nPortNo)
 //	g_objInspector.Set_LotStart(INSPECTOR_ALL, gLot.sLotID[nNo], nPortNo, 1, gLot.nCmCount[nNo], sRecipe, m_pEquipData->sPROG_VER, m_pEquipData->sPARA_VER);
 	g_objDispatcher.Set_LotStart(nPortNo);
 	gData.sLotID_Start = gLot.sLotID[nNo];
+
+	gCap.sMZID[nNo] = gLot.sMZID_LD[nNo];
 
 	return TRUE;
 }
@@ -10084,7 +10096,8 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 		}
 		break;
 	case 12:
-		if (Check_InspectDone(n2No, gData.nPortNo_UnloadPicker[n2No-1], gData.nTrayNo_UnloadPicker[n2No-1])) {
+		if (Check_InspectDone(n2No, gData.nPortNo_UnloadPicker[n2No-1], gData.nTrayNo_UnloadPicker[n2No-1])) 
+		{
 			m_tUnloadPicker2Loop.Takt_Save(19, 6); m_tUnloadPicker2Loop.Takt_Start(); 
 			Set_ROSTime(n2No, gData.nPortNo_UnloadPicker[n2No-1], gData.nTrayNo_UnloadPicker[n2No-1]);
 			m_nUnloadPicker2Case = 15; m_tUnloadPicker2Loop.Set_LoopTime(300000);	//5분
@@ -13614,14 +13627,21 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 	static int nMZExit = 0;
 	static CString sMZID;
 
-	switch (m_nLD1FConveyorCase) {
+	switch (m_nLD1FConveyorCase)
+	{
 	case 0:	// Wait
 		nMZExit = Check_LoadMZ();
-		if (nMZExit > 0 && !gData.bCycleStop) {
+		if (nMZExit > 0 && !gData.bCycleStop) 
+		{
 			if (!m_tLD1FConveyorLoop.Waiting_Time(2000)) break;
 
 			g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,0,LoadMZ Checked");
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+#ifndef AJIN_BOARD_USE
+			m_pDX17->iLDCVElevatorCVStop = m_pDX17->iLDCVElevatorCVStart = FALSE;
+#endif
+
 		}
 		return TRUE;
 
@@ -13652,10 +13672,15 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 				m_pDY16->oLDCV4CCW1F = TRUE; m_pDY16->oLDCV4CW1F = TRUE;
 				g_objAJinAXL.Write_Output(16);
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(15000);
+
+
 			}
 		}
 		break;
 	case 3:
+#ifndef AJIN_BOARD_USE
+		m_pDX16->iLDVC1FStop = TRUE;
+#endif
 		if (m_pDX16->iLDVC1FStop)
 		{
 			g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,3,Load Conveyor 1F All Stop");
@@ -13664,6 +13689,8 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			m_pDY16->oLDCV4CCW1F = FALSE; m_pDY16->oLDCV4CW1F = FALSE;
 			g_objAJinAXL.Write_Output(16);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+			
 		}
 		break;
 	case 4:
@@ -13702,10 +13729,16 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,6,Barcode Read End");
 				g_objLogFile.Save_RFBarData(0, sMZID);
 				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
 			}
+
 		break;
 	case 7:
 //		if (gData.bCycleStop == FALSE && gData.nCVJobSeq[0] == gData.nCVJobSeq[1] m_nMZTransferCase == 0) {
+
+#ifndef AJIN_BOARD_USE
+		m_pDX20->iMZTransExist = FALSE;
+#endif				
 		if (gData.bCycleStop == FALSE && m_nLDMZElevatorCase == 0 
 			&& m_nMZTransferCase == 0 && !m_pDX15->iLDMZCarrierExist && !m_pDX20->iMZTransExist 
 			&& (gData.nCVJobSeq[0] == 0 || gData.nCVJobSeq[1] > 0))
@@ -13816,6 +13849,9 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			m_pDY17->oLDCVElevatorCVCCW = TRUE; m_pDY17->oLDCVElevatorCVCW = TRUE;
 			g_objAJinAXL.Write_Output(17);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(10000);
+#ifndef AJIN_BOARD_USE
+			m_pDX17->iLDCVElevatorCVStart = TRUE;
+#endif
 		}
 		break;
 	case 19:
@@ -13826,6 +13862,8 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			m_pDY17->oLDCVElevatorCVCCW = FALSE; m_pDY17->oLDCVElevatorCVCW = FALSE;
 			g_objAJinAXL.Write_Output(17);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(10000);
+
+
 		}
 		break;
 	case 20:
@@ -13843,15 +13881,26 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		if (m_pDX17->iLDCVElevatorCVStart || m_pDX17->iLDCVElevatorCVStop) {
 			if (!m_tLD1FConveyorLoop.Waiting_Time(3000)) break;
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+#ifndef AJIN_BOARD_USE
+			m_pDX16->iLDVC1FStop = FALSE;
+#endif
+			
 		}
 		break;
 	case 22:
-		if (!m_pDX16->iLDVC1FStop && !m_pDX17->iLDCVElevatorAlarm) {
+		if (!m_pDX16->iLDVC1FStop && !m_pDX17->iLDCVElevatorAlarm) 
+		{
 			if (!m_tLD1FConveyorLoop.Waiting_Time(1000)) break;
 			m_pDY16->oLDCV3CCW1F = FALSE; m_pDY16->oLDCV3CW1F = FALSE;
 			m_pDY16->oLDCV4CCW1F = FALSE; m_pDY16->oLDCV4CW1F = FALSE;
 			g_objAJinAXL.Write_Output(16);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+#ifndef AJIN_BOARD_USE
+			m_pDX17->iLDCVElevatorCVStop = TRUE; m_pDX17->iLDCVElevatorCVStart = FALSE;
+#endif
+
 		}
 		break;
 	case 23:
@@ -13875,13 +13924,34 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			m_pDY16->oLDCVStopper1FUp = TRUE; m_pDY16->oLDCVStopper1FDn = FALSE;
 			g_objAJinAXL.Write_Output(16);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+
 		break;
 	case 26:
-		if (m_pDX16->iLDCVStopper1FUp && !m_pDX16->iLDCVStopper1FDn) {
+		if (m_pDX16->iLDCVStopper1FUp && !m_pDX16->iLDCVStopper1FDn)
+		{
 			m_pDY16->oLDCV3CCW1F = TRUE; m_pDY16->oLDCV3CW1F = TRUE;
 			m_pDY16->oLDCV4CCW1F = TRUE; m_pDY16->oLDCV4CW1F = TRUE;
 			g_objAJinAXL.Write_Output(16);
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+
+#ifndef AJIN_BOARD_USE
+			if(gData.nSimMzCntLoaded == 0)
+			{
+				m_pDX16->iLDVC1FStop = TRUE; m_pDX16->iLDCV1FCnt1 = FALSE;
+				gData.nSimMzCntLoaded++;
+			}
+			else if(gData.nSimMzCntLoaded == 1)
+			{
+				m_pDX16->iLDVC1FStop = TRUE; m_pDX16->iLDCV1FCnt2 = FALSE;
+				gData.nSimMzCntLoaded++;
+			}
+			else if(gData.nSimMzCntLoaded == 2)
+			{
+				m_pDX16->iLDVC1FStop = TRUE; m_pDX16->iLDCV1FCnt3 = FALSE;
+				gData.nSimMzCntLoaded++;
+			}			
+#endif
 		}
 		break;
 	case 27:
@@ -13933,6 +14003,9 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 
 	switch (m_nLD2FConveyorCase) {
 	case 0:	// Wait
+#ifndef AJIN_BOARD_USE
+		m_pDX16->iLDCV2FCnt1 = TRUE;
+#endif
 		nETMZExit = Check_EmptyMZ();
 		if (nETMZExit > 0) {
 			if (!m_tLD2FConveyorLoop.Waiting_Time(3000)) break;
@@ -13946,7 +14019,8 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 		return TRUE;
 
 	case 1:
-		if (nETMZExit > 0) {
+		if (nETMZExit > 0) 
+		{
 			m_nBarRetry1 = 0;
 			m_pDY16->oLDCVStopper2FUp = TRUE; m_pDY16->oLDCVStopper2FDn = FALSE;
 			g_objAJinAXL.Write_Output(16);
@@ -14272,20 +14346,11 @@ BOOL CSequenceMain::Run_Simulation()
 	if (m_nVisionStage1Case ==  8 || m_nVisionStage2Case ==  8 || m_nVisionStage3Case ==  8 || m_nVisionStage4Case ==  8) gData.bTop1ScanDone = TRUE;
 	if (m_nVisionStage1Case == 12 || m_nVisionStage2Case == 12 || m_nVisionStage3Case == 12 || m_nVisionStage4Case == 12) gData.bTop1ScanDone = TRUE;
 	if (m_nVisionStage1Case == 18 || m_nVisionStage2Case == 18 || m_nVisionStage3Case == 18 || m_nVisionStage4Case == 18) gData.bTop2ScanDone = TRUE;
-
-	if (m_nLDCVElevatorCase == 0) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStop = m_pDX17->iLDCVElevatorCVStart = FALSE; }
-	if (m_nLD1FConveyorCase ==  3) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC1FStop = TRUE; }
-	if (m_nLD1FConveyorCase ==  7) { Sleep(SIM_WAITTIMES); m_pDX20->iMZTransExist = FALSE; }
-	if (m_nLD1FConveyorCase == 19) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStart = TRUE; }
-	if (m_nLD1FConveyorCase == 21) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC1FStop = FALSE; }
-	if (m_nLD1FConveyorCase == 22) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStop = TRUE; m_pDX17->iLDCVElevatorCVStart = FALSE;}
-	if (m_nLD1FConveyorCase == 25) { Sleep(SIM_WAITTIMES); m_pDX16->iLDCVStopper1FUp = TRUE; m_pDX16->iLDCVStopper1FDn = FALSE;}
-	if (m_nLD1FConveyorCase == 26) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC1FStop = TRUE; m_pDX16->iLDCV1FCnt1 = FALSE;}
-
-	if (m_nLD2FConveyorCase == 0) m_pDX16->iLDCV2FCnt1 = TRUE;
-	if (m_nLD2FConveyorCase ==  3) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC2FStop = TRUE; }
+	
+	
+	if (m_nLD2FConveyorCase == 3) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC2FStop = TRUE; }
 	if (m_nLD2FConveyorCase == 19) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStart = TRUE; }
-	if (m_nLD2FConveyorCase == 21) { Sleep(SIM_WAITTIMES); m_pDX16->iLDVC2FStop = FALSE; }
+	if (m_nLD2FConveyorCase == 21) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStart = TRUE; m_pDX16->iLDVC2FStop = FALSE; }
 	if (m_nLD2FConveyorCase == 22) { Sleep(SIM_WAITTIMES); m_pDX17->iLDCVElevatorCVStop = TRUE; m_pDX17->iLDCVElevatorCVStart = FALSE; }
 
 	if (m_nULCVElevatorCase == 11) { Sleep(SIM_WAITTIMES); m_pDX17->iULCVElevatorMZExist = TRUE; }
@@ -14307,12 +14372,15 @@ BOOL CSequenceMain::Run_Simulation()
 	if (m_nMZTransferCase == 46) { Sleep(SIM_WAITTIMES); m_pDX18->iNGMZElevatorExist = TRUE; }
 	if (m_nMZTransferCase == 47) { Sleep(SIM_WAITTIMES); m_pDX18->iGDMZElevatorExist = TRUE; }
 
-	if (m_pEquipData->bUseMES) {
+	if (m_pEquipData->bUseMES) 
+	{
 		if (m_nLDMZElevatorCase == 9) {	//MES-Test시 Carrrier수량설정
 			gLot.nCarrierExist[0][0] = 1; //gLot.nCarrierExist[0][1] = 1;
 			gData.nSimCount++;
 		}
-	} else {
+	} 
+	else
+	{
 		if (m_nLDMZElevatorCase == 9) {
 			int nS, nE, nX;
 			if (gData.nSimCount == 0 || gData.nSimCount == 4) { nS =  0; nE =  8; }

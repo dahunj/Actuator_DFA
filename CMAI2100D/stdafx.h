@@ -106,7 +106,7 @@
 #define SIM_WAITTIMES	 50		//
 #define SIM_WAITTIMEM	 50		//
 
-#define	VELOCITY_WEIGHT	 25
+#define	VELOCITY_WEIGHT	 100
 //****************************************************************************
 //#define RESULT_TEST		// 비전 FOB 모드에서 전체 양품 처리가 안되어 추가함.
 //#define ALIGN_TEST		// Align 반복 Test.
@@ -261,6 +261,9 @@ typedef struct {
 	int		nScanRetry[3];		//0:BTM, 1:T1, 2:T2
 	double	dAlignOffset[2][2];	//0:X, 1:Y
 	int		nNG_MC[5][2];	//0:MC, 1:GF, 2:Barcode, 3:Vision-timover, 4:MES_NG
+
+	int		nSimMzCntLoaded;
+
 } GLOVAL_DATA;
 
 typedef struct {

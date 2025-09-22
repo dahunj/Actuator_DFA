@@ -835,13 +835,17 @@ BOOL CWorkDlg::Work_Start()
 	DX_DATA_19 *pDX19 = g_objAJinAXL.Get_pDX19();
 	DX_DATA_20 *pDX20 = g_objAJinAXL.Get_pDX20();
 #ifndef AJIN_BOARD_USE
-		pDX18->iMZBufferExist = TRUE;
-		pDX18->iGDMZElevatorExist = FALSE;
-		gData.nSimCount = 0;
-		pDX16->iLDCV2FCnt1 = TRUE;
-		pDX16->iLDCV1FCnt1 = TRUE;
-		pDX20->iMZTransExist = FALSE;
-		g_objAJinAXL.Move_Absolute(AX_ELEVATOR_Z2, 290);
+	pDX18->iMZBufferExist = TRUE;
+	pDX18->iGDMZElevatorExist = FALSE;
+	gData.nSimCount = 0;
+	pDX16->iLDCV2FCnt1 = TRUE;
+	pDX16->iLDCV2FCnt2 = TRUE;
+	pDX16->iLDCV2FCnt3 = TRUE;
+	pDX16->iLDCV1FCnt1 = TRUE;
+	pDX16->iLDCV1FCnt2 = TRUE;
+	pDX16->iLDCV1FCnt3 = TRUE;
+	pDX20->iMZTransExist = FALSE;
+	g_objAJinAXL.Move_Absolute(AX_ELEVATOR_Z2, 290);
 #endif
 
 	if (!pDX18->iMZBufferExist) {

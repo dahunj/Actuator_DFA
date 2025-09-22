@@ -347,7 +347,8 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 
 	double dValue;
 	int	   nNo = 16;
-	for(int i=0; i<20; i++) {
+	for(int i=0; i<20; i++) 
+	{
 		str.Format(_T("%d"), gCap.nCount[nIx][i]);
 		m_grdData.Set_CellFont(nDp, nNo, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, nNo, str);
@@ -366,7 +367,8 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 		nNo++;
 	}
 	nNo = 56;
-	for(int i=0; i<20; i++) {
+	for(int i=0; i<20; i++) 
+	{
 		str.Format(_T("%d"), gCap.nFCount[nIx][i]);
 		m_grdData.Set_CellFont(nDp, nNo, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, nNo, str);
@@ -386,8 +388,10 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 void OCAPProcess::Set_AddMZData(int nPortNo)
 {
 	int nNo = nPortNo - 1;
-	for (int i=0; i<50; i++) {
-		if (gLot.sMZID_GD[nNo] == gCap.sMZID[i]) {
+	for (int i=0; i<50; i++) 
+	{
+		if (gLot.sMZID_GD[nNo] == gCap.sMZID[i]) 
+		{
 			AddCarToMZ(nNo, i);
 			return;
 		}
@@ -467,16 +471,20 @@ void OCAPProcess::Set_AddDEFECT(CString sMZid, CString sCode)
 	if (gCap.nMZCycle < 0 || gCap.nMZCycle > 49) return;
 	if (sMZid.GetLength() < 2 || sCode.GetLength() < 1 ) return;
 
-	for (int i=0; i<50; i++) {
-		if (sMZid == gCap.sMZID[i]) {
-			for(int j=0; j<100; j++) {
-				if (sCode == gCap.sFAIName[j]) {
+	for (int i=0; i<50; i++)
+	{
+//		if (sMZid == gCap.sMZID[i]) 
+//		{
+			for(int j=0; j<20; j++) 
+			{
+				if (sCode == gCap.sFAIName[j]) 
+				{
 					gCap.nCount[i][i]++;
 					return;
 				}
 			}
 			return;
-		}
+//		}
 	}
 }
 

@@ -60,11 +60,21 @@ END_MESSAGE_MAP()
 
 void CInspector::Initialize()
 {
+#ifndef AJIN_BOARD_USE
+	BOOL bVisionPC1Opened = m_UdpVisionPC1.Open_Socket(UDP_PC1_LPORT, UDP_PC1_HPORT, "127.0.0.1", this);
+	BOOL bVisionPC2Opened = m_UdpVisionPC2.Open_Socket(UDP_PC2_LPORT, UDP_PC2_HPORT, "127.0.0.1", this);
+	BOOL bVisionPC3Opened = m_UdpVisionPC3.Open_Socket(UDP_PC3_LPORT, UDP_PC3_HPORT, "127.0.0.1", this);
+	BOOL bVisionPC4Opened = m_UdpVisionPC4.Open_Socket(UDP_PC4_LPORT, UDP_PC4_HPORT, "127.0.0.1", this);
+	BOOL bVisionPC5Opened = m_UdpVisionPC5.Open_Socket(UDP_PC5_LPORT, UDP_PC5_HPORT, "127.0.0.1", this);
+#else
 	BOOL bVisionPC1Opened = m_UdpVisionPC1.Open_Socket(UDP_PC1_LPORT, UDP_PC1_HPORT, UDP_PC1_HOST_IP, this);
 	BOOL bVisionPC2Opened = m_UdpVisionPC2.Open_Socket(UDP_PC2_LPORT, UDP_PC2_HPORT, UDP_PC2_HOST_IP, this);
 	BOOL bVisionPC3Opened = m_UdpVisionPC3.Open_Socket(UDP_PC3_LPORT, UDP_PC3_HPORT, UDP_PC3_HOST_IP, this);
 	BOOL bVisionPC4Opened = m_UdpVisionPC4.Open_Socket(UDP_PC4_LPORT, UDP_PC4_HPORT, UDP_PC4_HOST_IP, this);
 	BOOL bVisionPC5Opened = m_UdpVisionPC5.Open_Socket(UDP_PC5_LPORT, UDP_PC5_HPORT, UDP_PC5_HOST_IP, this);
+
+#endif
+	
 	if (bVisionPC1Opened) Set_ConnectRequest(INSPECTOR_PC1);
 	if (bVisionPC2Opened) Set_ConnectRequest(INSPECTOR_PC2);
 	if (bVisionPC3Opened) Set_ConnectRequest(INSPECTOR_PC3);
@@ -78,6 +88,7 @@ void CInspector::Terminate()
 
 	m_UdpVisionPC1.Close_Socket();
 	m_UdpVisionPC2.Close_Socket();
+
 	m_UdpVisionPC3.Close_Socket();
 	m_UdpVisionPC4.Close_Socket();
 	m_UdpVisionPC5.Close_Socket();
