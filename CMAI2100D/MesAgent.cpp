@@ -705,7 +705,7 @@ void CMesAgent::Set_OcapFaiNG(int nPno, int nType, CString sFaiNGCode)
 {
 	if (sFaiNGCode.GetLength() < 1) return;
 
-	for(int i=0; i<20; i++) {
+	/*for(int i=0; i<20; i++) {
 		if (sFaiNGCode == gCap.sFAICode[i]) { gLot.nOcapCount[nPno-1][i]++; if (nType==1) gLot.nFOcapCount[nPno-1][i]++; return; }
 	}
 
@@ -715,7 +715,7 @@ void CMesAgent::Set_OcapFaiNG(int nPno, int nType, CString sFaiNGCode)
 		for(int i=7; i<14; i++) {
 			if (sFAING == gCap.sFAICode[i]) { gLot.nOcapCount[nPno-1][i]++; if (nType==1) gLot.nFOcapCount[nPno-1][i]++; return; }
 		}
-	}
+	}*/
 }
 
 void CMesAgent::Set_TerminalOK()

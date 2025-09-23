@@ -41,8 +41,8 @@ private:
 public:
 	void Display_Status();
 	void Set_AddMZData(int nPortNo);
-	void Set_AddDEFECT(CString sMZid, CString sCode);
-	void Check_DEFECT(int nNo);
+	void Set_AddDEFECT(CString sMZid, int nPortNo);
+	void Check_DEFECT(CString sMZID);
 	void Check_DEFECTF(int nNo);
 	void AddCarToMZ(int nPortNo, int nIndex);
 	void AddMZOut(CString sMZid);
