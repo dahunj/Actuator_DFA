@@ -3895,6 +3895,8 @@ BOOL CSequenceMain::Run_Transfer1()
 			gData.nTrayNo_Tansfer[0] = gData.nPortNo_Tansfer[0] = 0;
 			gData.nLDMZ_LastCarrier[1] = gData.nLDMZ_LastCarrier[0];
 
+			gTracking.sMZID_Trasnfer1 = gTracking.sMZID_LoadMZElev;
+
 			if (m_nLDMZElevatorCase == 30) 
 			{
 				m_nLDMZElevatorCase = 31; m_tLDMZElevatorLoop.Set_LoopTime(5000);
@@ -12836,9 +12838,9 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			gData.nSlotNo_LDMZ = nSlotNo;
 			if (nSlotNo == nLastSlotNo) gData.nLDMZ_LastCarrier[0] = 1;
 			else						gData.nLDMZ_LastCarrier[0] = 0;
-
-			//gCap.sMZID_Pre[gData.nSlotNo_LDMZ-1] =  gData.sMZID[4];
-			
+						
+			gTracking.sMZID_LoadMZElev = gData.sMZID[4];
+		
 			m_nLDMZElevatorCase = 30; m_tLDMZElevatorLoop.Set_LoopTime(10000);
 
 			m_sLog.Format("MCC,28,LDMZElevator,%d, Slot NO : %d & Last Carrier Check : %d", m_nLDMZElevatorCase, nSlotNo, gData.nLDMZ_LastCarrier[0]);

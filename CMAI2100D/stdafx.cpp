@@ -11,6 +11,8 @@ GLOVAL_LOT			gLot;
 GLOVAL_ALM			gAlm;
 GLOVAL_MES			gMes;
 GLOVAL_OCAP			gCap;
+GLOVAL_TRACKING		gTracking;
+
 GLOVAL_NGCODE* gNG = new GLOVAL_NGCODE;
 
 /*

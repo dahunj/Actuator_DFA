@@ -414,16 +414,29 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
+	
 	CString sMZID_Org[30][40];
+
+	int nSlotNo_Org[30][40];
 
 	
 } GLOVAL_OCAP;
+
+typedef struct {
+
+	CString sMZID_LoadMZElev;
+	CString	sMZID_Trasnfer1;
+	CString sMZID_LoadStage[2];
+
+} GLOVAL_TRACKING;
+
 
 extern GLOVAL_DATA		gData;
 extern GLOVAL_LOT		gLot;
 extern GLOVAL_ALM		gAlm;
 extern GLOVAL_MES		gMes;
 extern GLOVAL_OCAP		gCap;
+extern GLOVAL_TRACKING	gTracking;
 
 typedef struct {
 	CString		sNGCode[30][1][40][5][20];	//Port[30],TrayNo[1],Module[40],Inspection[5],NG-Code[20]

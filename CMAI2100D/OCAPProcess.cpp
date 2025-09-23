@@ -207,10 +207,8 @@ void OCAPProcess::Set_AddDEFECT(CString sMZid,int nPortNo)
 void OCAPProcess::Check_DEFECT(CString sMZID)
 {
 	
-	
 }
 
 void OCAPProcess::Check_DEFECTF(int nNo)
 {
-	
 }
