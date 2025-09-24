@@ -231,7 +231,7 @@ private:
 
 	void Set_NextLot(CString sLotID, DWORD dwTime);
 	void Set_AlignData(int nPortNo, int nStageNo);
-	void Set_AlignToStage(int nPortNo);
+	void Set_AlignToStage(int nPortNo, int nStageNo);
 
 public:
 	double	m_dBtmZ, m_dTop1Z, m_dTop2Z;

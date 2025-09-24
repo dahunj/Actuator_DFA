@@ -427,6 +427,17 @@ typedef struct {
 	CString sMZID_LoadMZElev;
 	CString	sMZID_Trasnfer1;
 	CString sMZID_LoadStage[2];
+	CString sMZID_LoadStageModule[2][10][4];
+	CString	sMZID_LoadPicker[2][10];
+	CString	sMZID_InspectStage[4][10];
+	CString	sMZID_UnloadPicker[2][10];
+	CString sMZID_NGTray[10][4];
+	CString sMZID_GoodTray[10][4];
+
+	CString sMZID_GoodMZElev[10][4];
+	CString sMZID_NGMZElev[10][4];
+
+	CString sMZID_Transfer2[10][4];
 
 } GLOVAL_TRACKING;
 
