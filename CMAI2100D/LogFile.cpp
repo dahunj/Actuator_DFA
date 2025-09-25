@@ -16,6 +16,7 @@ CCriticalSection g_csMesAgentLog;
 CCriticalSection g_csDispatcherLog;
 CCriticalSection g_csDailyLotLog;
 CCriticalSection g_csOperatingRatioLog;
+CCriticalSection g_csHomeTracking;
 
 CLogFile::CLogFile()
 {
@@ -142,6 +143,37 @@ void CLogFile::Save_HandlerLog(CString sLog)
 		}
 	}
 	g_csHandlerLog.Unlock();
+}
+
+void CLogFile::Save_HomeTrackingLog(CString sLog)
+{
+	g_csHomeTracking.Lock();
+
+	CString strPath = gsCurrentDir + "\\LOG\\HomeTracking";
+
+	Create_Folder(strPath);
+
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+
+	CString strFile, strSave;
+	strFile.Format("%s\\%04d%02d%02d_HomeTracking.csv", strPath, time.wYear, time.wMonth, time.wDay);
+
+	CFile file;
+	if (file.Open(strFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone)) {
+		try {
+			file.SeekToEnd();
+
+			strSave.Format("[%02d:%02d:%02d %03d], %s\r\n", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds, sLog);
+
+			file.Write(strSave, strSave.GetLength());
+			file.Close();
+
+		} catch (CFileException *pEx) {
+			pEx->Delete();
+		}
+	}
+	g_csHomeTracking.Unlock();
 }
 
 void CLogFile::Save_InspectorLog(CString sLog)

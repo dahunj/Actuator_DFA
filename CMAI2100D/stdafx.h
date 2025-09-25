@@ -434,10 +434,15 @@ typedef struct {
 	CString sMZID_NGTray[10][4];
 	CString sMZID_GoodTray[10][4];
 
+	CString sMZID_Transfer2[10][4];
+
 	CString sMZID_GoodMZElev[10][4];
 	CString sMZID_NGMZElev[10][4];
 
-	CString sMZID_Transfer2[10][4];
+	CString sMZID_GoodMZ[8][10][4];
+	CString sMZID_NGMZ[8][10][4];
+
+	
 
 } GLOVAL_TRACKING;
 
