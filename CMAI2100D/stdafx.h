@@ -92,6 +92,8 @@
 #define ELEVATOR_DN		4.0
 #define ELEVATOR_SL		0.5
 
+#define PICK_CNT		8
+
 #ifdef CARRIER_TYPE_MEM
 	#define MAIN_VERSION	"Vd 3.1.6m"
 	#define CARRIER_OFFSETX	8.0
@@ -414,10 +416,14 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
-	
-	CString sMZID_Org[30][40];
+	int nDefectCnt[30];
+	int nGoodCnt[30];
+	int nTotalCntCarrier[30];
 
-	int nSlotNo_Org[30][40];
+	int nCurrentMZIdx;
+	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
+
+	
 
 	
 } GLOVAL_OCAP;
@@ -428,9 +434,9 @@ typedef struct {
 	CString	sMZID_Trasnfer1;
 	CString sMZID_LoadStage[2];
 	CString sMZID_LoadStageModule[2][10][4];
-	CString	sMZID_LoadPicker[2][10];
-	CString	sMZID_InspectStage[4][10];
-	CString	sMZID_UnloadPicker[2][10];
+	CString	sMZID_LoadPicker[2][PICK_CNT];
+	CString	sMZID_InspectStage[4][PICK_CNT];
+	CString	sMZID_UnloadPicker[2][PICK_CNT];
 	CString sMZID_NGTray[10][4];
 	CString sMZID_GoodTray[10][4];
 

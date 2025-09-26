@@ -340,14 +340,22 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else if (sJudge == "R")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 4;	//외관불량(Ros Skip to Repair)
 	else if (sJudge == "X")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 5;	//외관불량(Ros Skip to NG)
 	else					 gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 3;	//외관불량(ROS 판정)
-	if (sJudge == "G") gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
+	
+	if (sJudge == "G")
+	{
+		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
+		gCap.nGoodCnt[nPortNo -1]++;
+	}
 	else			   gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
+	
 	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] + nImage2;	//외관불량수
+	
 	if (nVNo >=1 && nVNo <=5) {
 		for (int i = 0; i < 20; i++) AfxExtractSubString(gNG->sNGCode[nPortNo-1][0][nCMNo-1][nVNo-1][i], sRcvData, i + 12, ',');
 	}
+	
 	if (nMarginal > 0) gLot.nMarginal[nPortNo-1][nCMNo-1] = nVNo;	//Marginal
 
 	//Module 검사완료 Check
@@ -452,6 +460,12 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		if (gData.nNG_MC[4][0] > 0 && gData.nNG_MC[4][0] <= gData.nNG_MC[4][1]) g_objCommon.Show_Error(9205);
 		return;
 	} */
+	if(nNGSize1 > 0)
+	{
+		gCap.nDefectCnt[nPortNo-1]++;
+	}
+
+
 	if (nNGGF > 0) {
 		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]  = 5;	//GRAB_FAIL
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = "GRAB_FAIL";
@@ -471,7 +485,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		gLot.nRosJugCount[nPortNo-1][6]++;
 		return;
 	}
-	if (nNGSize > 0 && (nNGMC > 0 || nMCBTM > 0 || nNGSkip > 0 || nReSkip > 0)) {
+	if (nNGSize > 0 && (nNGMC > 0 || nMCBTM > 0 || nNGSkip > 0 || nReSkip > 0))
+	{
 		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	//치수불량: 7,8,9
 		gLot.nRosJugCount[nPortNo-1][6]++;
 		return;

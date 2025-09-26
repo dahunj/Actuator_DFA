@@ -1251,11 +1251,10 @@ void CSequenceMain::Set_AlignToStage(int nPortNo, int nStageNo)
 			if (gData.InfoAlignTray[i][j] > 0) 
 			{
 				gData.InfoLoadTray[i][j] = 1;
+				
 				gTracking.sMZID_LoadStageModule[nStageNo][i][j] = gTracking.sMZID_LoadStage[nStageNo];
-				gTracking.sMZID_LoadStage[nStageNo] = "";
-
 				m_sLog.Format("sMZID_LoadStageModule x:%d y:%d - MZ ID:%s",j,i, gTracking.sMZID_LoadStageModule[nStageNo][i][j]);
-				g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				if (gTracking.sMZID_LoadStageModule[nStageNo][i][j] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 			else
 			{
@@ -1263,6 +1262,7 @@ void CSequenceMain::Set_AlignToStage(int nPortNo, int nStageNo)
 			}
 		}
 	}
+	gTracking.sMZID_LoadStage[nStageNo] = "";
 	g_dlgWork.PostMessage(UM_UPDATE_TRAY_INFO, 2, NULL);
 	Init_AlignTray();
 }
@@ -1461,38 +1461,44 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 					{ 
 						if (gData.InfoUnloadPick[nPNo-1][i] == 3) gData.InfoUnloadPick[nPNo-1][i] = 7; 
 					}
-					if (gData.InfoUnloadPick[nPNo-1][i] != 2) 
+					/*	if (gData.InfoUnloadPick[nPNo-1][i] != 2) 
 					{
-						gData.InfoUnloadPick[nPNo-1][i] = nNGType[i];
-						if (gData.InfoUnloadPick[nPNo-1][i] == 15) gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "VMAC000003";
-						else									   gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "NG-Code";
-						for(int j=0; j<20; j++) 
-						{
-							gNG->sNGCode[nPortNo-1][0][i+nCno][2][j] = "NG-Code"; 
-						}
+					gData.InfoUnloadPick[nPNo-1][i] = nNGType[i];
+					if (gData.InfoUnloadPick[nPNo-1][i] == 15) gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "VMAC000003";
+					else									   gLot.sNGCode_I[nPortNo-1][0][i+nCno][0] = "NG-Code";
+					for(int j=0; j<20; j++) 
+					{
+					gNG->sNGCode[nPortNo-1][0][i+nCno][2][j] = "NG-Code"; 
+					}
 					} 
 					else 
 					{
-						gLot.nMarginal[nPNo-1][i+nCno] = nMargin[i];
-					}
+					gLot.nMarginal[nPNo-1][i+nCno] = nMargin[i];
+					}*/
+									
 					//gjc-Test (OCAP)
-					//if (gData.InfoUnloadPick[nPNo-1][i] != 2)
-					//{
-					//	if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
-					//	if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }
-					//	if (i >=4 && i <=5) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-44"; }
-					//	if (i >=6 && i <=7) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "FDFAI-44"; }
+					if (gData.InfoUnloadPick[nPNo-1][i] != 2)
+					{
+						if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
+						if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }
+						if (i >=4 && i <=5) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-44"; }
+						if (i >=6 && i <=7) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "FDFAI-44"; }
+						
+						if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") 
+						{
+							gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Right(gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].GetLength()-1);
+							gLot.nFOcapExist[nPortNo-1][nTrayNo-1][i+nCno] = 1;
+							gCap.nDefectCnt[nPortNo-1]++;
+						}						
+					}
+					else
+					{
+						gCap.nGoodCnt[nPortNo-1]++;
+					}					
+					
+					//g_dlgOCAP.Set_AddDEFECT();
+					//g_dlgOCAP.Set_AddMZData(gData.nPortNo_NGTray[n1NSNo-5]);
 
-					//	
-					//	if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") 
-					//	{
-					//		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Right(gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].GetLength()-1);
-					//		gLot.nFOcapExist[nPortNo-1][nTrayNo-1][i+nCno] = 1;
-
-					//		
-
-					//	}						
-					//}
 					
 				}
 			}
@@ -4650,7 +4656,7 @@ BOOL CSequenceMain::Run_Transfer2()
 					gTracking.sMZID_NGTray[y][x] = "";
 
 					m_sLog.Format("NGTray To Transfer2 x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
-					g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					if(gTracking.sMZID_Transfer2[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 				}
 			}
 			
@@ -4721,7 +4727,7 @@ BOOL CSequenceMain::Run_Transfer2()
 					gTracking.sMZID_GoodTray[y][x] = "";
 
 					m_sLog.Format("GoodTray To Transfer2 x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
-					g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					if(gTracking.sMZID_Transfer2[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 				}
 			}
 
@@ -4910,7 +4916,7 @@ BOOL CSequenceMain::Run_Transfer2()
 							gTracking.sMZID_Transfer2[y][x] = "";
 
 							m_sLog.Format("Transfer2 To NG MZ Elev x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_NGMZElev[y][x]);
-							g_objLogFile.Save_HomeTrackingLog(m_sLog);
+							if(gTracking.sMZID_NGMZElev[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						}
 					}
 
@@ -4932,7 +4938,7 @@ BOOL CSequenceMain::Run_Transfer2()
 							gTracking.sMZID_Transfer2[y][x] = "";
 
 							m_sLog.Format("Transfer2 To Good MZ Elev x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_GoodMZElev[y][x]);
-							g_objLogFile.Save_HomeTrackingLog(m_sLog);
+							if(gTracking.sMZID_NGMZElev[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						}
 					}
 					if (m_nGDMZElevatorCase == 70) m_nGDMZElevatorCase = 71;
@@ -6269,9 +6275,11 @@ BOOL CSequenceMain::Run_LoadPicker1()
 			for(int i=nS; i<nE; i++) 
 			{
 				gData.InfoLoadPick[n1No-1][i] = gData.InfoLoadTray[nLoad1PosY-1][i];	gData.InfoLoadTray[nLoad1PosY-1][i] = 0;
+				
 				gTracking.sMZID_LoadPicker[n1No-1][i] = gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i];
-				m_sLog.Format("LoadPicker No:%d x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
-				g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i] = "";
+				m_sLog.Format("LoadStage To LoadPicker No:%d x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
+				if(gTracking.sMZID_LoadPicker[n1No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
 			n1LP = gData.nPortNo_LoadPicker[n1No-1] - 1;
@@ -6380,6 +6388,11 @@ BOOL CSequenceMain::Run_LoadPicker1()
 
 			for(int i=nS; i<nE; i++) {
 				gData.InfoLoadPick[n1No-1][i+4] = gData.InfoLoadTray[nLoad1PosY-1][i]; gData.InfoLoadTray[nLoad1PosY-1][i] = 0;
+
+				gTracking.sMZID_LoadPicker[n1No-1][i+4] = gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i];
+				gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i] = "";
+				m_sLog.Format("LoadStage To LoadPicker No:%d x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
+				if(gTracking.sMZID_LoadPicker[n1No-1][i+4] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
 			n1LP = gData.nPortNo_LoadPicker[n1No-1] - 1;
@@ -6711,12 +6724,16 @@ BOOL CSequenceMain::Run_LoadPicker1()
 
 			for(int i=0; i<10; i++) 
 			{
-				 gData.InfoVision[n1LPVisionNo-1][i] = gData.InfoLoadPick[n1No-1][i]; gData.InfoLoadPick[n1No-1][i] = 0;
-				 gTracking.sMZID_InspectStage[n1LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n1No-1][i]; gTracking.sMZID_LoadPicker[n1No-1][i] = "";
-				 m_sLog.Format("LoadPicker %d To InspectStage %d, pocket:%d y:%d - MZ ID:%s",n1No, n1LPVisionNo, i , gTracking.sMZID_InspectStage[n1LPVisionNo-1][i]);
-				 g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				 gData.InfoVision[n1LPVisionNo-1][i] = gData.InfoLoadPick[n1No-1][i]; gData.InfoLoadPick[n1No-1][i] = 0;				
 			}
-			for(int i=0; i<8; i++) { gLot.nHistory[n1LP][n1LT][n1LM+i][3] = gData.nVisionNo = n1LPVisionNo; }
+			for(int i=0; i< PICK_CNT; i++) 
+			{ 
+				gTracking.sMZID_InspectStage[n1LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n1No-1][i]; gTracking.sMZID_LoadPicker[n1No-1][i] = "";
+				m_sLog.Format("LoadPicker %d To InspectStage %d, pocket:%d - MZ ID:%s",n1No, n1LPVisionNo, i , gTracking.sMZID_InspectStage[n1LPVisionNo-1][i]);
+				if(gTracking.sMZID_InspectStage[n1LPVisionNo-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+
+				gLot.nHistory[n1LP][n1LT][n1LM+i][3] = gData.nVisionNo = n1LPVisionNo; 
+			}
 			m_nLoadPicker1Case++; m_tLoadPicker1Loop.Set_LoopTime(3000+m_pEquipData->nDelayTime[4]);
 		}
 		break;
@@ -7056,9 +7073,11 @@ BOOL CSequenceMain::Run_LoadPicker2()
 			for(int i=nS; i<nE; i++)
 			{
 				gData.InfoLoadPick[n2No-1][i] = gData.InfoLoadTray[nLoad2PosY-1][i];	gData.InfoLoadTray[nLoad2PosY-1][i] = 0;
+				
 				gTracking.sMZID_LoadPicker[n2No-1][i] = gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i];
+				gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i] = "";
 				m_sLog.Format("Load Stage To LoadPicker, No:%d x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
-				g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				if (gTracking.sMZID_LoadPicker[n2No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 			
 			n2LP = gData.nPortNo_LoadPicker[n2No-1] - 1;
@@ -7166,6 +7185,11 @@ BOOL CSequenceMain::Run_LoadPicker2()
 			else			 { nS = 2; nE = 4; }
 			for(int i=nS; i<nE; i++) {
 				gData.InfoLoadPick[n2No-1][i+4] = gData.InfoLoadTray[nLoad2PosY-1][i]; gData.InfoLoadTray[nLoad2PosY-1][i] = 0;
+				
+				gTracking.sMZID_LoadPicker[n2No-1][i+4] = gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i];
+				gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i] = "";
+				m_sLog.Format("Load Stage To LoadPicker, No:%d x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
+				if (gTracking.sMZID_LoadPicker[n2No-1][i+4] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
 			n2LP = gData.nPortNo_LoadPicker[n2No-1] - 1;
@@ -7497,9 +7521,15 @@ BOOL CSequenceMain::Run_LoadPicker2()
 
 			for(int i=0; i<10; i++) {
 				 gData.InfoVision[n2LPVisionNo-1][i] = gData.InfoLoadPick[n2No-1][i]; gData.InfoLoadPick[n2No-1][i] = 0;
-				 gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n2No-1][i]; gTracking.sMZID_LoadPicker[n2No-1][i] = "";
+				
 			}
-			for(int i=0; i<8; i++) { gLot.nHistory[n2LP][n2LT][n2LM+i][3] = gData.nVisionNo = n2LPVisionNo; }
+			for(int i=0; i < PICK_CNT; i++) 
+			{ 
+				gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n2No-1][i]; gTracking.sMZID_LoadPicker[n2No-1][i] = "";
+				m_sLog.Format("LoadPicker %d To InspectStage %d, pocket:%d - MZ ID:%s",n2No, n2LPVisionNo, i , gTracking.sMZID_InspectStage[n2LPVisionNo-1][i]);
+				if(gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				gLot.nHistory[n2LP][n2LT][n2LM+i][3] = gData.nVisionNo = n2LPVisionNo;
+			}
 			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(3000+m_pEquipData->nDelayTime[4]);
 		}
 		break;
@@ -9586,11 +9616,18 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 			for(int i=0; i<10; i++) 
 			{
-				gData.InfoUnloadPick[n1No-1][i] = gData.InfoVision[n1VNo-1][i];	gData.InfoVision[n1VNo-1][i] = 0;
+				gData.InfoUnloadPick[n1No-1][i] = gData.InfoVision[n1VNo-1][i];	gData.InfoVision[n1VNo-1][i] = 0;				
+			}
+
+			for(int i=0; i<PICK_CNT; i++) 
+			{
 				gTracking.sMZID_UnloadPicker[n1No-1][i] = gTracking.sMZID_InspectStage[n1VNo-1][i];	gTracking.sMZID_InspectStage[n1VNo-1][i] = "";
 				m_sLog.Format("InspectStage %d To UnloadPicker %d, pocket:%d - MZ ID:%s",n1VNo, n1No, i , gTracking.sMZID_UnloadPicker[n1No-1][i]);
-				g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				if(gTracking.sMZID_UnloadPicker[n1No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);				
 			}
+
+			
+
 			gData.sLotID_VisionStage[n1VNo-1] = "";
 			gData.nTrayNo_VisionStage[n1VNo-1] = gData.nPortNo_VisionStage[n1VNo-1] = 0;
 
@@ -9838,9 +9875,8 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1] = "";
 
 			m_sLog.Format("UnloadPicker %d To NGTray x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
-			g_objLogFile.Save_HomeTrackingLog(m_sLog);
-
-
+			if(gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+			
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][6] = 1;
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][7] = (n1PosY-1) * 4 + n1PosX;
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][8] = n1NSNo-4;
@@ -10001,7 +10037,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 				gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1+i] = "";
 
 				m_sLog.Format("UnloadPicker %d To GoodTray x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1]);
-				g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				if(gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 				if (gData.InfoGoodTray[n1PosY-1][n1PosX-1+i] > 0) 
 				{
@@ -10189,10 +10225,19 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 			gData.nPortNo_UnloadPicker[n2No-1] = gData.nPortNo_VisionStage[n2VNo-1];
 			gData.sLotID_UnloadPicker[2]	   = gData.sLotID_UnloadPicker[n2No-1];
 
-			for(int i=0; i<10; i++) {
+			for(int i=0; i<10; i++) 
+			{
 				gData.InfoUnloadPick[n2No-1][i] = gData.InfoVision[n2VNo-1][i];	gData.InfoVision[n2VNo-1][i] = 0;
-				gTracking.sMZID_UnloadPicker[n2No-1][i] = gTracking.sMZID_InspectStage[n2VNo-1][i];	gTracking.sMZID_InspectStage[n2VNo-1][i] = "";
+				
 			}
+
+			for(int i=0; i<PICK_CNT; i++) 
+			{
+				gTracking.sMZID_UnloadPicker[n2No-1][i] = gTracking.sMZID_InspectStage[n2VNo-1][i];	gTracking.sMZID_InspectStage[n2VNo-1][i] = "";
+				m_sLog.Format("InspectStage %d To UnloadPicker %d, pocket:%d - MZ ID:%s",n2VNo, n2No, i , gTracking.sMZID_UnloadPicker[n2No-1][i]);
+				if(gTracking.sMZID_UnloadPicker[n2No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);			
+			}
+
 			gData.sLotID_VisionStage[n2VNo-1] = "";
 			gData.nTrayNo_VisionStage[n2VNo-1] = gData.nPortNo_VisionStage[n2VNo-1] = 0;
 
@@ -10430,6 +10475,10 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 
 			gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] = gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1];
 			gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1] = "";
+			m_sLog.Format("UnloadPicker %d To NGTray Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
+			if(gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+
+
 
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][6] = 1;
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][7] = (n2PosY-1) * 4 + n2PosX;
@@ -10591,6 +10640,10 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 
 				gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] = gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1+i];
 				gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1+i] = "";
+
+				m_sLog.Format("UnloadPicker %d To GoodTray Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1]);
+				if(gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+
 				
 				if (gData.InfoGoodTray[n2PosY-1][n2PosX-1+i] > 0) 
 				{
@@ -10784,7 +10837,8 @@ BOOL CSequenceMain::Run_NGStage1()
 	case 8:
 		if (g_objCarrierRFID_NG.Is_RecvComplete()) {
 			gData.sCarID_NGTray[nNStage1No] = g_objCarrierRFID_NG.Get_CarrierID();
-			if (gData.sCarID_NGTray[nNStage1No].GetLength() > 2) {
+			if (gData.sCarID_NGTray[nNStage1No].GetLength() > 2) 
+			{
 				gMes.nCarConfirm[2] = 1;
 #ifndef AJIN_BOARD_USE
 				gMes.nCarConfirm[2] = 2;
@@ -10809,7 +10863,8 @@ BOOL CSequenceMain::Run_NGStage1()
 		}
 		break;
 	case 12:
-		if (g_objCommon.Check_Position(nNStage1YAxisNo, 1)) {
+		if (g_objCommon.Check_Position(nNStage1YAxisNo, 1))
+		{
 			g_objCommon.Save_Motion(nNStage1YAxisNo, 1);
 			m_tNGStage1Loop.Takt_Save(20, 4); m_tNGStage1Loop.Takt_Start(); 
 			m_nNGStage1Case = 20; m_tNGStage1Loop.Set_LoopTime(5000);
@@ -10948,7 +11003,8 @@ BOOL CSequenceMain::Run_NGStage1()
 		return TRUE;
 
 	case 61:
-		if (!m_pDX11->iNGStage1TrayExist) {
+		if (!m_pDX11->iNGStage1TrayExist) 
+		{
 			gNG->nTrayOX[1][0] = 0;
 			m_tNGStage1Loop.Takt_Save(20, 16);
 			m_nNGStage1Case = 0; m_tNGStage1Loop.Set_LoopTime(30000);
@@ -13246,7 +13302,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		}
 		break;
 	case 20:
-		if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 0)) {
+		if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 0)) 
+		{						
 			gLot.nCarrierExist[1][nMZNo1-1] = 0;
 			m_nNGMZElevatorCase = 30; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 		}
@@ -13311,15 +13368,24 @@ BOOL CSequenceMain::Run_NGMZElevator()
 			gLot.nSlotNo_NG[nPNo] = gData.nMZSlotNo[1] = nMZNo2;
 			gData.sMZID_NGElevator[1] = gData.sMZID_NGElevator[0];
 
+
+			for(int y = 0; y < 10; y++)
+			{
+				for(int x = 0; x < 4; x++)
+				{
+					gTracking.sMZID_NGMZ[nMZNo2-1][y][x] = gTracking.sMZID_NGMZElev[y][x];
+					gTracking.sMZID_NGMZElev[y][x] = "";
+
+					m_sLog.Format("NG MZ No:%d x:%d Y:%d - MZ ID:%s",nMZNo2-1, x, y , gTracking.sMZID_NGMZ[nMZNo2-1][y][x]);
+					if(gTracking.sMZID_NGMZ[nMZNo2-1][y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				}
+			}	
+			g_dlgOCAP.AddCarToMZ(nLDPNoNG, "NG");
+
 			//gCap.sMZID_Later[nPNo] = gLot.sMZID_NG[nPNo];
-			
-		/*	g_dlgOCAP.Set_AddDEFECT(gLot.sMZID_NG[nPNo], nPortNo);
-			g_dlgOCAP.Set_AddMZData(nPortNo);*/
-
-
 			gData.sCarID_Elevator[0] = gData.sLotID_UnMZ[0] = gData.sMZID_NGElevator[0] = "";
 			gData.nPortNo_UnMZ[0] = 0;
-
+			
 			CString sCaInLotID = gLot.sLotID[nPNo];
 			int     nMZLastCar = gLot.nMZLastCar[nPNo];
 			if (sCaInLotID.GetLength() < 2) { sCaInLotID = gData.sLastLotID; nMZLastCar = gData.nMZLastCar; }
@@ -13380,6 +13446,10 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		{
 //			if (Check_MZCarrierExit(2) > 0) m_nNGMZElevatorCase = 50;
 //			else							m_nNGMZElevatorCase = 0;
+
+			//g_dlgOCAP.AddMZOut();
+
+
 			m_nNGMZElevatorCase = 50; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 			if (m_nNGMZElevatorCase == 50)
 			{
@@ -13640,7 +13710,8 @@ BOOL CSequenceMain::Run_GDMZElevator()
 		}
 		break;
 	case 20:
-		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 0)) {
+		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 0)) 
+		{
 			gLot.nCarrierExist[2][nSlotNo-1] = 0;
 //			gData.nTrayNo_Magazine[2] = nSlotNo;
 			m_nGDMZElevatorCase = 30; m_tGDMZElevatorLoop.Set_LoopTime(10000);
@@ -13774,6 +13845,20 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			gLot.sMZID_GD[nPNo] = gData.sMZID[7];
 			gLot.sCarID_GD[nPNo] = gData.sCarID_Elevator[1];
 			gLot.nSlotNo_GD[nPNo] = gData.nMZSlotNo[2] = nSlotNo;
+
+			for(int y = 0; y < 10; y++)
+			{
+				for(int x = 0; x < 4; x++)
+				{
+					gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] = gTracking.sMZID_GoodMZElev[y][x];
+					gTracking.sMZID_GoodMZElev[y][x] = "";
+
+					m_sLog.Format("Good MZ No:%d x:%d Y:%d - MZ ID:%s",nSlotNo-1, x, y , gTracking.sMZID_GoodMZ[nSlotNo-1][y][x]);
+					if(gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] != "")g_objLogFile.Save_HomeTrackingLog(m_sLog);
+				}
+			}
+			g_dlgOCAP.AddCarToMZ(nInPNo, "GOOD");
+
 
 			gData.sCarID_Elevator[1] = gData.sLotID_UnMZ[1] = "";
 			gData.nPortNo_UnMZ[1] = 0;

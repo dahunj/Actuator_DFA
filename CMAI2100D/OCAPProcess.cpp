@@ -179,27 +179,43 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	
 }
 
+
+void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
+{
+	if(nSlotNo <= 8 && nSlotNo > 0)  gCap.nCurrentMZIdx = 0;
+	else if(nSlotNo > 8 && nSlotNo <= 16) gCap.nCurrentMZIdx = 1;
+	else if(nSlotNo > 16 && nSlotNo <= 24) gCap.nCurrentMZIdx = 2;
+	else if(nSlotNo > 24 && nSlotNo <= 30) gCap.nCurrentMZIdx = 3;
+
+	CString strLog; 
+	strLog.Format("nSlotNo: %d  CurrentMZ index:%d", nSlotNo, gCap.nCurrentMZIdx);
+	g_objLogFile.Save_TestLog(strLog);
+	
+	if(sType == "GOOD") gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nGoodCnt[nSlotNo];
+	else	gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
+
+}
+
+void OCAPProcess::AddMZOut(CString sMZid)
+{
+
+}
+
+
 void OCAPProcess::Set_AddMZData(int nPortNo)
 {
 	
 }
 
-void OCAPProcess::AddCarToMZ(int nNo, int nIdx)
-{
-	
-}
 
 void OCAPProcess::DelMZData(int nMZNo)
 {
 	
 }
 
-void OCAPProcess::AddMZOut(CString sMZid)
-{
-	
-}
 
-void OCAPProcess::Set_AddDEFECT(CString sMZid,int nPortNo)
+
+void OCAPProcess::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
 {
 	
 }

@@ -39,13 +39,19 @@ private:
 	void Display_Grid(int nDp, int nIndex);
 
 public:
+	void AddCarToMZ(int nSlotNo, CString sType); //Type - 0 :Good, 1: NG 
+	void AddMZOut(CString sMZid);
+
+
+
+
 	void Display_Status();
 	void Set_AddMZData(int nPortNo);
-	void Set_AddDEFECT(CString sMZid, int nPortNo);
+	void Set_AddDEFECT(CString sMZid, int nPortNo, int nInfo);
 	void Check_DEFECT(CString sMZID);
 	void Check_DEFECTF(int nNo);
-	void AddCarToMZ(int nPortNo, int nIndex);
-	void AddMZOut(CString sMZid);
+	
+	
 	void DelMZData(int nMZNo);
 };
 
