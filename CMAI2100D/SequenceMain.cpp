@@ -1455,6 +1455,33 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 			{
 				int nRand = g_objCommon.Get_Random(0, 99); 
 				gData.InfoUnloadPick[nPNo-1][i] = (nRand < m_pEquipData->nDryRunNg ? 3 : 2);
+
+				//gjc-Test (OCAP)
+				if (gData.InfoUnloadPick[nPNo-1][i] != 2)
+				{
+					gCap.nDefectCnt[nPortNo-1]++;
+
+					if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
+					if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }
+					if (i >=4 && i <=5) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-44"; }
+					if (i >=6 && i <=7) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "FDFAI-44"; }
+
+					if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") 
+					{
+						gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Right(gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].GetLength()-1);
+						gLot.nFOcapExist[nPortNo-1][nTrayNo-1][i+nCno] = 1;						
+					}						
+				}
+				else
+				{
+					gCap.nGoodCnt[nPortNo-1]++;
+				}					
+
+				//g_dlgOCAP.Set_AddDEFECT();
+				//g_dlgOCAP.Set_AddMZData(gData.nPortNo_NGTray[n1NSNo-5]);
+
+
+
 				if (!bUseVision && !gData.bResultTest)
 				{
 					if (m_pEquipData->bUseGoodSort) 
@@ -1476,28 +1503,7 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 					gLot.nMarginal[nPNo-1][i+nCno] = nMargin[i];
 					}*/
 									
-					//gjc-Test (OCAP)
-					if (gData.InfoUnloadPick[nPNo-1][i] != 2)
-					{
-						if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
-						if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }
-						if (i >=4 && i <=5) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-44"; }
-						if (i >=6 && i <=7) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "FDFAI-44"; }
-						
-						if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Left(5) == "FDFAI") 
-						{
-							gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].Right(gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3].GetLength()-1);
-							gLot.nFOcapExist[nPortNo-1][nTrayNo-1][i+nCno] = 1;
-							gCap.nDefectCnt[nPortNo-1]++;
-						}						
-					}
-					else
-					{
-						gCap.nGoodCnt[nPortNo-1]++;
-					}					
 					
-					//g_dlgOCAP.Set_AddDEFECT();
-					//g_dlgOCAP.Set_AddMZData(gData.nPortNo_NGTray[n1NSNo-5]);
 
 					
 				}
@@ -14529,6 +14535,9 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 		}
 		break;
 	case 23:
+#ifndef AJIN_BOARD_USE
+		m_pDX17->iLDCVElevatorCVStop = TRUE;
+#endif
 		if (m_pDX17->iLDCVElevatorCVStop) {
 			m_pDY17->oLDCVElevatorCVCCW = FALSE; m_pDY17->oLDCVElevatorCVCW = FALSE;
 			g_objAJinAXL.Write_Output(17);
