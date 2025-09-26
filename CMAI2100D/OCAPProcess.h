@@ -40,7 +40,7 @@ private:
 
 public:
 	void AddCarToMZ(int nSlotNo, CString sType); //Type - 0 :Good, 1: NG 
-	void AddMZOut(CString sMZid);
+	void AddMZOut(CString sMZid, CString sType);
 
 
 

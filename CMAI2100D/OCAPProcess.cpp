@@ -191,13 +191,38 @@ void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
 	strLog.Format("nSlotNo: %d  CurrentMZ index:%d", nSlotNo, gCap.nCurrentMZIdx);
 	g_objLogFile.Save_TestLog(strLog);
 	
-	if(sType == "GOOD") gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nGoodCnt[nSlotNo];
-	else	gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
+	if(sType == "GOOD")
+	{
+		gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nGoodCnt[nSlotNo];
+		gCap.nTotalGood[gCap.nCurrentMZIdx] += gCap.nGoodCnt[nSlotNo];
+	}
+	else if(sType == "NG")
+	{
+		gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
+		gCap.nTotalDefect[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
+	}
 
 }
 
-void OCAPProcess::AddMZOut(CString sMZid)
+void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 {
+	double dPer = 0;
+
+	dPer = (gCap.nTotalDefect[gCap.nCurrentMZIdx] * 100.0) / gCap.nTotalCntMZ[gCap.nCurrentMZIdx];
+
+	gCap.dLimitPercent[0] = 20; //Test
+
+	if (dPer < gCap.dLimitPercent[0]) return;
+	
+	gCap.sAlmMZID = sMZid;
+	gCap.sAlmFAIName.Format("FAI-%s", gCap.sFAIName[0]);
+	gCap.dAlmDefectPercent  = dPer;
+	gCap.nAlmNGCount   = gCap.nTotalDefect[gCap.nCurrentMZIdx];
+	
+	CString strTemp;
+	strTemp.Format("Magazine: %s, NG Code: %s, Percent:%lf, Count:%d", sMZid, gCap.sAlmFAIName, gCap.dAlmDefectPercent, gCap.nAlmNGCount);
+
+	g_objCommon.Show_Error(9181);
 
 }
 

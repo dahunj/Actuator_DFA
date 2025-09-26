@@ -1253,7 +1253,7 @@ void CSequenceMain::Set_AlignToStage(int nPortNo, int nStageNo)
 				gData.InfoLoadTray[i][j] = 1;
 				
 				gTracking.sMZID_LoadStageModule[nStageNo][i][j] = gTracking.sMZID_LoadStage[nStageNo];
-				m_sLog.Format("sMZID_LoadStageModule x:%d y:%d - MZ ID:%s",j,i, gTracking.sMZID_LoadStageModule[nStageNo][i][j]);
+				m_sLog.Format("sMZID_LoadStageModule, x:%d y:%d - MZ ID:%s",j,i, gTracking.sMZID_LoadStageModule[nStageNo][i][j]);
 				if (gTracking.sMZID_LoadStageModule[nStageNo][i][j] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 			else
@@ -1869,13 +1869,16 @@ BOOL CSequenceMain::Select_NGTrayPoketNo(int nType, int &nPosX, int &nPosY)
 	nPosX = nPosY = 0;
 	for(int i=0; i<10; i++) {
 		for(int j=0; j<4; j++) {
-			if (gData.InfoNgTray[i][j] == 0) {
-				if (!m_pEquipData->bUseNGSort || m_pEquipData->nTrayBase[i][j] == nType) {
+			if (gData.InfoNgTray[i][j] == 0) 
+			{
+				if (!m_pEquipData->bUseNGSort || m_pEquipData->nTrayBase[i][j] == nType) 
+				{
 					nPosY = i + 1;	//10
 					nPosX = j + 1;	//4
 					return TRUE;
 				}
-				if (m_pEquipData->bUseNGSort && m_pEquipData->nTrayBase[i][j] == 6) {
+				if (m_pEquipData->bUseNGSort && m_pEquipData->nTrayBase[i][j] == 6) 
+				{
 					if (nType == 7 || nType == 8 || nType == 9) {
 						nPosY = i + 1;	//10
 						nPosX = j + 1;	//4
@@ -1936,11 +1939,27 @@ BOOL CSequenceMain::Select_GoodTrayPoketNo(int nPNo, int nTNo, int &nPosX, int &
 
 BOOL CSequenceMain::Check_NGTrayFull()
 {
-	for(int i=0; i<10; i++) {
-		for(int j=0; j<4; j++) {
-			if (gData.InfoNgTray[i][j] == 0) return FALSE; 
+	if(m_pEquipData->bUseNGSort)
+	{
+		//dahunj 나중에 바꿔야 해 
+		for(int i=0; i<10; i++) 
+		{
+			for(int j=0; j<4; j++) 
+			{
+				if (gData.InfoNgTray[i][j] == 0) return FALSE; 
+			}
 		}
 	}
+	else
+	{
+		for(int i=0; i<10; i++) 
+		{
+			for(int j=0; j<4; j++) 
+			{
+				if (gData.InfoNgTray[i][j] == 0) return FALSE; 
+			}
+		}
+	}	
 	return TRUE;
 }
 
@@ -3915,7 +3934,7 @@ BOOL CSequenceMain::Run_Transfer1()
 			gData.nLDMZ_LastCarrier[1] = gData.nLDMZ_LastCarrier[0];
 
 			gTracking.sMZID_Trasnfer1 = gTracking.sMZID_LoadMZElev; gTracking.sMZID_LoadMZElev = "";
-			m_sLog.Format("Load Mz Elev To Transfer1 : %s", gTracking.sMZID_Trasnfer1);
+			m_sLog.Format("Load Mz Elev To Transfer1, : %s", gTracking.sMZID_Trasnfer1);
 			g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 			if (m_nLDMZElevatorCase == 30) 
@@ -4020,7 +4039,7 @@ BOOL CSequenceMain::Run_Transfer1()
 
 			gTracking.sMZID_LoadStage[nToTran1Pos-1] = gTracking.sMZID_Trasnfer1; gTracking.sMZID_Trasnfer1 = "";
 
-			m_sLog.Format("Transfer1 To LoadStage No %d - MZ ID:%s",nToTran1Pos, gTracking.sMZID_LoadStage[nToTran1Pos-1]);
+			m_sLog.Format("Transfer1 To LoadStage No %d, MZ ID:%s",nToTran1Pos, gTracking.sMZID_LoadStage[nToTran1Pos-1]);
 			g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 			gData.sMZID_LoadStage[nToTran1Pos-1] = gData.sMZID_Tansfer; gData.sMZID_Tansfer = "";
@@ -4655,7 +4674,7 @@ BOOL CSequenceMain::Run_Transfer2()
 					gTracking.sMZID_Transfer2[y][x] = gTracking.sMZID_NGTray[y][x];
 					gTracking.sMZID_NGTray[y][x] = "";
 
-					m_sLog.Format("NGTray To Transfer2 x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
+					m_sLog.Format("NGTray To Transfer2, x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
 					if(gTracking.sMZID_Transfer2[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 				}
 			}
@@ -4726,7 +4745,7 @@ BOOL CSequenceMain::Run_Transfer2()
 					gTracking.sMZID_Transfer2[y][x] = gTracking.sMZID_GoodTray[y][x];
 					gTracking.sMZID_GoodTray[y][x] = "";
 
-					m_sLog.Format("GoodTray To Transfer2 x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
+					m_sLog.Format("GoodTray To Transfer2, x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_Transfer2[y][x]);
 					if(gTracking.sMZID_Transfer2[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 				}
 			}
@@ -4912,11 +4931,11 @@ BOOL CSequenceMain::Run_Transfer2()
 					{
 						for(int x = 0; x < 4; x++)
 						{
-							gTracking.sMZID_NGMZElev[y][x] = gTracking.sMZID_Transfer2[y][x];
+							gTracking.sMZID_NGMZElev[gData.nPortNo_UnMZ[0] -1][y][x] = gTracking.sMZID_Transfer2[y][x];
 							gTracking.sMZID_Transfer2[y][x] = "";
 
-							m_sLog.Format("Transfer2 To NG MZ Elev x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_NGMZElev[y][x]);
-							if(gTracking.sMZID_NGMZElev[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+							m_sLog.Format("Transfer2 To NG MZ Elev, SlotNo:%d, x:%d, Y:%d - MZ ID:%s",gData.nPortNo_UnMZ[0], x, y , gTracking.sMZID_NGMZElev[gData.nPortNo_UnMZ[0] -1][y][x]);
+							if(gTracking.sMZID_NGMZElev[gData.nPortNo_UnMZ[0] -1][y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						}
 					}
 
@@ -4934,11 +4953,11 @@ BOOL CSequenceMain::Run_Transfer2()
 					{
 						for(int x = 0; x < 4; x++)
 						{
-							gTracking.sMZID_GoodMZElev[y][x] = gTracking.sMZID_Transfer2[y][x];
+							gTracking.sMZID_GoodMZElev[gData.nPortNo_UnMZ[1] - 1][y][x] = gTracking.sMZID_Transfer2[y][x];
 							gTracking.sMZID_Transfer2[y][x] = "";
 
-							m_sLog.Format("Transfer2 To Good MZ Elev x:%d Y:%d - MZ ID:%s", x, y , gTracking.sMZID_GoodMZElev[y][x]);
-							if(gTracking.sMZID_NGMZElev[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+							m_sLog.Format("Transfer2 To Good MZ Elev, SlotNo:%d, x:%d, Y:%d - MZ ID:%s",gData.nPortNo_UnMZ[1] - 1, x, y , gTracking.sMZID_GoodMZElev[gData.nPortNo_UnMZ[1] - 1][y][x]);
+							if(gTracking.sMZID_GoodMZElev[gData.nPortNo_UnMZ[1] - 1][y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						}
 					}
 					if (m_nGDMZElevatorCase == 70) m_nGDMZElevatorCase = 71;
@@ -6278,7 +6297,7 @@ BOOL CSequenceMain::Run_LoadPicker1()
 				
 				gTracking.sMZID_LoadPicker[n1No-1][i] = gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i];
 				gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i] = "";
-				m_sLog.Format("LoadStage To LoadPicker No:%d x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
+				m_sLog.Format("LoadStage To LoadPicker No:%d, x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
 				if(gTracking.sMZID_LoadPicker[n1No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
@@ -6391,7 +6410,7 @@ BOOL CSequenceMain::Run_LoadPicker1()
 
 				gTracking.sMZID_LoadPicker[n1No-1][i+4] = gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i];
 				gTracking.sMZID_LoadStageModule[nLPStage1No-1][nLoad1PosY-1][i] = "";
-				m_sLog.Format("LoadStage To LoadPicker No:%d x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
+				m_sLog.Format("LoadStage To LoadPicker No:%d, x:%d y:%d - MZ ID:%s",n1No, i, nLoad1PosY-1, gTracking.sMZID_LoadPicker[n1No-1][i]);
 				if(gTracking.sMZID_LoadPicker[n1No-1][i+4] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
@@ -7076,7 +7095,7 @@ BOOL CSequenceMain::Run_LoadPicker2()
 				
 				gTracking.sMZID_LoadPicker[n2No-1][i] = gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i];
 				gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i] = "";
-				m_sLog.Format("Load Stage To LoadPicker, No:%d x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
+				m_sLog.Format("Load Stage To LoadPicker No:%d, x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
 				if (gTracking.sMZID_LoadPicker[n2No-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 			
@@ -7188,7 +7207,7 @@ BOOL CSequenceMain::Run_LoadPicker2()
 				
 				gTracking.sMZID_LoadPicker[n2No-1][i+4] = gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i];
 				gTracking.sMZID_LoadStageModule[nLPStage2No-1][nLoad2PosY-1][i] = "";
-				m_sLog.Format("Load Stage To LoadPicker, No:%d x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
+				m_sLog.Format("Load Stage To LoadPicker No:%d, x:%d y:%d - MZ ID:%s",n2No, i, nLoad2PosY-1, gTracking.sMZID_LoadPicker[n2No-1][i]);
 				if (gTracking.sMZID_LoadPicker[n2No-1][i+4] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			}
 
@@ -9874,7 +9893,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] = gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1];
 			gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1] = "";
 
-			m_sLog.Format("UnloadPicker %d To NGTray x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
+			m_sLog.Format("UnloadPicker %d To NGTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
 			if(gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][6] = 1;
@@ -10036,7 +10055,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 				gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1+i] = gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1+i];
 				gTracking.sMZID_UnloadPicker[n1No-1][n1ModuleNo-1+i] = "";
 
-				m_sLog.Format("UnloadPicker %d To GoodTray x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1]);
+				m_sLog.Format("UnloadPicker %d To GoodTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1]);
 				if(gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 				if (gData.InfoGoodTray[n1PosY-1][n1PosX-1+i] > 0) 
@@ -10475,7 +10494,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 
 			gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] = gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1];
 			gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1] = "";
-			m_sLog.Format("UnloadPicker %d To NGTray Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
+			m_sLog.Format("UnloadPicker %d To NGTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
 			if(gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 
@@ -10641,7 +10660,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 				gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] = gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1+i];
 				gTracking.sMZID_UnloadPicker[n2No-1][n2ModuleNo-1+i] = "";
 
-				m_sLog.Format("UnloadPicker %d To GoodTray Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1]);
+				m_sLog.Format("UnloadPicker %d To GoodTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1]);
 				if(gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 				
@@ -12662,7 +12681,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		break;
 	case 19:
-			g_dlgOCAP.AddMZOut(gData.sMZID[9]);
+			g_dlgOCAP.AddMZOut(gTracking.sMZID_NGCV, "NG");
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		break;
@@ -12760,6 +12779,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		break;
 	case 32:
 		if (!m_pDX19->iULCV1FCnt1) {
+
+			g_dlgOCAP.AddMZOut(gTracking.sMZID_GOODCV, "GOOD");
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase = 0; m_tULCVElevatorLoop.Set_LoopTime(10000);
 
@@ -13033,7 +13054,7 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			else						gData.nLDMZ_LastCarrier[0] = 0;
 						
 			gTracking.sMZID_LoadMZElev = gData.sMZID[4];
-			m_sLog.Format("sMZID_LoadMZElev : %s", gTracking.sMZID_LoadMZElev);
+			m_sLog.Format("sMZID_LoadMZElev, %s", gTracking.sMZID_LoadMZElev);
 			g_objLogFile.Save_HomeTrackingLog(m_sLog);
 		
 			m_nLDMZElevatorCase = 30; m_tLDMZElevatorLoop.Set_LoopTime(10000);
@@ -13373,11 +13394,16 @@ BOOL CSequenceMain::Run_NGMZElevator()
 			{
 				for(int x = 0; x < 4; x++)
 				{
-					gTracking.sMZID_NGMZ[nMZNo2-1][y][x] = gTracking.sMZID_NGMZElev[y][x];
-					gTracking.sMZID_NGMZElev[y][x] = "";
+					gTracking.sMZID_NGMZ[nMZNo2-1][y][x] = gTracking.sMZID_NGMZElev[nLDPNoNG][y][x];
+					gTracking.sMZID_NGMZElev[nLDPNoNG][y][x] = "";
 
-					m_sLog.Format("NG MZ No:%d x:%d Y:%d - MZ ID:%s",nMZNo2-1, x, y , gTracking.sMZID_NGMZ[nMZNo2-1][y][x]);
-					if(gTracking.sMZID_NGMZ[nMZNo2-1][y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					m_sLog.Format("NG Elev To NG MZ, No:%d x:%d Y:%d - MZ ID:%s",nMZNo2-1, x, y , gTracking.sMZID_NGMZ[nMZNo2-1][y][x]);
+					if(gTracking.sMZID_NGMZ[nMZNo2-1][y][x] != "")
+					{
+						// 매거진 ID는 섞이지 않는다 장비에 1개의 매거진만 돌기 때문에, 1개 매거진이 다 돌아야 그다음 매거진이 구동됨 
+						gTracking.sMZID_NGCV = gTracking.sMZID_NGMZ[nMZNo2-1][y][x]; 
+						g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					}
 				}
 			}	
 			g_dlgOCAP.AddCarToMZ(nLDPNoNG, "NG");
@@ -13850,11 +13876,15 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			{
 				for(int x = 0; x < 4; x++)
 				{
-					gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] = gTracking.sMZID_GoodMZElev[y][x];
-					gTracking.sMZID_GoodMZElev[y][x] = "";
+					gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] = gTracking.sMZID_GoodMZElev[nInPNo][y][x];
+					gTracking.sMZID_GoodMZElev[nInPNo][y][x] = "";
 
-					m_sLog.Format("Good MZ No:%d x:%d Y:%d - MZ ID:%s",nSlotNo-1, x, y , gTracking.sMZID_GoodMZ[nSlotNo-1][y][x]);
-					if(gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] != "")g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					m_sLog.Format("Good Elev To Good MZ No:%d x:%d Y:%d - MZ ID:%s",nSlotNo-1, x, y , gTracking.sMZID_GoodMZ[nSlotNo-1][y][x]);
+					if(gTracking.sMZID_GoodMZ[nSlotNo-1][y][x] != "")
+					{
+						gTracking.sMZID_GOODCV = gTracking.sMZID_GoodMZ[nSlotNo-1][y][x];
+						g_objLogFile.Save_HomeTrackingLog(m_sLog);
+					}
 				}
 			}
 			g_dlgOCAP.AddCarToMZ(nInPNo, "GOOD");

@@ -421,9 +421,19 @@ typedef struct {
 	int nTotalCntCarrier[30];
 
 	int nCurrentMZIdx;
+	int nTotalDefect[4];
+	int nTotalGood[4];
 	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
 
+	double dLimitPercent[10];
+
+	CString		sFAIName[20];		//FAI이름-Display
+	CString		sFAICode[20];		//FAI-NG-Code
 	
+	CString		sAlmMZID;
+	CString		sAlmFAIName;
+	double		dAlmDefectPercent;
+	int			nAlmNGCount;
 
 	
 } GLOVAL_OCAP;
@@ -442,13 +452,14 @@ typedef struct {
 
 	CString sMZID_Transfer2[10][4];
 
-	CString sMZID_GoodMZElev[10][4];
-	CString sMZID_NGMZElev[10][4];
+	CString sMZID_GoodMZElev[8][10][4];
+	CString sMZID_NGMZElev[8][10][4];
 
 	CString sMZID_GoodMZ[8][10][4];
 	CString sMZID_NGMZ[8][10][4];
 
-	
+	CString sMZID_GOODCV;
+	CString sMZID_NGCV;
 
 } GLOVAL_TRACKING;
 
