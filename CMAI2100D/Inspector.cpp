@@ -353,7 +353,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else if (sJudge == "X")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 5;	//외관불량(Ros Skip to NG)
 	else					 gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 3;	//외관불량(ROS 판정)
 	
-
+	//OCAP Count 
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
@@ -365,18 +365,24 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 
 		if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
 		{
-			//NG code 에 따른 분기 - 우선순위는 반복문돌리고 번호를 앞에 두면 된다. 
-			if(sNGCode =="FAI-1")
+			for(int i = 0; i < 50; i++)
 			{
-				gCap.nDefectCnt[0][nPortNo -1]++;
-			}			
+				if(sNGCode == gCap.sFAICode[i])
+				{
+					gCap.nFAIDefectCnt[i][nPortNo -1]++;
+				}
+			}		
 		}
 		else
 		{
-
+			for(int i = 0; i < 50; i++)
+			{
+				if(sNGCode == gCap.sCosmeticCode[i])
+				{
+					gCap.nCosmeticDefectCnt[i][nPortNo -1]++;
+				}
+			}			
 		}
-
-
 	}
 	
 	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
@@ -431,6 +437,10 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	strLog.Format("[Get_InspectComplete] Inspection Complete LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Time(%d) NG(%d) Bar(%s) SNG(%d) MC(%d) GF(%d) SNG(%d) SRe(%d) MCBTM(%d) FDFAI(%d) NC(%s) SS(%d-%d-%d) FAIFail(%d) Marginal(%d)",
 		sLotID, sPortNo, sTrayNo, nCMNo, dwTerm, nNGCnt, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], nNGSize, nNGMC, nNGGF, nNGSkip, nReSkip, nMCBTM, gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nNGSize1Sp, nNGSize2Sp, nNGSize3Sp, nFaiFail, gLot.nMarginal[nPortNo-1][nCMNo-1]);	g_objLogFile.Save_HandlerLog(strLog);
 
+
+#ifndef AJIN_BOARD_USE
+
+#else
 	//Barcdoe read fail(5) - ROS Skip
 	gAlm.sAlmLotID[0] = sLotID; gAlm.sAlmLotID[1] = sType;
 	if (gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1] == "NOREAD" || gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1] == "BARCODE_NOREAD" || gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1].GetLength() < 15) {
@@ -441,6 +451,9 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		if (gData.nNG_MC[2][0] > 0 && gData.nNG_MC[2][0] <= gData.nNG_MC[2][1]) g_objCommon.Show_Error(9203);
 		return;
 	}
+#endif
+
+	
 	gData.nNG_MC[2][1] = 0;
 	gData.nNG_MC[3][1] = 0;
 	if (nNGMC > 0) gData.nNG_MC[0][1]++;

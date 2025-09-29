@@ -416,22 +416,32 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
-	int nDefectCnt[50][30]; //50가지 NG, 30개의 Slot 
-	int nGoodCnt[30];
+	int nCosmeticDefectCnt[50][30]; //50가지 NG, 30개의 Slot 
+	int nFAIDefectCnt[50][30];
 	int nTotalCntCarrier[30];
+	int nGoodCnt[30];
 
 	int nCurrentMZIdx;
-	int nTotalDefect[4];
+	int nTotalCosmeticDefect[50][4];
+	int nTotalFAIDefect[50][4];
 	int nTotalGood[4];
 	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
 
 	double dLimitPercent[10];
 
-	CString		sFAIName[20];		//FAI이름-Display
-	CString		sFAICode[20];		//FAI-NG-Code
+	CString		sFAIName[50];		// FAI이름-Display
+	CString		sFAICode[50];		// FAI-NG-Code
 	
+	CString		sCosmeticName[50];
+	CString		sCosmeticCode[50];
+
+	double		dDefectPercent[4];		// 설정된 불량율%
+	int			nConsecutiveMZCnt[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
+	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
+	
+	CString		sAlmOCAP;
 	CString		sAlmMZID;
-	CString		sAlmFAIName;
+	CString		sAlmDefectName;
 	double		dAlmDefectPercent;
 	int			nAlmNGCount;
 
