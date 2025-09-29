@@ -1459,7 +1459,7 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 				//gjc-Test (OCAP)
 				if (gData.InfoUnloadPick[nPNo-1][i] != 2)
 				{
-					gCap.nDefectCnt[nPortNo-1]++;
+					gCap.nDefectCnt[0][nPortNo-1]++;
 
 					if (i >=0 && i <=1) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-61"; }
 					if (i >=2 && i <=3) { gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][3] = 7; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][3] = "DFAI-14A"; }

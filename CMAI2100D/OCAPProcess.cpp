@@ -198,8 +198,8 @@ void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
 	}
 	else if(sType == "NG")
 	{
-		gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
-		gCap.nTotalDefect[gCap.nCurrentMZIdx] += gCap.nDefectCnt[nSlotNo];
+		gCap.nTotalCntMZ[gCap.nCurrentMZIdx] += gCap.nDefectCnt[0][nSlotNo];
+		gCap.nTotalDefect[gCap.nCurrentMZIdx] += gCap.nDefectCnt[0][nSlotNo];
 	}
 
 }

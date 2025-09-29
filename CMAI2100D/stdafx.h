@@ -416,7 +416,7 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
-	int nDefectCnt[30];
+	int nDefectCnt[50][30]; //50가지 NG, 30개의 Slot 
 	int nGoodCnt[30];
 	int nTotalCntCarrier[30];
 

@@ -118,7 +118,8 @@ void CCMAI2100App::uSleep(int msec)
 {
 	DWORD dwStart = GetTickCount();
 	int dwTerm = 0;
-	do {
+	do 
+	{
 		dwTerm = (int)(GetTickCount() - dwStart);
 		DoEvents();
 	} while (dwTerm < msec);

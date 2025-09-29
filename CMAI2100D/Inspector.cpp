@@ -61,11 +61,11 @@ END_MESSAGE_MAP()
 void CInspector::Initialize()
 {
 #ifndef AJIN_BOARD_USE
-	BOOL bVisionPC1Opened = m_UdpVisionPC1.Open_Socket(UDP_PC1_LPORT, UDP_PC1_HPORT, "127.0.0.1", this);
-	BOOL bVisionPC2Opened = m_UdpVisionPC2.Open_Socket(UDP_PC2_LPORT, UDP_PC2_HPORT, "127.0.0.1", this);
-	BOOL bVisionPC3Opened = m_UdpVisionPC3.Open_Socket(UDP_PC3_LPORT, UDP_PC3_HPORT, "127.0.0.1", this);
-	BOOL bVisionPC4Opened = m_UdpVisionPC4.Open_Socket(UDP_PC4_LPORT, UDP_PC4_HPORT, "127.0.0.1", this);
-	BOOL bVisionPC5Opened = m_UdpVisionPC5.Open_Socket(UDP_PC5_LPORT, UDP_PC5_HPORT, "127.0.0.1", this);
+	BOOL bVisionPC1Opened = m_UdpVisionPC1.Open_Socket(21000, 21001, "127.0.0.1", this);
+	BOOL bVisionPC2Opened = m_UdpVisionPC2.Open_Socket(22000, 22001, "127.0.0.1", this);
+	BOOL bVisionPC3Opened = m_UdpVisionPC3.Open_Socket(23000, 23001, "127.0.0.1", this);
+	BOOL bVisionPC4Opened = m_UdpVisionPC4.Open_Socket(24000, 24001, "127.0.0.1", this);
+	BOOL bVisionPC5Opened = m_UdpVisionPC5.Open_Socket(25000, 25001, "127.0.0.1", this);
 #else
 	BOOL bVisionPC1Opened = m_UdpVisionPC1.Open_Socket(UDP_PC1_LPORT, UDP_PC1_HPORT, UDP_PC1_HOST_IP, this);
 	BOOL bVisionPC2Opened = m_UdpVisionPC2.Open_Socket(UDP_PC2_LPORT, UDP_PC2_HPORT, UDP_PC2_HOST_IP, this);
@@ -123,12 +123,22 @@ LRESULT CInspector::OnUdpReceive(WPARAM wLocalPort, LPARAM lParam)
 	BYTE byRecv[1024] = { 0 };
 	CString strLog;
 
+#ifndef AJIN_BOARD_USE
+	if (nPort == 21001) { nInspector = INSPECTOR_PC1; nLen = m_UdpVisionPC1.Read_Socket(byRecv); }
+	if (nPort == 22001) { nInspector = INSPECTOR_PC2; nLen = m_UdpVisionPC2.Read_Socket(byRecv); }
+	if (nPort == 23001) { nInspector = INSPECTOR_PC3; nLen = m_UdpVisionPC3.Read_Socket(byRecv); }
+	if (nPort == 24001) { nInspector = INSPECTOR_PC4; nLen = m_UdpVisionPC4.Read_Socket(byRecv); }
+	if (nPort == 25001) { nInspector = INSPECTOR_PC5; nLen = m_UdpVisionPC5.Read_Socket(byRecv); }
+#else
 	if (nPort == UDP_PC1_HPORT) { nInspector = INSPECTOR_PC1; nLen = m_UdpVisionPC1.Read_Socket(byRecv); }
 	if (nPort == UDP_PC2_HPORT) { nInspector = INSPECTOR_PC2; nLen = m_UdpVisionPC2.Read_Socket(byRecv); }
 	if (nPort == UDP_PC3_HPORT) { nInspector = INSPECTOR_PC3; nLen = m_UdpVisionPC3.Read_Socket(byRecv); }
 	if (nPort == UDP_PC4_HPORT) { nInspector = INSPECTOR_PC4; nLen = m_UdpVisionPC4.Read_Socket(byRecv); }
 	if (nPort == UDP_PC5_HPORT) { nInspector = INSPECTOR_PC5; nLen = m_UdpVisionPC5.Read_Socket(byRecv); }
 
+#endif
+
+	
 	if (nInspector == 0 || nLen < 1) {
 		strLog.Format("[H<-V%d] , Local Port (%d) Mismatch or Receive Data Zero (%d)", nInspector, nPort, nLen);
 		g_objLogFile.Save_InspectorLog(strLog);
@@ -330,6 +340,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sType == "B1" || sType == "AG") { if (sNGCode == "MC" || sNGCode == "ROI_FAIL") sNGCode = "MCBTM"; }
 	if (sNGCode.Left(5) == "FDFAI") { sNGCode = sNGCode.Right(sNGCode.GetLength()-1); gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1] = 1; }
 
+	
+
 	if		(sJudge == "G")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 2;	//Good
 	else if (sJudge == "S")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 7;	//치수불량1(7-FAI)
 	else if (sJudge == "T")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 8;	//치수불량2(Gap)
@@ -341,12 +353,31 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else if (sJudge == "X")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 5;	//외관불량(Ros Skip to NG)
 	else					 gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 3;	//외관불량(ROS 판정)
 	
+
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
 		gCap.nGoodCnt[nPortNo -1]++;
 	}
-	else			   gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
+	else
+	{
+		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
+
+		if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
+		{
+			//NG code 에 따른 분기 - 우선순위는 반복문돌리고 번호를 앞에 두면 된다. 
+			if(sNGCode =="FAI-1")
+			{
+				gCap.nDefectCnt[0][nPortNo -1]++;
+			}			
+		}
+		else
+		{
+
+		}
+
+
+	}
 	
 	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
@@ -460,10 +491,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		if (gData.nNG_MC[4][0] > 0 && gData.nNG_MC[4][0] <= gData.nNG_MC[4][1]) g_objCommon.Show_Error(9205);
 		return;
 	} */
-	if(nNGSize1 > 0)
-	{
-		gCap.nDefectCnt[nPortNo-1]++;
-	}
+	
 
 
 	if (nNGGF > 0) {
@@ -730,14 +758,21 @@ int CInspector::Get_VisionStatus(int nInspector)
 
 BOOL CInspector::Check_LotReady()
 {
+#ifndef AJIN_BOARD_USE
+	return TRUE;
+#else
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 	if (pEquipData->bUseBottom && m_bLotReady1 == FALSE) return FALSE;
 	if (pEquipData->bUseBotAng && m_bLotReady1 == FALSE) return FALSE;
 	if (pEquipData->bUseTop1   && m_bLotReady2 == FALSE) return FALSE;
 	if (pEquipData->bUseTopAng && m_bLotReady2 == FALSE) return FALSE;
 	if (pEquipData->bUseTop2   && m_bLotReady3 == FALSE) return FALSE;
-//	if (pEquipData->bUseTop1   && m_bLotReady4 == FALSE) return FALSE;
-//	if (pEquipData->bUseTop2   && m_bLotReady5 == FALSE) return FALSE;
+	//	if (pEquipData->bUseTop1   && m_bLotReady4 == FALSE) return FALSE;
+	//	if (pEquipData->bUseTop2   && m_bLotReady5 == FALSE) return FALSE;
+#endif
+
+
+	
 	return TRUE;
 }
 

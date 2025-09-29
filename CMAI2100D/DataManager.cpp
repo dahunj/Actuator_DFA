@@ -749,21 +749,21 @@ BOOL CDataManager::Read_OCAPData()
 	}
 
 	CString strKey;
-	/*for(int i=0; i<4; i++) 
-	{
-		strKey.Format("DEFECTP_%02d", i + 1);
-		gCap.dGiDefect[i] = INI.Get_Double("OPTION", strKey, 0.0);
-		strKey.Format("MZ_COUNT_%02d", i + 1);
-		gCap.nGiMZCnt[i]  = INI.Get_Integer("OPTION", strKey, 0);
-	}
-	gCap.nGiMinCnt	= INI.Get_Integer("OPTION", "MZ_MIN_COUNT", 0);
+	//for(int i=0; i<4; i++) 
+	//{
+	//	strKey.Format("DEFECTP_%02d", i + 1);
+	//	gCap.dGiDefect[i] = INI.Get_Double("OPTION", strKey, 0.0);
+	//	strKey.Format("MZ_COUNT_%02d", i + 1);
+	//	gCap.nGiMZCnt[i]  = INI.Get_Integer("OPTION", strKey, 0);
+	//}
+	//gCap.nGiMinCnt	= INI.Get_Integer("OPTION", "MZ_MIN_COUNT", 0);
 
 	for (int i = 0; i < 20; i++) 
 	{
 		strKey.Format("%02d", i + 1);
 		gCap.sFAIName[i] = INI.Get_String("DATA-NAME", strKey, "");
 		gCap.sFAICode[i] = INI.Get_String("DATA-CODE", strKey, "");
-	}*/
+	}
 	return TRUE;
 }
 
