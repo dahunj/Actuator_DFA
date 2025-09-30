@@ -439,7 +439,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 
 
 #ifndef AJIN_BOARD_USE
-
+	//pass
 #else
 	//Barcdoe read fail(5) - ROS Skip
 	gAlm.sAlmLotID[0] = sLotID; gAlm.sAlmLotID[1] = sType;
@@ -451,9 +451,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		if (gData.nNG_MC[2][0] > 0 && gData.nNG_MC[2][0] <= gData.nNG_MC[2][1]) g_objCommon.Show_Error(9203);
 		return;
 	}
-#endif
 
-	
+
 	gData.nNG_MC[2][1] = 0;
 	gData.nNG_MC[3][1] = 0;
 	if (nNGMC > 0) gData.nNG_MC[0][1]++;
@@ -461,7 +460,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (nNGGF > 0) gData.nNG_MC[1][1]++;
 	else		   gData.nNG_MC[1][1] = 0;
 
-	if (pEquipData->bUseMES) {
+	if (pEquipData->bUseMES)
+	{
 		int nFind = 0;
 		for (int i = 0; i < 40; i++) { //허수배출
 			if (gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1] == gNG->sModuleID[nPortNo-1][i]) {
@@ -558,10 +558,12 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		return;
 	}
 
+	
+#endif
 	if		(nNGSize > 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	}
 	else if (nNGCnt == 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = 2;			}
 	else					{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = 3;			}
-
+	
 	if (pEquipData->bUseROS && nNGCnt > 0) g_objDispatcher.Set_JudgeRequest(nPortNo, nTrayNo, nCMNo);
 }
 

@@ -421,7 +421,11 @@ typedef struct {
 	int nTotalCntCarrier[30];
 	int nGoodCnt[30];
 
-	int nCurrentMZIdx;
+	//매거진 인덱스 정보 전달 : 캐리어 --> 트랜스퍼 피커 --> 컨베이어 
+	//0:Good . 1: NG
+	int nCarrierMZIndex[2];
+	int nTransferMZIndex[2];
+	int nCVMZIndex[2];
 	int nTotalCosmeticDefect[50][4];
 	int nTotalFAIDefect[50][4];
 	int nTotalGood[4];
