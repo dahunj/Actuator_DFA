@@ -137,7 +137,60 @@ void OCAPProcess::OnStcOptionClick(UINT nID)
 
 void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 {
-	
+	pGrid->Set_RowCount(nRows);
+	pGrid->Set_ColCount(nCols);
+	pGrid->Set_FixRowCount(0);
+	pGrid->Set_FixColCount(0);
+
+	long lTotalW = pGrid->Get_GridWidth();
+	long lTotalH = pGrid->Get_GridHeight();
+	long lCellW = lTotalW / nCols;
+	long lCellH = (lTotalH / nRows) + 2;
+	long  lWidth[16]= { 60,    60,      100,          60,     60,      60,    50,   50,    50,    50,    50,    50,    50,     50,    50,     50};
+	CString sTxt[16]= {"날짜","시간","배출배거진ID", "투입", "완공", "양품", "OCAP NG", "RR", "치명", "BCR", "MES", "MC", "치수", "7FAI", "Tilt", "Gap"};
+	long  lWidthName[2]= { 40, 50 };
+
+	for (int i=0; i<nRows; i++)
+	{
+		pGrid->Set_RowHeight(i, lCellH);
+		for (int j=0; j<16; j++) 
+		{
+			if(i==0) 
+			{
+				pGrid->Set_ColWidth(j, lWidth[j]); pGrid->Set_CellText(i, j, sTxt[j]);
+				pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
+			}
+		}
+
+		int nW = 0, nName=0; 
+		for (int j=16; j<56; j++) 
+		{
+			if(i==0) 
+			{
+				pGrid->Set_ColWidth(j, lWidthName[nW]);
+				if (nW == 0) pGrid->Set_CellText(i, j, "FAI");
+				else		 pGrid->Set_CellText(i, j, gCap.sFAIName[nName]);
+				nW++; if (nW == 2) { nW = 0; nName++; }
+				if (j>=16 && j<=29) pGrid->Set_CellBackClr(i, j, RGB(0xFF, 0xFF, 0xCC));
+				if (j>=30 && j<=45) pGrid->Set_CellBackClr(i, j, RGB(0x99, 0xFF, 0x99));
+				if (j>=46 && j<=55) pGrid->Set_CellBackClr(i, j, RGB(0x33, 0xFF, 0x33));
+			}
+		}
+		nW = 0; nName=0; 
+		for (int j=56; j<96; j++)
+		{
+			if(i==0) 
+			{
+				pGrid->Set_ColWidth(j, lWidthName[nW]);
+				if (nW == 0) pGrid->Set_CellText(i, j, "ERR");
+				else		 pGrid->Set_CellText(i, j, gCap.sFAIName[nName]);
+				nW++; if (nW == 2) { nW = 0; nName++; }
+				if (j>=56 && j<=69) pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
+				if (j>=70 && j<=85) pGrid->Set_CellBackClr(i, j, RGB(0x99, 0x99, 0x99));
+				if (j>=86 && j<=95) pGrid->Set_CellBackClr(i, j, RGB(0x66, 0x66, 0x66));
+			}
+		}
+	}
 }
 
 void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
