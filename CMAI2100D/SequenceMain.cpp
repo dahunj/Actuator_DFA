@@ -5196,7 +5196,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 6);	//RFID
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
 
-			m_sLog.Format("MCC,8,Transfer1,%d, AX_LOAD_STAGE_Y1 move to RFID Pos ", m_nTransfer1Case);
+			m_sLog.Format("MCC,10,LoadStage1,%d, AX_LOAD_STAGE_Y1 move to RFID Pos ", m_nLoadStage1Case);
 			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
@@ -5209,7 +5209,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 				g_objCarrierRFID_Load.Send_RFIDRead();
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
 
-				m_sLog.Format("MCC,8,Transfer1,%d, Send_RFIDRead ", m_nTransfer1Case);
+				m_sLog.Format("MCC,10,LoadStage1,%d, Send_RFIDRead ", m_nLoadStage1Case);
 				g_objLogFile.Save_TestLog(m_sLog);
 			} 
 			else 
@@ -5217,7 +5217,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 				if (Search_Lot()) 
 				{
 					m_nLoadStage1Case = 10; m_tLoadStage1Loop.Set_LoopTime(5000);
-					m_sLog.Format("MCC,8,Transfer1,%d, Search_Lot ", m_nTransfer1Case);
+					m_sLog.Format("MCC,10,LoadStage1,%d, Search_Lot ", m_nLoadStage1Case);
 					g_objLogFile.Save_TestLog(m_sLog);
 				}
 			}
@@ -5232,7 +5232,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 				g_objMesAgent.Set_CarrierOutMGZ(gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1], gData.nSlotNo_LoadStage[nStageNo1]);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
 
-				m_sLog.Format("MCC,8,Transfer1,%d, RFID recv done and Set_CarrierOutMGZ ", m_nTransfer1Case);
+				m_sLog.Format("MCC,10,LoadStage1,%d, RFID recv done and Set_CarrierOutMGZ ", m_nLoadStage1Case);
 				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
@@ -5246,7 +5246,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 				g_objMesAgent.Set_CarrierIDReport("L", gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
 
-				m_sLog.Format("MCC,8,Transfer1,%d, Set_CarrierIDReport MzID:%s  CarrierID:%s ", m_nTransfer1Case, gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
+				m_sLog.Format("MCC,10,LoadStage1,%d, Set_CarrierIDReport MzID:%s  CarrierID:%s ", m_nLoadStage1Case, gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
 				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		} 
@@ -5257,19 +5257,28 @@ BOOL CSequenceMain::Run_LoadStage1()
 				g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo1], gLot.nCmCount[gLot.nJobCycle-1]);
 				m_nLoadStage1Case = 10; m_tLoadStage1Loop.Set_LoopTime(5000);
 
-				m_sLog.Format("MCC,8,Transfer1,%d, Save_RFBarData ", m_nTransfer1Case);
+				m_sLog.Format("MCC,10,LoadStage1,%d, Save_RFBarData ", m_nLoadStage1Case);
 				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
 	case 7:
 		if (gMes.nCarConfirm[0] > 1) {
-			if (gMes.nCarConfirm[0] == 2) {
+			if (gMes.nCarConfirm[0] == 2) 
+			{
 				gMes.bRcpBodyDone = FALSE;	nSNo1Vision = 0;
 				g_objInspector.Set_RecipeRequest(0, gMes.sHostLotID, gMes.sHostRecipe);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
-			} else {
+
+				m_sLog.Format("MCC,10,LoadStage1,%d-1, Set_RecipeRequest ", m_nLoadStage1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
+			} 
+			else 
+			{
 				m_nLoadStage1Case = 9; m_tLoadStage1Loop.Set_LoopTime(10000);
+				m_sLog.Format("MCC,10,LoadStage1,%d-2, nCarConfirm ? ", m_nLoadStage1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
@@ -5277,6 +5286,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 		if (gMes.bRcpBodyDone) {
 			g_objMesAgent.Set_PPSelectReport(gMes.sHostLotID, gMes.sRcpVersion);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(60000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nTransfer1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 9:
@@ -5288,6 +5300,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 			g_objMesAgent.Set_LotStart(gLot.sLotID[nPortNo1], gData.sMZID_LoadStage[nStageNo1], gData.nSlotNo_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1], gLot.sRecipeName[nPortNo1]);
 			g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo1], gLot.nCmCount[gLot.nJobCycle-1]);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,g_objMesAgent.Set_LotStart and Save_RFBarData", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -5324,6 +5339,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 
 			Set_LotStart(gLot.sLotID[nPortNo1],  gLot.nJobCycle);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(60000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,g_objInspector.Set_LotStart and Set_LotStart", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 11:
@@ -5343,74 +5361,109 @@ BOOL CSequenceMain::Run_LoadStage1()
 					}
 				}
 				m_tLoadStage1Loop.Takt_Save(10, 3); m_tLoadStage1Loop.Takt_Start();
-				g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 3);	//Aling1
+				g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 3);	//Align 1 pos
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+				m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Align 1 Pos", m_nLoadStage1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
 
 	case 12:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 3)) {
-			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 3);
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 3)) 
+		{
+			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 3); 
 			m_tLoadStage1Loop.Takt_Save(10, 4); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Save_Motion", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 13:
-		if (!m_pEquipData->bUseAlign1) {
+		if (!m_pEquipData->bUseAlign1)
+		{
 			if (gNG->nTrayOX[0][0] == 1) Set_AlignData(gData.nPortNo_LoadStage[nStageNo1], nStageNo1);
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 5);	//Aling3
 			m_nLoadStage1Case = 19; m_tLoadStage1Loop.Set_LoopTime(30000);
 
 			m_sLog.Format("[LoadStage1: Skip] AlingUse(%d) Exist(%d)", m_pEquipData->bUseAlign1, m_pDX04->iLoadStage1TrayExist);
 			g_objLogFile.Save_HandlerLog(m_sLog);
-		} else {
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Align 3 Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+		}
+		else
+		{
 			Init_AlignTray();
 			gData.bAlignScanDone = FALSE;
 			g_objInspector.Set_AlignRequest(INSPECTOR_PC1, "A1", gData.sLotID_LoadStage[nStageNo1], gData.nPortNo_LoadStage[nStageNo1], gData.nTrayNo_LoadStage[nStageNo1], 1);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Set_AlignRequest 1", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 14:
-		if (gData.bAlignScanDone) {
+		if (gData.bAlignScanDone)
+		{
 			if (!m_tLoadStage1Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
 			m_tLoadStage1Loop.Takt_Save(10, 5); m_tLoadStage1Loop.Takt_Start();
-			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 4);	//Aling2
+			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 4);	//Align 2 
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,bAlignScanDone and (AX_LOAD_STAGE_Y1) move to Align 2 Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 15:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 4)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 4)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 4);
 			m_tLoadStage1Loop.Takt_Save(10, 6); m_tLoadStage1Loop.Takt_Start();
 			gData.bAlignScanDone = FALSE;
 			g_objInspector.Set_AlignRequest(INSPECTOR_PC1, "A1", gData.sLotID_LoadStage[nStageNo1], gData.nPortNo_LoadStage[nStageNo1], gData.nTrayNo_LoadStage[nStageNo1], 2);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Set_AlignRequest 2", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 16:
-		if (gData.bAlignScanDone) {
+		if (gData.bAlignScanDone) 
+		{
 			if (!m_tLoadStage1Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
 			m_tLoadStage1Loop.Takt_Save(10, 7); m_tLoadStage1Loop.Takt_Start();
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 5);	//Aling3
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,bAlignScanDone and AX_LOAD_STAGE_Y1 move to Align 3 Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 17:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 5)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 5)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 5);
 			m_tLoadStage1Loop.Takt_Save(10, 8); m_tLoadStage1Loop.Takt_Start();
 			gData.bAlignScanDone = gData.bAlignA1Done = FALSE;
 			g_objInspector.Set_AlignRequest(INSPECTOR_PC1, "A1", gData.sLotID_LoadStage[nStageNo1], gData.nPortNo_LoadStage[nStageNo1], gData.nTrayNo_LoadStage[nStageNo1], 3);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Set_AlignRequest 3", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 18:
-		if (gData.bAlignA1Done) {
+		if (gData.bAlignA1Done) 
+		{
 			if (!m_tLoadStage1Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
-			if (m_pEquipData->bUseAlignOffset) {
-				if (m_pEquipData->dAlignOffset < fabs(gData.dAlignOffset[0][1])) {
+			if (m_pEquipData->bUseAlignOffset) 
+			{
+				if (m_pEquipData->dAlignOffset < fabs(gData.dAlignOffset[0][1])) 
+				{
 					gAlm.sAlmLID[0].Format("%0.3lf", m_pEquipData->dAlignOffset);
 					gAlm.sAlmLID[1].Format("%0.3lf", fabs(gData.dAlignOffset[0][1]));
 					g_objCommon.Show_Error(4118);
@@ -5419,60 +5472,94 @@ BOOL CSequenceMain::Run_LoadStage1()
 			}
 			m_tLoadStage1Loop.Takt_Save(10, 9); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,bAlignA1Done", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 19:
 		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 5)) {
-			if (gNG->nTrayOX[0][0] == 1) {
-				if (Check_AlignData(gData.nPortNo_LoadStage[nStageNo1])) {
+			if (gNG->nTrayOX[0][0] == 1) 
+			{
+				if (Check_AlignData(gData.nPortNo_LoadStage[nStageNo1]))
+				{
 					g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 5);
 					m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
 				}
-			} else {
+			} 
+			else 
+			{
 				g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 5);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
 			}
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 20:	//Align Wait
-		if (m_nLoadStage2Case > 20 && m_nLoadStage2Case < 40) {
+		if (m_nLoadStage2Case > 20 && m_nLoadStage2Case < 40) 
+		{
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 1);	//Wait
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
-		} else if (m_nLoadStage2Case < 20 || (m_nLoadStage2Case >= 25 && m_nLoadStage2Case <= 29)  || m_nLoadStage2Case >= 40) {
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 wait", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+		} 
+		else if (m_nLoadStage2Case < 20 || (m_nLoadStage2Case >= 25 && m_nLoadStage2Case <= 29)  || m_nLoadStage2Case >= 40) 
+		{
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 2);	//Unload
 			m_nLoadStage1Case = 23; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Unload Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 	case 21:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 1)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 1)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 1);
 			m_tLoadStage1Loop.Takt_Save(10, 10); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 22:	//Align Wait
-		if (m_nLoadStage2Case < 20 || m_nLoadStage2Case >= 40) {
+		if (m_nLoadStage2Case < 20 || m_nLoadStage2Case >= 40) 
+		{
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 2);	//Unload
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Unload Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 	case 23:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 2)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 2)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 2);
 			m_tLoadStage1Loop.Takt_Save(10, 11); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 24:
-		if (gNG->nTrayOX[0][0] == 0 || (gNG->nTrayOX[0][0] == 1 && m_pDX04->iLoadStage1TrayExist)) {
+		if (gNG->nTrayOX[0][0] == 0 || (gNG->nTrayOX[0][0] == 1 && m_pDX04->iLoadStage1TrayExist)) 
+		{
 			Set_AlignToStage(gData.nPortNo_LoadStage[nStageNo1], nStageNo1);
 			m_nLoadStage1Case = 30; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 25:	//Lot취소
-		if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) {
+		if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) 
+		{
 			if (gData.nLastCar_LoadStage[nStageNo1] == 1) {
 				int nPNo = gLot.nJobCycle - 1; if (nPNo < 0) nPNo = 27;
 				gLot.nMZLastCar[nPNo] = gData.nLastCar_LoadStage[nStageNo1];
@@ -5490,31 +5577,50 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage1SlaveIn = FALSE; m_pDY04->oLoadStage1SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Lot Cancel", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 26:
-		if (!m_pDX04->iLoadStage1SlaveIn && m_pDX04->iLoadStage1SlaveOut) {
+		if (!m_pDX04->iLoadStage1SlaveIn && m_pDX04->iLoadStage1SlaveOut) 
+		{
 			m_pDY04->oLoadStage1MasterIn = FALSE; m_pDY04->oLoadStage1MasterOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Master Out", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 27:
-		if (!m_pDX04->iLoadStage1MasterIn && m_pDX04->iLoadStage1MasterOut) {
+		if (!m_pDX04->iLoadStage1MasterIn && m_pDX04->iLoadStage1MasterOut) 
+		{
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,iLoadStage1MasterOut Check", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 28:
-		if (!m_pDX04->iLoadStage1TrayExist) {
+		if (!m_pDX04->iLoadStage1TrayExist)
+		{
 			gNG->nTrayOX[0][0] = 0;
-			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 0);
+			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 0); //load pos
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Load Pos", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 29:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 0)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 0)) 
+		{
 			gData.nCarrierStart = 0;
 			m_nLoadStage1Case = 0; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Load Pos Done", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -5522,49 +5628,73 @@ BOOL CSequenceMain::Run_LoadStage1()
 		m_tLoadStage1Loop.Set_LoopTime(5000);
 		return TRUE;
 	case 31:
-		if (m_nLoadStage2Case < 30 || m_nLoadStage2Case >= 50) {
+		if (m_nLoadStage2Case < 30 || m_nLoadStage2Case >= 50) 
+		{
 			m_tLoadStage1Loop.Takt_Save(10, 12); m_tLoadStage1Loop.Takt_Start();
 			m_pDY04->oLoadStage1Up = FALSE; m_pDY04->oLoadStage1Down = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			gData.sCarID_LoadStage[nStageNo1] = "";	gData.dAlignOffset[1][1] = 0.0;
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Load Stage Down", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 	case 32:
-		if (!m_pDX04->iLoadStage1Up && m_pDX04->iLoadStage1Down) {
+		if (!m_pDX04->iLoadStage1Up && m_pDX04->iLoadStage1Down) 
+		{
 			gData.nCarrierStart = 0;
 			m_tLoadStage1Loop.Takt_Save(10, 13); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case = 40; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 40:	//Up Wait
-		if (m_nLoadStage2Case < 40 || m_nLoadStage2Case >= 60) {
+		if (m_nLoadStage2Case < 40 || m_nLoadStage2Case >= 60)
+		{
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 	case 41:
 		if (!m_pDX04->iLoadStage1Up && m_pDX04->iLoadStage1Down) {
-			if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) {
+			if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) 
+			{
 				g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 0);	//load
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+				m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Load Pos", m_nLoadStage1Case);
+				g_objLogFile.Save_TestLog(m_sLog);
 			}
 		}
 		break;
 	case 42:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 0)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y1, 0)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y1, 0);
 			m_tLoadStage1Loop.Takt_Save(10, 14); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case = 50; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
 	case 50:	//Align후
-		if (m_nLoadStage2Case >= 30 && m_nLoadStage2Case < 50) {
+		if (m_nLoadStage2Case >= 30 && m_nLoadStage2Case < 50) 
+		{
 			m_tLoadStage1Loop.Takt_Save(10, 15); m_tLoadStage1Loop.Takt_Start();
 			m_pDY04->oLoadStage1Up = TRUE; m_pDY04->oLoadStage1Down = FALSE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Stage Up", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		return TRUE;
 	case 51:
@@ -5573,6 +5703,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage1SlaveIn = FALSE; m_pDY04->oLoadStage1SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Slave Out", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 52:
@@ -5581,25 +5714,45 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage1MasterIn = FALSE; m_pDY04->oLoadStage1MasterOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,Master Out", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 53:
-		if (!m_pDX04->iLoadStage1MasterIn && m_pDX04->iLoadStage1MasterOut) {
+		if (!m_pDX04->iLoadStage1MasterIn && m_pDX04->iLoadStage1MasterOut)
+		{
 			m_tLoadStage1Loop.Takt_Save(10, 18); m_tLoadStage1Loop.Takt_Start();
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 54:
-		if (gNG->nTrayOX[0][0] == 1) {
+		if (gNG->nTrayOX[0][0] == 1) 
+		{
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
-		} else {
+
+			m_sLog.Format("MCC,10,LoadStage1,%d-1,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+		} 
+		else 
+		{
 			m_tLoadStage1Loop.Takt_Save(10, 19);
 			m_nLoadStage1Case = 0; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d-2,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 55:
-		if (m_pDX04->iLoadStage1TrayExist) {
+		if (m_pDX04->iLoadStage1TrayExist) 
+		{
 			m_nLoadStage1Case = 60; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -5608,10 +5761,14 @@ BOOL CSequenceMain::Run_LoadStage1()
 		return TRUE;
 
 	case 61:
-		if (!m_pDX04->iLoadStage1TrayExist) {
+		if (!m_pDX04->iLoadStage1TrayExist) 
+		{
 			gNG->nTrayOX[0][0] = 0;
 			m_tLoadStage1Loop.Takt_Save(10, 19);
 			m_nLoadStage1Case = 0; m_tLoadStage1Loop.Set_LoopTime(30000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -5623,6 +5780,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage2SlaveIn = FALSE;  m_pDY04->oLoadStage2SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		break;
 	case 82:
 		if (!m_pDX04->iLoadStage1MasterIn && m_pDX04->iLoadStage1MasterOut) {
@@ -5631,6 +5791,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 					if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) {
 						if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 						m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+						m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+						g_objLogFile.Save_TestLog(m_sLog);
 					}
 				}
 			}
@@ -5644,8 +5806,12 @@ BOOL CSequenceMain::Run_LoadStage1()
 
 			m_nLoadStage1Case = gData.nLoadStageSeqNo[0];
 			m_tLoadStage1Loop.Set_LoopTime(60000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		} else {
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 
@@ -5656,6 +5822,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage2SlaveIn = FALSE; m_pDY04->oLoadStage2SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		break;
 	case 85:
 		if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) {
@@ -5664,6 +5832,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 					if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) {
 						if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 						m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+						m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+						g_objLogFile.Save_TestLog(m_sLog);
 					}
 				}
 			}
@@ -5676,6 +5846,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage2SlaveIn = TRUE;  m_pDY04->oLoadStage2SlaveOut = FALSE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		break;
 	case 87:
 		if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) {
@@ -5684,6 +5856,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 					if (m_pDX04->iLoadStage2SlaveIn && !m_pDX04->iLoadStage2SlaveOut) {
 						if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 						m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(5000);
+						m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+						g_objLogFile.Save_TestLog(m_sLog);
 					}
 				}
 			}
@@ -5696,6 +5870,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 			m_pDY04->oLoadStage2SlaveIn = FALSE; m_pDY04->oLoadStage2SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(10000);
+			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		break;
 	case 89:
 		if (m_pDX04->iLoadStage1MasterIn && !m_pDX04->iLoadStage1MasterOut) {
@@ -5704,6 +5880,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 					if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) {
 						if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 						m_nLoadStage1Case = 81; m_tLoadStage1Loop.Set_LoopTime(5000);
+						m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nLoadStage1Case);
+						g_objLogFile.Save_TestLog(m_sLog);
 					}
 				}
 			}
@@ -5736,100 +5914,164 @@ BOOL CSequenceMain::Run_LoadStage2()
 {
 	static int nStageNo2 = 1, nSNo2Vision, nPortNo2;	//1고정
 
-	switch (m_nLoadStage2Case) {
+	switch (m_nLoadStage2Case) 
+	{
 	case 0:	// Wait
 		m_tLoadStage2Loop.Set_LoopTime(5000);
 		return TRUE;
 
 	case 1:
-		if (m_pDX04->iLoadStage2TrayExist) {
-			if (m_pDX04->iLoadStage2MasterIn && !m_pDX04->iLoadStage2MasterOut) {
+		if (m_pDX04->iLoadStage2TrayExist) 
+		{
+			if (m_pDX04->iLoadStage2MasterIn && !m_pDX04->iLoadStage2MasterOut) 
+			{
+				m_sLog.Format("MCC,11,LoadStage2,%d,Slave In", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				if (!m_tLoadStage2Loop.Waiting_Time(200)) break;
 				gNG->nTrayOX[0][1] = 1;
 				m_tLoadStage2Loop.Takt_Start();
 				m_pDY04->oLoadStage2SlaveIn = TRUE; m_pDY04->oLoadStage2SlaveOut = FALSE;
 				g_objAJinAXL.Write_Output(4);
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
+
 			}
 		}
 		break;
 	case 2:
 		if (m_pDX04->iLoadStage2MasterIn && !m_pDX04->iLoadStage2MasterOut) {
-			if (m_pDX04->iLoadStage2SlaveIn && !m_pDX04->iLoadStage2SlaveOut) {
-				if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) {
+			if (m_pDX04->iLoadStage2SlaveIn && !m_pDX04->iLoadStage2SlaveOut) 
+			{
+				if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) 
+				{
+					m_sLog.Format("MCC,11,LoadStage2,%d,Up Check", m_nLoadStage2Case);
+					g_objLogFile.Save_TestLog(m_sLog);
+
 					m_tLoadStage2Loop.Takt_Save(11, 1); m_tLoadStage2Loop.Takt_Start();
-					m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
+					m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);					
 				}
 			}
 		}
 		break;
 	case 3:	//RFID Wait
-		if (m_nLoadStage1Case >= 30) {
+		if (m_nLoadStage1Case >= 30)
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to RFID pos", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 2); m_tLoadStage2Loop.Takt_Start();
 			m_nRFRetray[0][1] = 0;
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 6);	//RFID
-			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(10000);
+			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(10000);			
 		}
 		return TRUE;
 
 	case 4:
 		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 6)) {
-			if (m_pEquipData->bUseRFIDLoad) {
+			if (m_pEquipData->bUseRFIDLoad) 
+			{
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objCarrierRFID_Load.Send_RFIDRead()", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				g_objCarrierRFID_Load.Send_RFIDRead();
-				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
-			} else {
-				if (Search_Lot()) { m_nLoadStage2Case = 10; m_tLoadStage2Loop.Set_LoopTime(5000); }
+				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);				
+			} 
+			else 
+			{
+				if (Search_Lot()) 
+				{ 
+					m_sLog.Format("MCC,11,LoadStage2,%d,Search_Lot", m_nLoadStage2Case);
+					g_objLogFile.Save_TestLog(m_sLog);
+
+					m_nLoadStage2Case = 10; m_tLoadStage2Loop.Set_LoopTime(5000);					
+				}
 			}
 		}
 		break;
 	case 5:
-		if (g_objCarrierRFID_Load.Is_RecvComplete()) {
+		if (g_objCarrierRFID_Load.Is_RecvComplete()) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_CarrierOutMGZ", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			gData.sCarID_LoadStage[nStageNo2] = g_objCarrierRFID_Load.Get_CarrierID();
-			if (gData.sCarID_LoadStage[nStageNo2].GetLength() > 2) {
+			if (gData.sCarID_LoadStage[nStageNo2].GetLength() > 2) 
+			{
 				g_objMesAgent.Set_CarrierOutMGZ(gData.sMZID_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2], gData.nSlotNo_LoadStage[nStageNo2]);
-				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
+				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);			
 			}
 		}
 		break;
 	case 6:
-		if (m_pEquipData->bUseMES) {
-			if (gData.sCarID_LoadStage[nStageNo2].GetLength() > 2) {
+		if (m_pEquipData->bUseMES) 
+		{
+			if (gData.sCarID_LoadStage[nStageNo2].GetLength() > 2) 
+			{
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_CarrierIDReport", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				gMes.nCarConfirm[0] = 1;
 				g_objMesAgent.Set_CarrierIDReport("L", gData.sMZID_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2]);
-				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
+				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);				
 			}
-		} else {
-			if (Search_Lot()) {	
+		} 
+		else 
+		{
+			if (Search_Lot()) 
+			{	
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objLogFile.Save_RFBarData", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo2], gLot.nCmCount[gLot.nJobCycle-1]);
-				m_nLoadStage2Case = 10; m_tLoadStage2Loop.Set_LoopTime(5000);
+				m_nLoadStage2Case = 10; m_tLoadStage2Loop.Set_LoopTime(5000);			
 			}
 		}
 		break;
 	case 7:
-		if (gMes.nCarConfirm[0] > 1) {
-			if (gMes.nCarConfirm[0] == 2) {
+		if (gMes.nCarConfirm[0] > 1) 
+		{
+			if (gMes.nCarConfirm[0] == 2) 
+			{
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Set_RecipeRequest", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				gMes.bRcpBodyDone = FALSE;	nSNo2Vision = 0;
 				g_objInspector.Set_RecipeRequest(0, gMes.sHostLotID, gMes.sHostRecipe);
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
+			
 			} else {
+				m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				m_nLoadStage2Case = 9; m_tLoadStage2Loop.Set_LoopTime(10000);
+				
 			}
 		}
 		break;
 	case 8:	
-		if (gMes.bRcpBodyDone) {
+		if (gMes.bRcpBodyDone) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_PPSelectReport", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objMesAgent.Set_PPSelectReport(gMes.sHostLotID, gMes.sRcpVersion);
-			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(60000);
+			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(60000);				
 		}
 		break;
 	case 9:
-		if (gMes.nCarConfirm[0] >= 4) {
+		if (gMes.nCarConfirm[0] >= 4) 
+		{
 			if (!m_tLoadStage2Loop.Waiting_Time(500)) break;
+
+
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_LotStart", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 
 			nPortNo2 = gMes.nLotPortNo - 1;
 			g_objMesAgent.Set_LotStart(gLot.sLotID[nPortNo2], gData.sMZID_LoadStage[nStageNo2], gData.nSlotNo_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2], gLot.sRecipeName[nPortNo2]);
 			g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo2], gLot.nCmCount[gLot.nJobCycle-1]);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
+
 		}
 		break;
 
@@ -5861,6 +6103,9 @@ BOOL CSequenceMain::Run_LoadStage2()
 
 			Set_LotStart(gLot.sLotID[nPortNo2],  gLot.nJobCycle);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(60000);
+
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 		}
 		break;
 	case 11:
@@ -5875,6 +6120,9 @@ BOOL CSequenceMain::Run_LoadStage2()
 						g_dlgWork.PostMessage(UM_UPDATE_MODEL, 1, NULL);
 					}
 				}
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Check_LotReady AX_LOAD_STAGE_Y2 move to Align 3 Pos", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				m_tLoadStage2Loop.Takt_Save(11, 3); m_tLoadStage2Loop.Takt_Start();
 				g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 3);	//Aling1
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
@@ -5883,7 +6131,11 @@ BOOL CSequenceMain::Run_LoadStage2()
 		break;
 
 	case 12:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 3)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 3)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Save_Motion", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 3);
 			m_tLoadStage2Loop.Takt_Save(11, 4); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
@@ -5891,14 +6143,23 @@ BOOL CSequenceMain::Run_LoadStage2()
 		break;
 
 	case 13:
-		if (!m_pEquipData->bUseAlign1) {
+		if (!m_pEquipData->bUseAlign1) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Align 3", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			if (gNG->nTrayOX[0][1] == 1) Set_AlignData(gData.nPortNo_LoadStage[nStageNo2], nStageNo2);
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 5);	//Aling3
 			m_nLoadStage2Case = 19; m_tLoadStage2Loop.Set_LoopTime(30000);
 
 			m_sLog.Format("[LoadStage2: Skip] AlingUse(%d) Exist(%d)", m_pEquipData->bUseAlign1, m_pDX04->iLoadStage2TrayExist);
 			g_objLogFile.Save_HandlerLog(m_sLog);
-		} else {
+		}
+		else
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Set_AlignRequest", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			Init_AlignTray();
 			gData.bAlignScanDone = FALSE;
 			g_objInspector.Set_AlignRequest(INSPECTOR_PC1, "A1", gData.sLotID_LoadStage[nStageNo2], gData.nPortNo_LoadStage[nStageNo2], gData.nTrayNo_LoadStage[nStageNo2], 1);
@@ -5906,32 +6167,50 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 14:
-		if (gData.bAlignScanDone) {
+		if (gData.bAlignScanDone) 
+		{
 			if (!m_tLoadStage2Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
+
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Align 2", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 5); m_tLoadStage2Loop.Takt_Start();
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 4);	//Aling2
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(10000);
 		}
 		break;
 	case 15:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 4)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 4)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 4);
 			m_tLoadStage2Loop.Takt_Save(11, 6); m_tLoadStage2Loop.Takt_Start();
 			gData.bAlignScanDone = FALSE;
+
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Set_AlignRequest", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objInspector.Set_AlignRequest(INSPECTOR_PC1, "A1", gData.sLotID_LoadStage[nStageNo2], gData.nPortNo_LoadStage[nStageNo2], gData.nTrayNo_LoadStage[nStageNo2], 2);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		break;
 	case 16:
-		if (gData.bAlignScanDone) {
+		if (gData.bAlignScanDone) 
+		{
 			if (!m_tLoadStage2Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Align 3 Pos", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 7); m_tLoadStage2Loop.Takt_Start();
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 5);	//Aling3
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(10000);
 		}
 		break;
 	case 17:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 5)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 5)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Set_AlignRequest 3", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 5);
 			m_tLoadStage2Loop.Takt_Save(11, 8); m_tLoadStage2Loop.Takt_Start();
 			gData.bAlignScanDone = gData.bAlignA1Done = FALSE;
@@ -5940,7 +6219,8 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 18:
-		if (gData.bAlignA1Done) {
+		if (gData.bAlignA1Done) 
+		{
 			if (!m_tLoadStage2Loop.Waiting_Time(m_pEquipData->nDelayTime[5])) break;
 			if (m_pEquipData->bUseAlignOffset) {
 				if (m_pEquipData->dAlignOffset < fabs(gData.dAlignOffset[0][1])) {
@@ -5950,14 +6230,21 @@ BOOL CSequenceMain::Run_LoadStage2()
 					return FALSE;
 				}
 			}
+			m_sLog.Format("MCC,11,LoadStage2,%d,bAlignA1Done", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 9); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 19:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 5)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 5)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Save_Motion", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			if (gNG->nTrayOX[0][1] == 1) {
-				if (Check_AlignData(gData.nPortNo_LoadStage[nStageNo2])) {
+				if (Check_AlignData(gData.nPortNo_LoadStage[nStageNo2]))
+				{
 					g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 5);
 					m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 				}
@@ -5969,43 +6256,66 @@ BOOL CSequenceMain::Run_LoadStage2()
 		break;
 
 	case 20:	//Align Wait
-		if (m_nLoadStage1Case > 20 && m_nLoadStage1Case < 40) {
+		if (m_nLoadStage1Case > 20 && m_nLoadStage1Case < 40) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Wait Pos", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 1);	//Wait
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
-		} else if (m_nLoadStage1Case < 20 || (m_nLoadStage1Case >= 25 && m_nLoadStage1Case <= 29) || m_nLoadStage1Case >= 40) {
+		} 
+		else if (m_nLoadStage1Case < 20 || (m_nLoadStage1Case >= 25 && m_nLoadStage1Case <= 29) || m_nLoadStage1Case >= 40) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Unload Pos", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 2);	//Unload
 			m_nLoadStage2Case = 23; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		return TRUE;
 	case 21:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 1)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 1)) 
+		{
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 1);
 			m_tLoadStage2Loop.Takt_Save(11, 10); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		break;
 	case 22:	//Align Wait
-		if (m_nLoadStage1Case < 20 || m_nLoadStage1Case >= 40) {
+		if (m_nLoadStage1Case < 20 || m_nLoadStage1Case >= 40) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Unload", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 2);	//Unload
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		return TRUE;
 	case 23:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 2)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 2)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Save_Motion", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 2);
 			m_tLoadStage2Loop.Takt_Save(11, 11); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 24:
-		if (gNG->nTrayOX[0][1] == 0 || (gNG->nTrayOX[0][1] == 1 && m_pDX04->iLoadStage2TrayExist)) {
+		if (gNG->nTrayOX[0][1] == 0 || (gNG->nTrayOX[0][1] == 1 && m_pDX04->iLoadStage2TrayExist)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Set_AlignToStage", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			Set_AlignToStage(gData.nPortNo_LoadStage[nStageNo2], nStageNo2);
 			m_nLoadStage2Case = 30; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 
 	case 25:	//Lot취소
-		if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) {
+		if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) 
+		{
 			if (gData.nLastCar_LoadStage[nStageNo2] == 1) {
 				int nPNo = gLot.nJobCycle - 1; if (nPNo < 0) nPNo = 27;
 				gLot.nMZLastCar[nPNo] = gData.nLastCar_LoadStage[nStageNo2];
@@ -6020,32 +6330,51 @@ BOOL CSequenceMain::Run_LoadStage2()
 			gData.nTrayNo_LoadStage[nStageNo2] = 0;
 			gData.nPortNo_LoadStage[nStageNo2] = 0;
 
+			m_sLog.Format("MCC,11,LoadStage2,%d,Lot Cancel", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_pDY04->oLoadStage2SlaveIn = FALSE; m_pDY04->oLoadStage2SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 26:
-		if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) {
+		if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_pDY04->oLoadStage2MasterIn = FALSE; m_pDY04->oLoadStage2MasterOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 27:
-		if (!m_pDX04->iLoadStage2MasterIn && m_pDX04->iLoadStage2MasterOut) {
+		if (!m_pDX04->iLoadStage2MasterIn && m_pDX04->iLoadStage2MasterOut) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 28:
-		if (!m_pDX04->iLoadStage2TrayExist) {
+		if (!m_pDX04->iLoadStage2TrayExist) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Load", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			gNG->nTrayOX[0][1] = 0;
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 0);
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 29:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 0)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 0))
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			gData.nCarrierStart = 0;
 			m_nLoadStage2Case = 0; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
@@ -6055,7 +6384,11 @@ BOOL CSequenceMain::Run_LoadStage2()
 		m_tLoadStage2Loop.Set_LoopTime(5000);
 		return TRUE;
 	case 31:
-		if (m_nLoadStage1Case < 30 || m_nLoadStage1Case >= 50) {
+		if (m_nLoadStage1Case < 30 || m_nLoadStage1Case >= 50) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Stage Down", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 12); m_tLoadStage2Loop.Takt_Start();
 			m_pDY04->oLoadStage2Up = FALSE; m_pDY04->oLoadStage2Down = TRUE;
 			g_objAJinAXL.Write_Output(4);
@@ -6064,7 +6397,11 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		return TRUE;
 	case 32:
-		if (!m_pDX04->iLoadStage2Up && m_pDX04->iLoadStage2Down) {
+		if (!m_pDX04->iLoadStage2Up && m_pDX04->iLoadStage2Down) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			gData.nCarrierStart = 0;
 			m_tLoadStage2Loop.Takt_Save(11, 13); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case = 40; m_tLoadStage2Loop.Set_LoopTime(30000);
@@ -6072,20 +6409,33 @@ BOOL CSequenceMain::Run_LoadStage2()
 		break;
 
 	case 40:	//Up Wait
-		if (m_nLoadStage1Case < 40 || m_nLoadStage1Case >= 60) {
+		if (m_nLoadStage1Case < 40 || m_nLoadStage1Case >= 60) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		return TRUE;
 	case 41:
-		if (!m_pDX04->iLoadStage2Up && m_pDX04->iLoadStage2Down) {
-			if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) {
+		if (!m_pDX04->iLoadStage2Up && m_pDX04->iLoadStage2Down) 
+		{
+			if (m_pDX04->iLoadStage1Up && !m_pDX04->iLoadStage1Down) 
+			{
+				m_sLog.Format("MCC,11,LoadStage2,%d,AX_LOAD_STAGE_Y2 move to Load", m_nLoadStage2Case);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				g_objCommon.Move_Position(AX_LOAD_STAGE_Y2, 0);	//load
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
 			}
 		}
 		break;
 	case 42:
-		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 0)) {
+		if (g_objCommon.Check_Position(AX_LOAD_STAGE_Y2, 0)) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Save_Motion", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			g_objCommon.Save_Motion(AX_LOAD_STAGE_Y2, 0);
 			m_tLoadStage2Loop.Takt_Save(11, 14); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case = 50; m_tLoadStage2Loop.Set_LoopTime(5000);
@@ -6093,7 +6443,10 @@ BOOL CSequenceMain::Run_LoadStage2()
 		break;
 
 	case 50:	//Align후
-		if (m_nLoadStage1Case >= 30 && m_nLoadStage1Case < 50) {
+		if (m_nLoadStage1Case >= 30 && m_nLoadStage1Case < 50) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,Stage Up", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_tLoadStage2Loop.Takt_Save(11, 15); m_tLoadStage2Loop.Takt_Start();
 			m_pDY04->oLoadStage2Up = TRUE; m_pDY04->oLoadStage2Down = FALSE;
 			g_objAJinAXL.Write_Output(4);
@@ -6101,7 +6454,11 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		return TRUE;
 	case 51:
-		if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) {
+		if (m_pDX04->iLoadStage2Up && !m_pDX04->iLoadStage2Down) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 16); m_tLoadStage2Loop.Takt_Start();
 			m_pDY04->oLoadStage2SlaveIn = FALSE; m_pDY04->oLoadStage2SlaveOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
@@ -6109,7 +6466,10 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 52:
-		if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) {
+		if (!m_pDX04->iLoadStage2SlaveIn && m_pDX04->iLoadStage2SlaveOut) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_tLoadStage2Loop.Takt_Save(11, 17); m_tLoadStage2Loop.Takt_Start();
 			m_pDY04->oLoadStage2MasterIn = FALSE; m_pDY04->oLoadStage2MasterOut = TRUE;
 			g_objAJinAXL.Write_Output(4);
@@ -6117,21 +6477,37 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 53:
-		if (!m_pDX04->iLoadStage2MasterIn && m_pDX04->iLoadStage2MasterOut) {
+		if (!m_pDX04->iLoadStage2MasterIn && m_pDX04->iLoadStage2MasterOut)
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 18); m_tLoadStage2Loop.Takt_Start();
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);
 		}
 		break;
 	case 54:
-		if (gNG->nTrayOX[0][1] == 1) {
+		if (gNG->nTrayOX[0][1] == 1) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
-		} else {
+		} 
+		else
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
+
 			m_tLoadStage2Loop.Takt_Save(11, 19);
 			m_nLoadStage2Case = 0; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		break;
 	case 55:
-		if (m_pDX04->iLoadStage2TrayExist) {
+		if (m_pDX04->iLoadStage2TrayExist) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_nLoadStage2Case = 60; m_tLoadStage2Loop.Set_LoopTime(30000);
 		}
 		break;
@@ -6141,7 +6517,10 @@ BOOL CSequenceMain::Run_LoadStage2()
 		return TRUE;
 
 	case 61:
-		if (!m_pDX04->iLoadStage2TrayExist) {
+		if (!m_pDX04->iLoadStage2TrayExist) 
+		{
+			m_sLog.Format("MCC,11,LoadStage2,%d,empty", m_nLoadStage2Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			gNG->nTrayOX[0][1] = 0;
 			m_tLoadStage2Loop.Takt_Save(11, 19);
 			m_nLoadStage2Case = 0; m_tLoadStage2Loop.Set_LoopTime(30000);
@@ -6196,6 +6575,9 @@ BOOL CSequenceMain::Run_LoadPicker1()
 			if (m_nLoadStage2Case == 30) nLPStage1No = 2;
 			g_objCommon.Set_LoadPickerUp(n1No);	gData.nLPCount1 = 0;
 			g_objCommon.Move_Position(AX_LOAD_PICKER_Z1, 0);
+
+			m_sLog.Format("MCC,12,LoadPicker1,%d,AX_LOAD_PICKER_Z1 move to Ready up", m_nLoadPicker1Case);
+			g_objLogFile.Save_TestLog(m_sLog);
 			m_nLoadPicker1Case++; m_tLoadPicker1Loop.Set_LoopTime(5000);
 
 			m_sLog.Format("[LoadPicker1: Start] StageNo(%d) LoadAlignOffset(%d/%0.3lf)", nLPStage1No, m_pEquipData->bUseAlignOffset, gData.dAlignOffset[1][1]);
@@ -6204,19 +6586,25 @@ BOOL CSequenceMain::Run_LoadPicker1()
 		return TRUE;
 
 	case 1:
-		if (g_objCommon.Check_Position(AX_LOAD_PICKER_Z1, 0)) {
-			if (g_objCommon.Get_LoadPickerUp(n1No)) {
+		if (g_objCommon.Check_Position(AX_LOAD_PICKER_Z1, 0)) 
+		{
+			if (g_objCommon.Get_LoadPickerUp(n1No)) 
+			{
 				g_objCommon.Move_Position(AX_LOAD_PICKER_X1, nLPStage1No);
 				g_objCommon.Move_Position(AX_LOAD_PICKER_Y1, nLPStage1No);
 //				if(m_pEquipData->bUseAlignOffset) dLP1PosY = m_pMoveData->dLoadPickerY1[nLPStage1No] + (gData.dAlignOffset[1][1] * -1.0);
 //				else							  dLP1PosY = m_pMoveData->dLoadPickerY1[nLPStage1No];
 //				g_objAJinAXL.Move_Absolute(AX_LOAD_PICKER_Y1, dLP1PosY);
+				m_sLog.Format("MCC,12,LoadPicker1,%d,AX_LOAD_PICKER_X1 and Y1 move to Stage No:%d", m_nLoadPicker1Case, nLPStage1No);
+				g_objLogFile.Save_TestLog(m_sLog);
+
 				m_nLoadPicker1Case++; m_tLoadPicker1Loop.Set_LoopTime(10000);
 			}
 		}
 		break;
 	case 2:
-		if (g_objCommon.Check_Position(AX_LOAD_PICKER_X1, nLPStage1No) && g_objCommon.Check_Position(AX_LOAD_PICKER_Y1, nLPStage1No)) {
+		if (g_objCommon.Check_Position(AX_LOAD_PICKER_X1, nLPStage1No) && g_objCommon.Check_Position(AX_LOAD_PICKER_Y1, nLPStage1No)) 
+		{
 //		if (g_objCommon.Check_Position(AX_LOAD_PICKER_X1, nLPStage1No) && g_objAJinAXL.Is_MoveDone(AX_LOAD_PICKER_Y1, dLP1PosY)) {
 			g_objCommon.Save_Motion(AX_LOAD_PICKER_X1, nLPStage1No);	g_objCommon.Save_Motion(AX_LOAD_PICKER_Y1, nLPStage1No);
 			g_objCommon.Set_LoadPickerOpen(n1No);
@@ -6224,11 +6612,17 @@ BOOL CSequenceMain::Run_LoadPicker1()
 			{
 				if (nLoad1PosY == 1 || nLoad1PosY == 3 || nLoad1PosY == 5 || nLoad1PosY == 7 || nLoad1PosY == 9) 
 				{
+					m_sLog.Format("MCC,12,LoadPicker1,%d,Check_LoadModule", m_nLoadPicker1Case);
+					g_objLogFile.Save_TestLog(m_sLog);
+
 					gData.InfoLoadPick[n1No-1][9] = ((nLoad1PosY-1) * 4) + 1;	nStartY1 = nLoad1PosY;
 					m_nLoadPicker1Case++; m_tLoadPicker1Loop.Set_LoopTime(5000);
 				} 
 				else 
 				{
+					m_sLog.Format("MCC,12,LoadPicker1,%d,Check_LoadModule", m_nLoadPicker1Case);
+					g_objLogFile.Save_TestLog(m_sLog);
+
 					gData.InfoLoadPick[n1No-1][9] = ((nLoad1PosY-2) * 4) + 1;	nLoad1PosX = nStartY1 = 0;
 					m_nLoadPicker1Case = 10; m_tLoadPicker1Loop.Set_LoopTime(5000);
 				}
@@ -6364,11 +6758,15 @@ BOOL CSequenceMain::Run_LoadPicker1()
 				nLoad1PosX = 2;
 				m_nLoadPicker1Case = 3; m_tLoadPicker1Loop.Set_LoopTime(30000);
 			} else {
-				if (Check_LoadModule(nLoad1PosX, nLoad1PosY)) {
+				if (Check_LoadModule(nLoad1PosX, nLoad1PosY)) 
+				{
 					if (nLoad1PosY == 1 || nLoad1PosY == 3 || nLoad1PosY == 5 || nLoad1PosY == 7 || nLoad1PosY == 9 ||
-						(nStartY1 > 0 && (nLoad1PosY > nStartY1+1))) {
+						(nStartY1 > 0 && (nLoad1PosY > nStartY1+1))) 
+					{
 						m_nLoadPicker1Case = 18; m_tLoadPicker1Loop.Set_LoopTime(30000);
-					} else {
+					}
+					else
+					{
 						m_tLoadPicker1Loop.Takt_Save(12, 5); m_tLoadPicker1Loop.Takt_Start();
 						double dOffset1 = (nLoad1PosY <= 5 ? 0.0 : CARRIER_OFFSETY);
 						double dOffset2 = (!m_pEquipData->bUseAlignOffset ? 0.0 : gData.dAlignOffset[1][1]);

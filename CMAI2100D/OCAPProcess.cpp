@@ -245,7 +245,7 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 	{
 		gCap.nTotalGood[nCurrentMzIdx] ++;
 		gCap.nTotalCntMZ[nCurrentMzIdx] ++;	
-		strTemp.Format("Good,  nTotalGood:%d, nTotalCntMZ:%d, nCurrentMzIdx",gCap.nTotalGood[nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx);
+		strTemp.Format("Good, nTotalGood:%d, nTotalCntMZ:%d, nCurrentMzIdx",gCap.nTotalGood[nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx);
 		g_objLogFile.Save_TestLog(strTemp);
 	}
 	else
