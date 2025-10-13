@@ -949,7 +949,8 @@ BOOL CSequenceMain::Check_MZEndUnload(CString sLotID, int nPortNo, int nPickNo)
 		if (sLotID == gData.sLotID_LoadStage[i]) return FALSE;
 		if (sLotID == gData.sLotID_LoadPicker[i]) return FALSE;
 	}
-	for (int i=0; i<4; i++) {
+	for (int i=0; i<4; i++) 
+	{
 		if (sLotID == gData.sLotID_VisionStage[i]) return FALSE;
 	}
 	if (nPickNo == 1) { if (sLotID == gData.sLotID_UnloadPicker[1]) return FALSE; }
@@ -10315,7 +10316,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			m_sLog.Format("UnloadPicker %d To NGTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
 			if(gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						
-			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_UnloadPicker[n1No-1]-1, "NG",gData.InfoNgTray[n1PosY-1][n1PosX-1], gLot.sNGCode_I[gData.nPortNo_NGTray[n1NSNo-5]-1][gData.nTrayNo_NGTray[n1NSNo-5]-1][n1ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
+			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_NGTray[n1NSNo-5]-1, "NG",gData.InfoNgTray[n1PosY-1][n1PosX-1], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 			
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][6] = 1;
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][7] = (n1PosY-1) * 4 + n1PosX;
@@ -10921,7 +10922,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 			m_sLog.Format("UnloadPicker %d To NGTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
 			if(gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
-			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_UnloadPicker[n2No-1]-1, "NG",gData.InfoNgTray[n2PosY-1][n2PosX-1], gLot.sNGCode_I[gData.nPortNo_NGTray[n2NSNo-5]-1][gData.nTrayNo_NGTray[n2NSNo-5]-1][n2ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
+			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_NGTray[n2NSNo-5]-1, "NG",gData.InfoNgTray[n2PosY-1][n2PosX-1], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 		
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][6] = 1;
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][7] = (n2PosY-1) * 4 + n2PosX;

@@ -245,7 +245,7 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 	{
 		gCap.nTotalGood[nCurrentMzIdx] ++;
 		gCap.nTotalCntMZ[nCurrentMzIdx] ++;	
-		strTemp.Format("Good, nTotalGood:%d, nTotalCntMZ:%d, nCurrentMzIdx",gCap.nTotalGood[nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx);
+		strTemp.Format("Good, nTotalGood:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d, sNGCode:%s",gCap.nTotalGood[nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode);
 		g_objLogFile.Save_TestLog(strTemp);
 	}
 	else
@@ -254,11 +254,15 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 		{
 			for(int i = 0; i < 50; i++)
 			{
-				if(sNGCode == gCap.sCosmeticCode[i] && sNGCode != "" && gCap.sCosmeticCode[i] !="")
+				if(sNGCode == gCap.sCosmeticCode[i] && sNGCode !="")
 				{
-					gCap.nTotalCosmeticDefect[i][nCurrentMzIdx] ++;
+					gCap.nTotalCosmeticDefect[i][nCurrentMzIdx]++;
 					gCap.nTotalCntMZ[nCurrentMzIdx] ++;
-					strTemp.Format("NG, nTotalCosmeticDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d", gCap.nTotalCosmeticDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx);
+					strTemp.Format("NG, nTotalCosmeticDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d,sNGCode:%s,%s", gCap.nTotalCosmeticDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode, gCap.sCosmeticCode[i]);
+					g_objLogFile.Save_TestLog(strTemp);
+				}
+				else{
+					strTemp.Format("NG, What is this?,sNGCode:%s", sNGCode);
 					g_objLogFile.Save_TestLog(strTemp);
 				}
 			}						
@@ -267,15 +271,19 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 		{
 			for(int i = 0; i < 50; i++)
 			{
-				if(sNGCode == gCap.sFAICode[i] && sNGCode != "" && gCap.sFAICode[i] !="")
+				if(sNGCode == gCap.sFAICode[i] && sNGCode != "")
 				{
 					gCap.nTotalFAIDefect[i][nCurrentMzIdx] ++;
 					gCap.nTotalCntMZ[nCurrentMzIdx]++;
-					strTemp.Format("NG, nTotalFAIDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d", gCap.nTotalFAIDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx);
+					strTemp.Format("NG, nTotalFAIDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d,sNGCode:%s,%s", gCap.nTotalFAIDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode, gCap.sFAICode[i]);
 					g_objLogFile.Save_TestLog(strTemp);
 				}
 			}		
-		}		
+		}
+		else{
+			strTemp.Format("NG, What is this?,sNGCode:%s", sNGCode);
+			g_objLogFile.Save_TestLog(strTemp);
+		}
 	}
 }
 
