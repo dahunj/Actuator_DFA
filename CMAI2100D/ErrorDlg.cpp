@@ -210,6 +210,11 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 														gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[2], gCap.nGiMZCnt[2], gAlm.sAlmLotID[0]);
 		if (m_nErrNo == 9184) strErrPick.Format(" #==> [%s] 측정 Error [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      설비 문제여부를 확인해야 합니다.#      [%s]",
 														gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[3], gCap.nGiMZCnt[3], gAlm.sAlmLotID[0]);*/
+		//후처리 
+		if(gCap.nOcapMzIndex == 3) gCap.nOcapMzIndex = 0;
+		else gCap.nOcapMzIndex++;
+
+
 		if (m_nErrNo > 9200 && m_nErrNo < 9210) strErrPick.Format(" #==> [%s]비전에서 발생하였습니다.", gAlm.sAlmLotID[1]);
 		if (m_nErrNo == 9211) strErrPick.Format(" # Barcode [%s]", gAlm.sAlmLotID[1]);
 		if (m_nErrNo == 9030) strErrPick.Format(" #==> LotID[%s] RecipeID[%s] Code[%s] #   Text[%s]", gMes.sHostLotID, gMes.sHostRecipe, gMes.sHostCancelCode, gMes.sHostCancelText);

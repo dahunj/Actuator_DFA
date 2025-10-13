@@ -234,18 +234,14 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 
 void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx)
 {
-	if(nSlotNo <= 8 && nSlotNo > 0)  nCurrentMzIdx = 0;
-	else if(nSlotNo > 8 && nSlotNo <= 16) nCurrentMzIdx = 1;
-	else if(nSlotNo > 16 && nSlotNo <= 24) nCurrentMzIdx = 2;
-	else if(nSlotNo > 24 && nSlotNo <= 30) nCurrentMzIdx = 3;
-	
 	CString strTemp;
 
 	if(sType == "GOOD")
 	{
-		gCap.nTotalGood[nCurrentMzIdx] ++;
-		gCap.nTotalCntMZ[nCurrentMzIdx] ++;	
-		strTemp.Format("Good, nTotalGood:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d, sNGCode:%s",gCap.nTotalGood[nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode);
+		gCap.nCarrierGood[nSlotNo]++;
+		gCap.nTotalCntCarrier[nSlotNo]++;		
+			
+		strTemp.Format("Good, nCarrierGood:%d, nTotalCntCarrier:%d, nSlotNo:%d, sNGCode:%s",gCap.nCarrierGood[nSlotNo],gCap.nTotalCntCarrier[nSlotNo],nSlotNo, sNGCode);
 		g_objLogFile.Save_TestLog(strTemp);
 	}
 	else
@@ -256,15 +252,15 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 			{
 				if(sNGCode == gCap.sCosmeticCode[i] && sNGCode !="")
 				{
-					gCap.nTotalCosmeticDefect[i][nCurrentMzIdx]++;
-					gCap.nTotalCntMZ[nCurrentMzIdx] ++;
-					strTemp.Format("NG, nTotalCosmeticDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d,sNGCode:%s,%s", gCap.nTotalCosmeticDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode, gCap.sCosmeticCode[i]);
+					gCap.nCarrierCosmeticDefect[i][nSlotNo]++;
+					gCap.nTotalCntCarrier[nSlotNo] ++;
+					strTemp.Format("NG, nCarrierCosmeticDefect:%d, nTotalCntCarrier:%d, nSlotNo:%d,sNGCode:%s,%s", gCap.nCarrierCosmeticDefect[i][nSlotNo],gCap.nTotalCntCarrier[nSlotNo],nSlotNo, sNGCode, gCap.sCosmeticCode[i]);
 					g_objLogFile.Save_TestLog(strTemp);
 				}
-				else{
+				/*else{
 					strTemp.Format("NG, What is this?,sNGCode:%s", sNGCode);
 					g_objLogFile.Save_TestLog(strTemp);
-				}
+				}*/
 			}						
 		}
 		else if(nJudge == 7 || nJudge == 8 || nJudge == 9 || nJudge == 17 || nJudge == 18 || nJudge == 19)
@@ -273,9 +269,9 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 			{
 				if(sNGCode == gCap.sFAICode[i] && sNGCode != "")
 				{
-					gCap.nTotalFAIDefect[i][nCurrentMzIdx] ++;
-					gCap.nTotalCntMZ[nCurrentMzIdx]++;
-					strTemp.Format("NG, nTotalFAIDefect:%d, nTotalCntMZ:%d, nCurrentMzIdx:%d,sNGCode:%s,%s", gCap.nTotalFAIDefect[i][nCurrentMzIdx],gCap.nTotalCntMZ[nCurrentMzIdx],nCurrentMzIdx, sNGCode, gCap.sFAICode[i]);
+					gCap.nCarrierFAIDefect[i][nSlotNo] ++;
+					gCap.nTotalCntCarrier[nSlotNo]++;
+					strTemp.Format("NG, nCarrierFAIDefect:%d, nTotalCntCarrier:%d, nSlotNo:%d,sNGCode:%s,%s", gCap.nCarrierFAIDefect[i][nSlotNo],gCap.nTotalCntCarrier[nSlotNo],nSlotNo, sNGCode, gCap.sFAICode[i]);
 					g_objLogFile.Save_TestLog(strTemp);
 				}
 			}		
@@ -287,33 +283,23 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 	}
 }
 
-void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType, int& nCurrentMzIdx)
+void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
 {
-	if(nSlotNo <= 8 && nSlotNo > 0)  nCurrentMzIdx = 0;
-	else if(nSlotNo > 8 && nSlotNo <= 16) nCurrentMzIdx = 1;
-	else if(nSlotNo > 16 && nSlotNo <= 24) nCurrentMzIdx = 2;
-	else if(nSlotNo > 24 && nSlotNo <= 30) nCurrentMzIdx = 3;
-
 	CString strLog; 
-	strLog.Format("nSlotNo: %d  CurrentMZ index:%d", nSlotNo, nCurrentMzIdx);
+	strLog.Format("nSlotNo: %d  CurrentMZ index:%d", nSlotNo);
 	g_objLogFile.Save_TestLog(strLog);
 	
 	if(sType == "GOOD")
 	{
-		/*gCap.nTotalGood[nCurrentMzIdx] += gCap.nGoodCnt[nSlotNo];
-		gCap.nTotalCntMZ[nCurrentMzIdx] += gCap.nGoodCnt[nSlotNo];	*/	
-	}
+		gCap.nGoodInMZ[gCap.nOcapMzIndex] += gCap.nCarrierGood[nSlotNo];		
+	}		
 	else if(sType == "NG")
 	{
-		/*for(int i = 0; i < 50; i++)
+		for(int i = 0; i < 50; i++)
 		{
-		gCap.nTotalFAIDefect[i][nCurrentMzIdx] += gCap.nFAIDefectCnt[i][nSlotNo];
-		gCap.nTotalCosmeticDefect[i][nCurrentMzIdx] += gCap.nCosmeticDefectCnt[i][nSlotNo];
-
-		gCap.nTotalCntMZ[nCurrentMzIdx] += gCap.nTotalFAIDefect[i][nCurrentMzIdx];
-		gCap.nTotalCntMZ[nCurrentMzIdx] += gCap.nTotalCosmeticDefect[i][nCurrentMzIdx];	
-		}*/
-		
+			gCap.nFAIDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierFAIDefect[i][nSlotNo];
+			gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierCosmeticDefect[i][nSlotNo];				
+		}		
 	}
 
 }
@@ -324,29 +310,36 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 	
 	if(sType == "NG") return;
 
+
+	gCap.nTotalCntMZ[gCap.nOcapMzIndex] += gCap.nGoodInMZ[gCap.nOcapMzIndex]; 
+
+	for(int i = 0; i < 50; i++)
+	{
+		gCap.nTotalCntMZ[gCap.nOcapMzIndex] += gCap.nFAIDefectMZ[i][gCap.nOcapMzIndex];
+	}
+	for(int i = 0; i < 50; i++)
+	{
+		gCap.nTotalCntMZ[gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+	}
+
 	//Cosmetic check 
 	for(int i = 0; i < 50; i++)
 	{
-		dPer = (gCap.nTotalCosmeticDefect[i][gCap.nCVMZIndex[0]] * 100.0) / gCap.nTotalCntMZ[gCap.nCVMZIndex[0]];
+		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
 		if (dPer < gCap.dDefectPercent[0]) continue;
 
 		gCap.sAlmMZID = sMZid;
 		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
 		gCap.dAlmDefectPercent  = dPer;
-		gCap.nAlmNGCount   = gCap.nCosmeticDefectCnt[i][gCap.nCVMZIndex[1]];
-
+		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		
 		g_objCommon.Show_Error(9181);
+
+		
 	}
-	
-	//gCap.sAlmOCAP.Format("Magazine: %s, NG Code: %s, Percent:%lf, Count:%d", sMZid, gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.nAlmNGCount);
 
 	
-
-	//FAI Check 	
-	/*gCap.sAlmMZID = sMZid;
-	gCap.sAlmDefectName.Format("%s", gCap.sFAIName[0]);
-	gCap.dAlmDefectPercent  = dPer;
-	gCap.nAlmNGCount   = gCap.nTotalDefect[gCap.nCurrentMZIdx];*/
+	
 	
 	
 	

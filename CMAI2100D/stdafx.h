@@ -416,19 +416,25 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
-	int nCosmeticDefectCnt[50][30]; //50가지 NG, 30개의 Slot 
-	int nFAIDefectCnt[50][30];
-	int nTotalCntCarrier[30];
-	int nGoodCnt[30];
-
+	
 	//매거진 인덱스 정보 전달 : 캐리어 --> 트랜스퍼 피커 --> 컨베이어 
 	//0:Good . 1: NG
 	int nCarrierMZIndex[2];
 	int nTransferMZIndex[2];
 	int nCVMZIndex[2];
-	int nTotalCosmeticDefect[50][4];
-	int nTotalFAIDefect[50][4];
-	int nTotalGood[4];
+
+
+	int nOcapMzIndex;
+	int nOcapCarrierIndex;
+
+	int nCarrierCosmeticDefect[50][28];
+	int nCarrierFAIDefect[50][28];
+	int nCarrierGood[28];
+	int nTotalCntCarrier[28]; // 동시에 돌수 있는 MZ 수는 최대 4개 
+	
+	int nCosmeticDefectMZ[50][4];
+	int nFAIDefectMZ[50][4];
+	int nGoodInMZ[4];
 	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
 
 	double dLimitPercent[10];

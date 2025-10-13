@@ -357,7 +357,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
-		gCap.nGoodCnt[nPortNo -1]++;
+		//gCap.nCarrierGood[nPortNo -1]++;
 		
 		strLog.Format("INSPECT,COMPLETE,GOOD,Empty");
 		g_objLogFile.Save_TestLog(strLog);
@@ -372,7 +372,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				if(sNGCode == gCap.sFAICode[i])
 				{
-					gCap.nFAIDefectCnt[i][nPortNo -1]++;
+					//gCap.nCarrierFAIDefect[i][nPortNo -1]++;
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sFAICode[i]);
 					g_objLogFile.Save_TestLog(strLog);
 				}
@@ -384,7 +384,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				if(sNGCode == gCap.sCosmeticCode[i])
 				{
-					gCap.nCosmeticDefectCnt[i][nPortNo -1]++;
+					//gCap.nCarrierCosmeticDefect[i][nPortNo -1]++;
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sCosmeticCode[i]);
 					g_objLogFile.Save_TestLog(strLog);
 				}
