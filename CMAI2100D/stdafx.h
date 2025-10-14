@@ -267,6 +267,9 @@ typedef struct
 
 	int		nSimMzCntLoaded;
 
+	int		nPosXFull[10];
+	int		nPosYFull[10];
+
 } GLOVAL_DATA;
 
 typedef struct {
@@ -510,7 +513,7 @@ typedef struct {
 	CString		sModuleID[30][40];			//Port[30],Module[40], Barcode
 	CString		sHaimNGCd[30][40];			//Port[30],Module[40], HaimNG_Code
 	CString		sCosmeticNG[30][40];		//Port[30],Module[40], Cosmetic_Judge(NG)
-	int			nTrayOX[3][2];				//1:Exist
+	int			nTrayOX[3][2];				//0:Load, 1:NG, 2:Good,     1:Exist, Stage에 Tray가 있는지 여부 
 	CString		sBackData[30][2];
 	int			nBackCnt[30];
 } GLOVAL_NGCODE;

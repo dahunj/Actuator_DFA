@@ -484,104 +484,104 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 		
 	}
 
-	//Cosmetic Case 2 Check 
-	for(int i = 0; i < 50; i++)
-	{
-		if(gCap.bOCAPDone) break;
+	////Cosmetic Case 2 Check 
+	//for(int i = 0; i < 50; i++)
+	//{
+	//	if(gCap.bOCAPDone) break;
 
-		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+	//	dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
 
-		if (dPer < gCap.dDefectPercent[1])
-		{
-			if(i == 49) gCap.nConsecutiveMZCount[1] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
-			continue;			
-		}
+	//	if (dPer < gCap.dDefectPercent[1])
+	//	{
+	//		if(i == 49) gCap.nConsecutiveMZCount[1] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
+	//		continue;			
+	//	}
 
-		gCap.nConsecutiveMZCount[1]++; //알람 발생시 연속 발생 매거진 횟수 증가 
-		if(gCap.nConsecutiveMZCount[1] < gCap.nConsecutiveMZLimit[1]) continue;
+	//	gCap.nConsecutiveMZCount[1]++; //알람 발생시 연속 발생 매거진 횟수 증가 
+	//	if(gCap.nConsecutiveMZCount[1] < gCap.nConsecutiveMZLimit[1]) continue;
 
-		gCap.sAlmMZID = sMZid;
-		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent  = dPer;
-		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+	//	gCap.sAlmMZID = sMZid;
+	//	gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
+	//	gCap.dAlmDefectPercent  = dPer;
+	//	gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 
-		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
-		else gCap.nMZCycle++;
+	//	if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
+	//	else gCap.nMZCycle++;
 
-		SYSTEMTIME time;
-		GetLocalTime(&time);
+	//	SYSTEMTIME time;
+	//	GetLocalTime(&time);
 
-		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+	//	m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+	//	gCap.sDate[gCap.nMZCycle-1] = m_strLog;
 
-		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+	//	m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+	//	gCap.sTime[gCap.nMZCycle-1] = m_strLog;
 
-		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
-		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+	//	gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
+	//	gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+	//	gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+	//	gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 
-		Display_Status();
+	//	Display_Status();
 
-		g_objCommon.Show_Error(9182);
+	//	g_objCommon.Show_Error(9182);
 
-		//후처리 
-		if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
-		else gCap.nOcapMzIndex++;
-		break;
+	//	//후처리 
+	//	if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
+	//	else gCap.nOcapMzIndex++;
+	//	break;
 
-	}
+	//}
 
-	
-	//Cosmetic Case 3 Check 
-	for(int i = 0; i < 50; i++)
-	{
-		if(gCap.bOCAPDone) break;
+	//
+	////Cosmetic Case 3 Check 
+	//for(int i = 0; i < 50; i++)
+	//{
+	//	if(gCap.bOCAPDone) break;
 
-		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+	//	dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
 
-		if (dPer < gCap.dDefectPercent[2])
-		{
-			if(i == 49) gCap.nConsecutiveMZCount[2] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
-			continue;			
-		}
+	//	if (dPer < gCap.dDefectPercent[2])
+	//	{
+	//		if(i == 49) gCap.nConsecutiveMZCount[2] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
+	//		continue;			
+	//	}
 
-		gCap.nConsecutiveMZCount[2]++; //알람 발생시 연속 발생 매거진 횟수 증가 
-		if(gCap.nConsecutiveMZCount[2] < gCap.nConsecutiveMZLimit[2]) continue;
+	//	gCap.nConsecutiveMZCount[2]++; //알람 발생시 연속 발생 매거진 횟수 증가 
+	//	if(gCap.nConsecutiveMZCount[2] < gCap.nConsecutiveMZLimit[2]) continue;
 
-		gCap.sAlmMZID = sMZid;
-		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent  = dPer;
-		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+	//	gCap.sAlmMZID = sMZid;
+	//	gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
+	//	gCap.dAlmDefectPercent  = dPer;
+	//	gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 
-		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
-		else gCap.nMZCycle++;
+	//	if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
+	//	else gCap.nMZCycle++;
 
-		SYSTEMTIME time;
-		GetLocalTime(&time);
+	//	SYSTEMTIME time;
+	//	GetLocalTime(&time);
 
-		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+	//	m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+	//	gCap.sDate[gCap.nMZCycle-1] = m_strLog;
 
-		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+	//	m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+	//	gCap.sTime[gCap.nMZCycle-1] = m_strLog;
 
-		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
-		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+	//	gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
+	//	gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+	//	gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+	//	gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 
-		Display_Status();
+	//	Display_Status();
 
-		g_objCommon.Show_Error(9183);
+	//	g_objCommon.Show_Error(9183);
 
-		//후처리 
-		if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
-		else gCap.nOcapMzIndex++;
-		break;
+	//	//후처리 
+	//	if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
+	//	else gCap.nOcapMzIndex++;
+	//	break;
 
-	}
+	//}
 	
 	gCap.bOCAPDone = FALSE;
 	

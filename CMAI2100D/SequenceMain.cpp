@@ -1927,6 +1927,19 @@ BOOL CSequenceMain::Select_NGTrayPoketNo(int nType, int &nPosX, int &nPosY)
 	return FALSE;
 }
 
+void CSequenceMain::Search_NGFullPoint(int nType, int &nPosX, int &nPosY)
+{
+	int tempX, tempY, tempType;
+	for(int i = 0; i < 10; i++)
+	{
+		for(int j = 0; j < 4; j++ )
+		{
+			tempType = m_pEquipData->nTrayBase[i][j];
+		}
+	}
+	
+}
+
 int CSequenceMain::Check_GoodExist(int nPNo, int &nPosX, int &nPosY)
 {
 	for(int i=0; i<8; i++) {
@@ -13863,7 +13876,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 			if (sCaInLotID.GetLength() < 2) { sCaInLotID = gData.sLastLotID; nMZLastCar = gData.nMZLastCar; }
 			g_objMesAgent.Set_CarrierInMGZ("N", sCaInLotID, gLot.sMZID_NG[nPNo], gLot.sCarID_NG[nPNo], gLot.nSlotNo_NG[nPNo]);
 
-			g_dlgOCAP.AddCarToMZ(nPNo,"NG");
+			//g_dlgOCAP.AddCarToMZ(nPNo,"NG");
 
 			m_nNGMZElevatorCase = 10; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 
