@@ -432,12 +432,12 @@ typedef struct {
 	int nCarrierCosmeticDefect[50][28];
 	int nCarrierFAIDefect[50][28];
 	int nCarrierGood[28];
-	int nTotalCntCarrier[28]; // 동시에 돌수 있는 MZ 수는 최대 4개 
+	int nTotalCntCarrier[28]; //  
 	
-	int nCosmeticDefectMZ[50][4];
-	int nFAIDefectMZ[50][4];
-	int nGoodInMZ[4];
-	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
+	int nCosmeticDefectMZ[50][50]; //50가지 종류의 불량, 50개의 매거진 루프 
+	int nFAIDefectMZ[50][50];
+	int nGoodInMZ[50];
+	int nTotalCntMZ[50]; // 동시에 돌수 있는 MZ 수는 최대 4개, 하지만 50개로 바꿈 
 
 	double dLimitPercent[10];
 
@@ -466,6 +466,9 @@ typedef struct {
 	int			nTotCount[50];		//투입-Module수
 	int			nGoodCount[50];		//양품수
 	int			nConsmeticNGCount[50];
+
+
+	BOOL		bOCAPDone;	//우선순위에 의해 OCAP 발생
 	
 } GLOVAL_OCAP;
 
@@ -483,11 +486,11 @@ typedef struct {
 
 	CString sMZID_Transfer2[10][4];
 
-	CString sMZID_GoodMZElev[8][10][4];
-	CString sMZID_NGMZElev[8][10][4];
+	CString sMZID_GoodMZElev[28][10][4];
+	CString sMZID_NGMZElev[28][10][4];
 
-	CString sMZID_GoodMZ[8][10][4];
-	CString sMZID_NGMZ[8][10][4];
+	CString sMZID_GoodMZ[28][10][4];
+	CString sMZID_NGMZ[28][10][4];
 
 	CString sMZID_GOODCV;
 	CString sMZID_NGCV;

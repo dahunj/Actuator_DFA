@@ -53,6 +53,7 @@ public:
 	
 	
 	void DelMZData(int nMZNo);
+	afx_msg void OnBnClickedBtnTest();
 };
 
 extern OCAPProcess g_dlgOCAP;

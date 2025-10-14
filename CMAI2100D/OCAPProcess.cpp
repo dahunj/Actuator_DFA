@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(OCAPProcess, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &OCAPProcess::OnBnClickedCancel)
 	ON_BN_CLICKED(IDOK,		&OCAPProcess::OnBnClickedOk)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_VALUE_0, IDC_STC_OCAP_VALUE_8, OnStcOptionClick)
+	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPProcess::OnBnClickedBtnTest)
 END_MESSAGE_MAP()
 
 
@@ -220,12 +221,11 @@ void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 			}
 		}		
 	}
-
 	
 	for (int i=0; i < nRows; i++)
 	{
 		pGrid->Set_RowHeight(i, lCellH);
-		for (int j=7; j<15; j++) 
+		for (int j=7; j<22; j++) 
 		{
 			if(i==0) 
 			{
@@ -291,12 +291,12 @@ void OCAPProcess::Display_Status()
 		nD++;
 		Display_Grid(nD, i);
 	}
-	for(int i=49; i>=0; i--) {
-		if (gCap.sDate[i].GetLength() < 1) break;
-		nD++;
-		Display_Grid(nD, i);
-		if (nD >= 51) return;
-	}
+	/*for(int i=49; i>=0; i--) {
+	if (gCap.sDate[i].GetLength() < 1) break;
+	nD++;
+	Display_Grid(nD, i);
+	if (nD >= 51) return;
+	}*/
 }
 
 void OCAPProcess::Display_Grid(int nDp, int nIx)
@@ -333,6 +333,13 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 6, str);
 
+	for(int i = 7; i < 22; i++)
+	{
+		str.Format(_T("%d"), gCap.nCosmeticDefectMZ[i-7][nIx]); 
+		m_grdData.Set_CellFont(nDp, i, str, 10, FALSE);
+		m_grdData.Set_CellText(nDp, i, str);
+	}
+	
 
 	
 	
@@ -429,7 +436,7 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 	}
 
 		
-	//Cosmetic check 
+	//Cosmetic case 1 check 
 	for(int i = 0; i < 50; i++)
 	{
 		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
@@ -442,14 +449,12 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 
 		gCap.nConsecutiveMZCount[0]++; //알람 발생시 연속 발생 매거진 횟수 증가 
 		if(gCap.nConsecutiveMZCount[0] < gCap.nConsecutiveMZLimit[0]) continue;
-
-
+		
 		gCap.sAlmMZID = sMZid;
 		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
 		gCap.dAlmDefectPercent  = dPer;
 		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
-		
-		
+				
 		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
 		else gCap.nMZCycle++;
 
@@ -470,14 +475,115 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 		Display_Status();
 
 		g_objCommon.Show_Error(9181);
+		gCap.bOCAPDone = TRUE;
+
+		//후처리 
+		if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
+		else gCap.nOcapMzIndex++;
 		break;
 		
 	}
 
+	//Cosmetic Case 2 Check 
+	for(int i = 0; i < 50; i++)
+	{
+		if(gCap.bOCAPDone) break;
+
+		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+
+		if (dPer < gCap.dDefectPercent[1])
+		{
+			if(i == 49) gCap.nConsecutiveMZCount[1] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
+			continue;			
+		}
+
+		gCap.nConsecutiveMZCount[1]++; //알람 발생시 연속 발생 매거진 횟수 증가 
+		if(gCap.nConsecutiveMZCount[1] < gCap.nConsecutiveMZLimit[1]) continue;
+
+		gCap.sAlmMZID = sMZid;
+		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
+		gCap.dAlmDefectPercent  = dPer;
+		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+
+		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
+		else gCap.nMZCycle++;
+
+		SYSTEMTIME time;
+		GetLocalTime(&time);
+
+		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+
+		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+
+		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
+		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+
+		Display_Status();
+
+		g_objCommon.Show_Error(9182);
+
+		//후처리 
+		if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
+		else gCap.nOcapMzIndex++;
+		break;
+
+	}
+
 	
+	//Cosmetic Case 3 Check 
+	for(int i = 0; i < 50; i++)
+	{
+		if(gCap.bOCAPDone) break;
+
+		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+
+		if (dPer < gCap.dDefectPercent[2])
+		{
+			if(i == 49) gCap.nConsecutiveMZCount[2] = 0;// 알람 없이 넘어가면 연속 발생 매거진 횟수 초기화 
+			continue;			
+		}
+
+		gCap.nConsecutiveMZCount[2]++; //알람 발생시 연속 발생 매거진 횟수 증가 
+		if(gCap.nConsecutiveMZCount[2] < gCap.nConsecutiveMZLimit[2]) continue;
+
+		gCap.sAlmMZID = sMZid;
+		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
+		gCap.dAlmDefectPercent  = dPer;
+		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+
+		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
+		else gCap.nMZCycle++;
+
+		SYSTEMTIME time;
+		GetLocalTime(&time);
+
+		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+
+		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+
+		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
+		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+
+		Display_Status();
+
+		g_objCommon.Show_Error(9183);
+
+		//후처리 
+		if(gCap.nOcapMzIndex == 49) gCap.nOcapMzIndex = 0;
+		else gCap.nOcapMzIndex++;
+		break;
+
+	}
 	
-	
-	
+	gCap.bOCAPDone = FALSE;
 	
 
 }
@@ -508,4 +614,32 @@ void OCAPProcess::Check_DEFECT(CString sMZID)
 
 void OCAPProcess::Check_DEFECTF(int nNo)
 {
+}
+
+
+void OCAPProcess::OnBnClickedBtnTest()
+{
+
+	gCap.nMZCycle = 4;
+	gCap.sDate[0] = "1/1";	
+	gCap.sDate[1] = "1/1";	
+	gCap.sDate[2] = "1/1";	
+	gCap.sDate[3] = "1/1";	
+
+
+	gCap.sTime[0] = "01:01";			
+	gCap.sMZID[0] = "AAAAAAAAAA";			
+	gCap.nTotCount[0] = 320;		
+	gCap.nGoodCount[0] = 2;		
+	gCap.nConsmeticNGCount[0] = 150;
+
+	gCap.nCosmeticDefectMZ[0][0] = 15;
+	gCap.nCosmeticDefectMZ[0][1] = 16;
+	gCap.nCosmeticDefectMZ[0][2] = 17;
+	gCap.nCosmeticDefectMZ[0][3] = 18;
+
+
+	Display_Status();
+
+	
 }

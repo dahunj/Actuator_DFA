@@ -410,7 +410,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (pEquipData->bUseTop2   && gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][5] < 2) return;
 
 	if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] > 1) {
-		strLog.Format("[Get_InspectComplete] Inspection Complete Allready Error => LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Bar(%s) Judge(%d) NC(%s)", sLotID, sPortNo, sTrayNo, nCMNo, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]);	g_objLogFile.Save_HandlerLog(strLog);
+		strLog.Format("[Get_InspectComplete] Inspection Complete Already Error => LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Bar(%s) Judge(%d) NC(%s)", sLotID, sPortNo, sTrayNo, nCMNo, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]);	g_objLogFile.Save_HandlerLog(strLog);
 		return;
 	}
 

@@ -621,10 +621,10 @@ void CSequenceMain::Set_ClearRunData(int nType)
 
 	if(nType == 0 )
 	{		
-		memset(gCap.nFAIDefectMZ, 0,sizeof(int)*50*4);
-		memset(gCap.nCosmeticDefectMZ, 0,sizeof(int)*50*4);
-		memset(gCap.nGoodInMZ, 0,sizeof(int)*4);
-		memset(gCap.nTotalCntMZ, 0,sizeof(int)*4);
+		memset(gCap.nFAIDefectMZ, 0,sizeof(int)*50*50);
+		memset(gCap.nCosmeticDefectMZ, 0,sizeof(int)*50*50);
+		memset(gCap.nGoodInMZ, 0,sizeof(int)*50);
+		memset(gCap.nTotalCntMZ, 0,sizeof(int)*50);
 		
 		gCap.nOcapMzIndex = 0;;
 		gCap.nOcapCarrierIndex = 0;;
@@ -15193,6 +15193,11 @@ BOOL CSequenceMain::Run_Simulation()
 			if (gData.nSimCount == 1 || gData.nSimCount == 5) { nS =  8; nE = 16; }
 			if (gData.nSimCount == 2 || gData.nSimCount == 6) { nS = 16; nE = 24; }
 			if (gData.nSimCount == 3 || gData.nSimCount == 7) { nS = 24; nE = 32; }
+			if (gData.nSimCount > 7) 
+			{
+				gData.nSimCount = 0;
+				nS =  0; nE =  8;
+			}
 			nX = 0;
 			for(int i=nS; i<nE; i++) {
 				if (gLot.nCmCount[i] > 0) gLot.nCarrierExist[0][nX] = 1;
