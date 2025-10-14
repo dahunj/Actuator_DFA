@@ -417,6 +417,8 @@ typedef struct {
 
 typedef struct {
 	
+	
+
 	//매거진 인덱스 정보 전달 : 캐리어 --> 트랜스퍼 피커 --> 컨베이어 
 	//0:Good . 1: NG
 	int nCarrierMZIndex[2];
@@ -446,15 +448,24 @@ typedef struct {
 	CString		sCosmeticCode[50];
 
 	double		dDefectPercent[4];		// 설정된 불량율%
-	int			nConsecutiveMZCnt[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
+	int			nConsecutiveMZLimit[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
 	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
-	
+	int			nConsecutiveMZCount[4];
 	CString		sAlmOCAP;
 	CString		sAlmMZID;
 	CString		sAlmDefectName;
 	double		dAlmDefectPercent;
 	int			nAlmNGCount;
+	
 
+	//display
+	int			nMZCycle;
+	CString		sDate[50];			//날자(07/31)
+	CString		sTime[50];			//시간(07:31)
+	CString		sMZID[50];			//양품MZ
+	int			nTotCount[50];		//투입-Module수
+	int			nGoodCount[50];		//양품수
+	int			nConsmeticNGCount[50];
 	
 } GLOVAL_OCAP;
 

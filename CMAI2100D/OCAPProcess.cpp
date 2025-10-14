@@ -1,4 +1,4 @@
-// OCAPProcess.cpp : ±∏«ˆ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+Ôªø// OCAPProcess.cpp : Íµ¨ÌòÑ ÌååÏùºÏûÖÎãàÎã§.
 //
 
 #include "stdafx.h"
@@ -10,7 +10,7 @@
 #include "afxdialogex.h"
 
 
-// OCAPProcess ¥Î»≠ ªÛ¿⁄¿‘¥œ¥Ÿ.
+// OCAPProcess ÎåÄÌôî ÏÉÅÏûêÏûÖÎãàÎã§.
 OCAPProcess g_dlgOCAP;
 
 IMPLEMENT_DYNAMIC(OCAPProcess, CDialogEx)
@@ -47,12 +47,12 @@ BOOL OCAPProcess::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  ø©±‚ø° √ﬂ∞° √ ±‚»≠ ¿€æ˜¿ª √ﬂ∞°«’¥œ¥Ÿ.
+	// TODO:  Ïó¨Í∏∞Ïóê Ï∂îÍ∞Ä Ï¥àÍ∏∞Ìôî ÏûëÏóÖÏùÑ Ï∂îÍ∞ÄÌï©ÎãàÎã§.
 	SetWindowPos(this, 0, 75, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 	Initial_Controls();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// øπø‹: OCX º”º∫ ∆‰¿Ã¡ˆ¥¬ FALSE∏¶ π›»Ø«ÿæﬂ «’¥œ¥Ÿ.
+	// ÏòàÏô∏: OCX ÏÜçÏÑ± ÌéòÏù¥ÏßÄÎäî FALSEÎ•º Î∞òÌôòÌï¥Ïïº Ìï©ÎãàÎã§.
 }
 
 BOOL OCAPProcess::PreTranslateMessage(MSG* pMsg) 
@@ -75,7 +75,7 @@ void OCAPProcess::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
-// OCAPProcess ∏ﬁΩ√¡ˆ √≥∏Æ±‚¿‘¥œ¥Ÿ.
+// OCAPProcess Î©îÏãúÏßÄ Ï≤òÎ¶¨Í∏∞ÏûÖÎãàÎã§.
 
 void OCAPProcess::OnBnClickedCancel()
 {
@@ -95,15 +95,15 @@ void OCAPProcess::OnBnClickedOk()
 		return;
 	}
 
-	m_stcOption[0].GetWindowText(strData); nData1 = atoi(strData); INI.Set_Integer("OPTION", "MZ_COUNT_01", nData1);
-	m_stcOption[1].GetWindowText(strData); dData1 = atof(strData); INI.Set_Double("OPTION", "DEFECTP_01", dData1, "%0.3lf");
-	m_stcOption[3].GetWindowText(strData); nData2 = atoi(strData); INI.Set_Integer("OPTION", "MZ_COUNT_02", nData2);
-	m_stcOption[4].GetWindowText(strData); dData2 = atof(strData); INI.Set_Double("OPTION", "DEFECTP_02", dData2, "%0.3lf");
-	m_stcOption[5].GetWindowText(strData); nData3 = atoi(strData); INI.Set_Integer("OPTION", "MZ_COUNT_03", nData3);
-	m_stcOption[6].GetWindowText(strData); dData3 = atof(strData); INI.Set_Double("OPTION", "DEFECTP_03", dData3, "%0.3lf");
-	m_stcOption[7].GetWindowText(strData); nData4 = atoi(strData); INI.Set_Integer("OPTION", "MZ_COUNT_04", nData4);
-	m_stcOption[8].GetWindowText(strData); dData4 = atof(strData); INI.Set_Double("OPTION", "DEFECTP_04", dData4, "%0.3lf");
-	m_stcOption[2].GetWindowText(strData); nData5 = atoi(strData); INI.Set_Integer("OPTION", "MZ_MIN_COUNT", nData5);
+	m_stcOption[0].GetWindowText(strData); nData1 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_01", nData1);
+	m_stcOption[1].GetWindowText(strData); dData1 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_01", dData1, "%0.3lf");
+	m_stcOption[3].GetWindowText(strData); nData2 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_02", nData2);
+	m_stcOption[4].GetWindowText(strData); dData2 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_02", dData2, "%0.3lf");
+	m_stcOption[5].GetWindowText(strData); nData3 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_03", nData3);
+	m_stcOption[6].GetWindowText(strData); dData3 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_03", dData3, "%0.3lf");
+	m_stcOption[7].GetWindowText(strData); nData4 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_04", nData4);
+	m_stcOption[8].GetWindowText(strData); dData4 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_04", dData4, "%0.3lf");
+	m_stcOption[2].GetWindowText(strData); nData5 = atoi(strData); INI.Set_Integer("OPTION", "MODULE_MIN_PER_MZ", nData5);
 
 	strLog.Format("[OCAP Option] OnBnClickedOk - Data1(%d,%0.3lf) Data2(%d,%0.3lf) Data3(%d,%0.3lf)  Data4(%d,%0.3lf) Skip(%d)", nData1, dData1, nData2, dData2, nData3, dData3, nData4, dData4, nData5);
 	g_objLogFile.Save_HandlerLog(strLog);
@@ -115,18 +115,76 @@ void OCAPProcess::OnBnClickedOk()
 
 void OCAPProcess::Initial_Controls() 
 {
-	for (int i = 0; i < 2; i++) m_Group[i].Init_Ctrl("πŸ≈¡", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
-	for (int i = 0; i < 6; i++) m_Label[i].Init_Ctrl("πŸ≈¡", 12, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80));
-	m_Label[0].Init_Ctrl("πŸ≈¡", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	m_Label[4].Init_Ctrl("πŸ≈¡", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	m_Label[5].Init_Ctrl("πŸ≈¡", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	m_Label[6].Init_Ctrl("πŸ≈¡", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	for (int i = 0; i < 9; i++) m_stcOption[i].Init_Ctrl("πŸ≈¡", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
+	for (int i = 0; i < 2; i++) m_Group[i].Init_Ctrl("Î∞îÌÉï", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
+	for (int i = 0; i < 6; i++) m_Label[i].Init_Ctrl("Î∞îÌÉï", 12, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80));
+	m_Label[0].Init_Ctrl("Î∞îÌÉï", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
+	m_Label[4].Init_Ctrl("Î∞îÌÉï", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
+	m_Label[5].Init_Ctrl("Î∞îÌÉï", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
+	m_Label[6].Init_Ctrl("Î∞îÌÉï", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
+	for (int i = 0; i < 9; i++) m_stcOption[i].Init_Ctrl("Î∞îÌÉï", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
+	
 }
 
 void OCAPProcess::Display_Option()
 {
 	CString strData;
+	strData.Format("%d", gCap.nConsecutiveMZLimit[0]);	m_stcOption[0].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[0]);	m_stcOption[1].SetWindowText(strData);
+	strData.Format("%d", gCap.nConsecutiveMZLimit[1]);	m_stcOption[3].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[1]);	m_stcOption[4].SetWindowText(strData);
+	strData.Format("%d", gCap.nConsecutiveMZLimit[2]);	m_stcOption[5].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[2]);	m_stcOption[6].SetWindowText(strData);
+	strData.Format("%d", gCap.nConsecutiveMZLimit[3]);	m_stcOption[7].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[3]);	m_stcOption[8].SetWindowText(strData);
+	strData.Format("%d", gCap.nMinModuleCnt);			m_stcOption[2].SetWindowText(strData);
+
+	//CIniFileCS INI(gsCurrentDir + "\\System\\OCAPData.ini");
+	//if (!INI.Check_File()) {
+	//	AfxMessageBox("OCAPData.ini File Not Found!");
+	//	return;
+	//}
+
+	//int		nData1, nData2, nData3, nData4, nData5;
+	//double	dData1, dData2, dData3, dData4;
+	//CString strData, strLog;
+
+	//nData1 = INI.Get_Integer("OPTION", "MZ_COUNT_01", 1); 
+	//strData.Format("%d", nData1);
+	//m_stcOption[0].SetWindowText(strData);
+
+	//nData2 = INI.Get_Integer("OPTION", "MZ_COUNT_02", 1);
+	//strData.Format("%d", nData2);
+	//m_stcOption[3].SetWindowText(strData);
+
+	//nData3 = INI.Get_Integer("OPTION", "MZ_COUNT_03", 1);
+	//strData.Format("%d", nData3);
+	//m_stcOption[5].SetWindowText(strData); 
+
+	//nData4 = INI.Get_Integer("OPTION", "MZ_COUNT_04", 3);
+	//strData.Format("%d", nData4);
+	//m_stcOption[7].SetWindowText(strData); 
+
+
+
+	//dData1 =INI.Get_Double("OPTION", "DEFECT_PERCENT_01", 3);
+	//strData.Format("%0.3lf", dData1);
+	//m_stcOption[1].SetWindowText(strData);
+
+	//dData2 =INI.Get_Double("OPTION", "DEFECT_PERCENT_02", 3);
+	//strData.Format("%0.3lf", dData2);
+	//m_stcOption[4].SetWindowText(strData);
+
+	//dData3 =INI.Get_Double("OPTION", "DEFECT_PERCENT_03", 9);
+	//strData.Format("%0.3lf", dData3);
+	//m_stcOption[6].SetWindowText(strData);
+
+	//dData4 =INI.Get_Double("OPTION", "DEFECT_PERCENT_04", 3);
+	//strData.Format("%0.3lf", dData4);
+	//m_stcOption[8].SetWindowText(strData);	 
+
+	//nData5 = INI.Get_Integer("OPTION", "MODULE_MIN_PER_MZ", 150);
+	//strData.Format("%d", nData5);
+	//m_stcOption[2].SetWindowText(strData); 
 	
 }
 
@@ -146,51 +204,38 @@ void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 	long lTotalH = pGrid->Get_GridHeight();
 	long lCellW = lTotalW / nCols;
 	long lCellH = (lTotalH / nRows) + 2;
-	long  lWidth[16]= { 60,    60,      100,          60,     60,      60,    50,   50,    50,    50,    50,    50,    50,     50,    50,     50};
-	CString sTxt[16]= {"≥Ø¬•","Ω√∞£","πË√‚πË∞≈¡¯ID", "≈ı¿‘", "øœ∞¯", "æÁ«∞", "OCAP NG", "RR", "ƒ°∏Ì", "BCR", "MES", "MC", "ƒ°ºˆ", "7FAI", "Tilt", "Gap"};
+	long  lWidth[7]= { 140,   140,      140,          60,     60,      60,    100  };
+	CString sTxt[7]= {"ÎÇ†Ïßú","ÏãúÍ∞Ñ","Î∞∞Ï∂úÎß§Í±∞ÏßÑID", "Ìà¨ÏûÖ", "ÏôÑÍ≥µ", "ÏñëÌíà", "OCAP NG"};
 	long  lWidthName[2]= { 40, 50 };
 
 	for (int i=0; i<nRows; i++)
 	{
 		pGrid->Set_RowHeight(i, lCellH);
-		for (int j=0; j<16; j++) 
+		for (int j=0; j<7; j++) 
 		{
 			if(i==0) 
 			{
 				pGrid->Set_ColWidth(j, lWidth[j]); pGrid->Set_CellText(i, j, sTxt[j]);
 				pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
 			}
-		}
-
-		int nW = 0, nName=0; 
-		for (int j=16; j<56; j++) 
-		{
-			if(i==0) 
-			{
-				pGrid->Set_ColWidth(j, lWidthName[nW]);
-				if (nW == 0) pGrid->Set_CellText(i, j, "FAI");
-				else		 pGrid->Set_CellText(i, j, gCap.sFAIName[nName]);
-				nW++; if (nW == 2) { nW = 0; nName++; }
-				if (j>=16 && j<=29) pGrid->Set_CellBackClr(i, j, RGB(0xFF, 0xFF, 0xCC));
-				if (j>=30 && j<=45) pGrid->Set_CellBackClr(i, j, RGB(0x99, 0xFF, 0x99));
-				if (j>=46 && j<=55) pGrid->Set_CellBackClr(i, j, RGB(0x33, 0xFF, 0x33));
-			}
-		}
-		nW = 0; nName=0; 
-		for (int j=56; j<96; j++)
-		{
-			if(i==0) 
-			{
-				pGrid->Set_ColWidth(j, lWidthName[nW]);
-				if (nW == 0) pGrid->Set_CellText(i, j, "ERR");
-				else		 pGrid->Set_CellText(i, j, gCap.sFAIName[nName]);
-				nW++; if (nW == 2) { nW = 0; nName++; }
-				if (j>=56 && j<=69) pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
-				if (j>=70 && j<=85) pGrid->Set_CellBackClr(i, j, RGB(0x99, 0x99, 0x99));
-				if (j>=86 && j<=95) pGrid->Set_CellBackClr(i, j, RGB(0x66, 0x66, 0x66));
-			}
-		}
+		}		
 	}
+
+	
+	for (int i=0; i < nRows; i++)
+	{
+		pGrid->Set_RowHeight(i, lCellH);
+		for (int j=7; j<15; j++) 
+		{
+			if(i==0) 
+			{
+				pGrid->Set_ColWidth(j, 160); pGrid->Set_CellText(i, j, gCap.sCosmeticCode[j-7]);
+				pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
+			}
+		}		
+	}
+
+
 }
 
 void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
@@ -225,10 +270,71 @@ void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 
 void OCAPProcess::Display_Status()
 {
+	
+	//gCap.nMZCycle = 1;
+	//gCap.sDate[0] = "1/1";			//¬≥¬Ø√Ä√ö(07/31)
+	//gCap.sTime[0] = "01:01";			//¬Ω√É¬∞¬£(07:31)
+	//gCap.sMZID[0] = "AAAAAAAAAA";			//¬æ√ß√á¬∞MZ
+	//gCap.nTotCount[0] = 320;		//√Ö√µ√Ä√î-Module¬º√∂
+	//gCap.nGoodCount[0] = 2;		//¬æ√ß√á¬∞¬º√∂
+	//gCap.nConsmeticNGCount[0] = 150;
+	//
+
+
+	if (gCap.nMZCycle < 0 || gCap.nMZCycle > 49) return;
+
+	int nD = 0;
+	int nS = gCap.nMZCycle - 1;
+	if (nS < 0) nS = 49;
+	for(int i=nS; i>=0; i--) {
+		if (gCap.sDate[i].GetLength() < 1) break;
+		nD++;
+		Display_Grid(nD, i);
+	}
+	for(int i=49; i>=0; i--) {
+		if (gCap.sDate[i].GetLength() < 1) break;
+		nD++;
+		Display_Grid(nD, i);
+		if (nD >= 51) return;
+	}
 }
 
 void OCAPProcess::Display_Grid(int nDp, int nIx)
 {
+	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
+	CString str;
+
+	str.Format(_T("%s"), gCap.sDate[nIx]);
+	m_grdData.Set_CellFont(nDp, 0, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 0, str);
+
+	str.Format(_T("%s"), gCap.sTime[nIx]);
+	m_grdData.Set_CellFont(nDp, 1, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 1, str);
+
+	str.Format(_T("%s"), gCap.sMZID[nIx]);
+	m_grdData.Set_CellFont(nDp, 2, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 2, str);
+
+	str.Format(_T("%d"), gCap.nTotCount[nIx]);
+	m_grdData.Set_CellFont(nDp, 3, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 3, str);
+
+	//	str.Format(_T("%d"), gCap.nGoodCount[nIx] + gCap.nROSNGCount[nIx] + gCap.nROSRfCount[nIx]);
+	str.Format(_T("%d"), gCap.nGoodCount[nIx]+ gCap.nConsmeticNGCount[nIx]);
+	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 4, str);
+
+	str.Format(_T("%d"), gCap.nGoodCount[nIx]);
+	m_grdData.Set_CellFont(nDp, 5, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 5, str);
+
+	str.Format(_T("%d"), gCap.nConsmeticNGCount[nIx]);
+	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 6, str);
+
+
+	
 	
 }
 
@@ -322,19 +428,49 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 		gCap.nTotalCntMZ[gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 	}
 
+		
 	//Cosmetic check 
 	for(int i = 0; i < 50; i++)
 	{
 		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		if (dPer < gCap.dDefectPercent[0]) continue;
+		
+		if (dPer < gCap.dDefectPercent[0])
+		{
+			if(i == 49) gCap.nConsecutiveMZCount[0] = 0;// ÏïåÎûå ÏóÜÏù¥ ÎÑòÏñ¥Í∞ÄÎ©¥ Ïó∞ÏÜç Î∞úÏÉù Îß§Í±∞ÏßÑ ÌöüÏàò Ï¥àÍ∏∞Ìôî 
+			continue;			
+		}
+
+		gCap.nConsecutiveMZCount[0]++; //ÏïåÎûå Î∞úÏÉùÏãú Ïó∞ÏÜç Î∞úÏÉù Îß§Í±∞ÏßÑ ÌöüÏàò Ï¶ùÍ∞Ä 
+		if(gCap.nConsecutiveMZCount[0] < gCap.nConsecutiveMZLimit[0]) continue;
+
 
 		gCap.sAlmMZID = sMZid;
 		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
 		gCap.dAlmDefectPercent  = dPer;
 		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 		
-		g_objCommon.Show_Error(9181);
+		
+		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
+		else gCap.nMZCycle++;
 
+		SYSTEMTIME time;
+		GetLocalTime(&time);
+
+		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+
+		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+
+		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
+		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+
+		Display_Status();
+
+		g_objCommon.Show_Error(9181);
+		break;
 		
 	}
 

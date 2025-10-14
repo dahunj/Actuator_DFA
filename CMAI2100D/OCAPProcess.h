@@ -17,6 +17,8 @@ public:
 	CStaticCS		m_stcOption[9];
 	CGridCS			m_grdData;
 
+	CString			m_strLog;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 

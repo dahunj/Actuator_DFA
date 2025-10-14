@@ -755,7 +755,7 @@ BOOL CDataManager::Read_OCAPData()
 		strKey.Format("DEFECT_PERCENT_%02d", i + 1);
 		gCap.dDefectPercent[i] = INI.Get_Double("OPTION", strKey, 0.0);
 		strKey.Format("CONS_MZ_COUNT_%02d", i + 1);
-		gCap.nConsecutiveMZCnt[i]  = INI.Get_Integer("OPTION", strKey, 0);
+		gCap.nConsecutiveMZLimit[i]  = INI.Get_Integer("OPTION", strKey, 0);
 	}
 	gCap.nMinModuleCnt	= INI.Get_Integer("OPTION", "MODULE_MIN_PER_MZ", 0);
 
