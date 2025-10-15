@@ -399,26 +399,33 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
 {
 	CString strLog; 
-	strLog.Format("nSlotNo: %d  CurrentMZ index:%d", nSlotNo);
-	g_objLogFile.Save_TestLog(strLog);
+
 	
 	if(sType == "GOOD")
 	{
-		gCap.nGoodInMZ[gCap.nOcapMzIndex] += gCap.nCarrierGood[nSlotNo];		
+		gCap.nGoodInMZ[gCap.nOcapMzIndex] += gCap.nCarrierGood[nSlotNo];
+		strLog.Format("AddCarToMZ,gCap.nGoodInMZ:%d, nSlotNo: %d  CurrentMZ index:%d", gCap.nGoodInMZ[gCap.nOcapMzIndex],nSlotNo, gCap.nOcapMzIndex);
+		g_objLogFile.Save_TestLog(strLog);
+
 	}		
 	else if(sType == "NG")
 	{
 		for(int i = 0; i < 50; i++)
 		{
 			gCap.nFAIDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierFAIDefect[i][nSlotNo];
-			gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierCosmeticDefect[i][nSlotNo];				
-		}		
+			gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierCosmeticDefect[i][nSlotNo];
+			
+			strLog.Format("AddCarToMZ,gCap.nCosmeticDefectMZ:%d,nSlotNo:%d,nOcapMzIndex:%d", gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex],nSlotNo,gCap.nOcapMzIndex);
+			g_objLogFile.Save_TestLog(strLog);
+		}	
+		
 	}
 
 }
 
 void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 {
+	CString strLog; 
 	double dPer = 0;
 	
 	if(sType == "NG") return;
@@ -433,8 +440,12 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 	for(int i = 0; i < 50; i++)
 	{
 		gCap.nTotalCntMZ[gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		strLog.Format("AddMZOut,nCosmeticDefectMZ:%d,nOcapMzIndex:%d", gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex],gCap.nOcapMzIndex);
+		//if(gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] != 0) 
+		g_objLogFile.Save_TestLog(strLog);
 	}
-
+	strLog.Format("AddMZOut,nTotalCntMZ:%d,nGoodInMZ:%d,nOcapMzIndex:%d", gCap.nTotalCntMZ[gCap.nOcapMzIndex], gCap.nGoodInMZ[gCap.nOcapMzIndex], gCap.nOcapMzIndex);
+	g_objLogFile.Save_TestLog(strLog);
 		
 	//Cosmetic case 1 check 
 	for(int i = 0; i < 50; i++)
