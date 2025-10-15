@@ -321,9 +321,7 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	m_grdData.Set_CellText(nDp, 3, str);
 
 	//	str.Format(_T("%d"), gCap.nGoodCount[nIx] + gCap.nROSNGCount[nIx] + gCap.nROSRfCount[nIx]);
-	str.Format(_T("%d"), gCap.nGoodCount[nIx]+ gCap.nConsmeticNGCount[nIx]);
-	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
-	m_grdData.Set_CellText(nDp, 4, str);
+	
 
 	str.Format(_T("%d"), gCap.nGoodCount[nIx]);
 	m_grdData.Set_CellFont(nDp, 5, str, 10, FALSE);
@@ -333,13 +331,19 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 6, str);
 
+	int temp = 0;
 	for(int i = 7; i < 22; i++)
 	{
+		temp += gCap.nCosmeticDefectMZ[i-7][nIx];
 		str.Format(_T("%d"), gCap.nCosmeticDefectMZ[i-7][nIx]); 
 		m_grdData.Set_CellFont(nDp, i, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, i, str);
 	}
-	
+
+
+	str.Format(_T("%d"), gCap.nGoodCount[nIx]+ temp);
+	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 4, str);
 
 	
 	
@@ -485,7 +489,7 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 
 		Display_Status();
 
-		g_objCommon.Show_Error(9181);
+		if(gCap.nTotalCntMZ[gCap.nOcapMzIndex] > gCap.nMinModuleCnt ) g_objCommon.Show_Error(9181);
 		gCap.bOCAPDone = TRUE;
 
 		//후처리 
