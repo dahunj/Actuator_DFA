@@ -420,14 +420,11 @@ typedef struct {
 
 typedef struct {
 	
-	
-
 	//매거진 인덱스 정보 전달 : 캐리어 --> 트랜스퍼 피커 --> 컨베이어 
 	//0:Good . 1: NG
 	int nCarrierMZIndex[2];
 	int nTransferMZIndex[2];
 	int nCVMZIndex[2];
-
 
 	int nOcapMzIndex;
 	int nOcapCarrierIndex;
@@ -438,9 +435,13 @@ typedef struct {
 	int nTotalCntCarrier[28]; //  
 	
 	int nCosmeticDefectMZ[50][50]; //50가지 종류의 불량, 50개의 매거진 루프 
+	int nCosmeticDefectTotal;
+
 	int nFAIDefectMZ[50][50];
+
 	int nGoodInMZ[50];
 	int nTotalCntMZ[50]; // 동시에 돌수 있는 MZ 수는 최대 4개, 하지만 50개로 바꿈 
+
 
 	double dLimitPercent[10];
 
@@ -449,11 +450,18 @@ typedef struct {
 	
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
+	int			nCosmeticCount;		// 외관 에러 항목 개수 
 
 	double		dDefectPercent[4];		// 설정된 불량율%
 	int			nConsecutiveMZLimit[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
 	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
-	int			nConsecutiveMZCount[4];
+	int			nConsecutiveMZCount[4][50];
+	int			nConsecutiveModuleCnt[4][50];
+	int			nConsecutiveGoodCnt[4][50];
+	int			nConsecutiveNGCnt[4][50];
+	int			nCosmeticCodeNum[4];
+	
+
 	CString		sAlmOCAP;
 	CString		sAlmMZID;
 	CString		sAlmDefectName;
@@ -471,8 +479,8 @@ typedef struct {
 	int			nConsmeticNGCount[50];
 
 
-	BOOL		bOCAPDone;	//우선순위에 의해 OCAP 발생
-	
+	BOOL		bOCAPDone[3]; // 3가지 조건 
+	BOOL		bErrorShowDone;
 } GLOVAL_OCAP;
 
 typedef struct {

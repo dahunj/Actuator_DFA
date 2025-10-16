@@ -632,7 +632,12 @@ void CSequenceMain::Set_ClearRunData(int nType)
 		memset(gCap.nCarrierCosmeticDefect, 0,sizeof(int)*50*28);
 		memset(gCap.nCarrierFAIDefect, 0,sizeof(int)*50*28);
 		memset(gCap.nCarrierGood, 0,sizeof(int)*28);
-		memset(gCap.nTotalCntCarrier, 0,sizeof(int)*28);	
+		memset(gCap.nTotalCntCarrier, 0,sizeof(int)*28);
+
+		gCap.bErrorShowDone = FALSE;
+		gCap.bOCAPDone[0] = FALSE;
+		gCap.bOCAPDone[1] = FALSE;
+		gCap.bOCAPDone[2] = FALSE;
 	}
 
 	
@@ -10544,7 +10549,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 			if (Check_GooodTrayFull()) 
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
+				//g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -11163,7 +11168,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 		{
 			if (Check_GooodTrayFull())
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
+				//g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
 
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
@@ -13879,7 +13884,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 					m_sLog.Format("NG Elev To NG MZ, No:%d x:%d Y:%d - MZ ID:%s",nMZNo2-1, x, y , gTracking.sMZID_NGMZ[nMZNo2-1][y][x]);
 					if(gTracking.sMZID_NGMZ[nMZNo2-1][y][x] != "")
 					{
-						// 매거진 ID는 섞이지 않는다 장비에 1개의 매거진만 돌기 때문에, 1개 매거진이 다 돌아야 그다음 매거진이 구동됨 
+						 
 						gTracking.sMZID_NGCV = gTracking.sMZID_NGMZ[nMZNo2-1][y][x]; 
 						g_objLogFile.Save_HomeTrackingLog(m_sLog);
 					}
@@ -13951,10 +13956,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		{
 //			if (Check_MZCarrierExit(2) > 0) m_nNGMZElevatorCase = 50;
 //			else							m_nNGMZElevatorCase = 0;
-
-			//g_dlgOCAP.AddMZOut();
-
-
+			
 			m_nNGMZElevatorCase = 50; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 			if (m_nNGMZElevatorCase == 50)
 			{
@@ -14273,7 +14275,10 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			for(int i=7; i>=0; i--) {
 				if (Check_LotEndLast(m_sGdMZInLot[i]) == FALSE) nFound++;
 			}
-			if (nFound == 0) m_nNGMZElevatorCase = 40;
+			if (nFound == 0) 
+			{	
+				m_nNGMZElevatorCase = 40;				
+			}
 		}
 		m_tGDMZElevatorLoop.Set_LoopTime(5000);
 			

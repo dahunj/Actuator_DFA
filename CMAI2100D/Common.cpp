@@ -536,15 +536,29 @@ BOOL CCommon::Check_MoveData(int nAxis, int nMoveIdx, CString sData)
 	AfxMessageBox(sTxt);
 	return FALSE;
 }
-void CCommon::Show_Error(int nErrNo)
+void CCommon::Show_Error(int nErrNo, int nType)
 {
-	g_csShowError.Lock();
-	if (gData.bAlarmShow == FALSE) {
-		if (!g_dlgError.IsWindowVisible() && !g_dlgAlarm.IsWindowVisible()) {
-			Show_ErrorT(nErrNo);
+	if(nType == 1)
+	{
+		if (!g_dlgError.IsWindowVisible() && !g_dlgAlarm.IsWindowVisible()) 
+		{
+			g_dlgError.Set_ErrorNumber(nErrNo);
+			g_dlgError.ShowWindow(SW_SHOW);
 		}
+
 	}
-	g_csShowError.Unlock();
+	else{
+		g_csShowError.Lock();
+		if (gData.bAlarmShow == FALSE) {
+			if (!g_dlgError.IsWindowVisible() && !g_dlgAlarm.IsWindowVisible()) {
+				Show_ErrorT(nErrNo);
+			}
+		}
+		g_csShowError.Unlock();
+	}
+
+
+	
 /*
 	if (!g_dlgError.IsWindowVisible() && !g_dlgAlarm.IsWindowVisible()) {
 		g_dlgError.Set_ErrorNumber(nErrNo);

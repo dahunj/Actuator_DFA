@@ -203,9 +203,9 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 		
 		
 		if (m_nErrNo == 9181) strErrPick.Format(" #==> [%s] 불양률이 [%0.1lf%%] 발생했습니다. (설정: %0.1lf%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요.# [%s]",
-														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[0], gCap.nConsecutiveMZCount[0], gCap.sAlmMZID);
+														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[0], gCap.nConsecutiveMZCount[0][gCap.nCosmeticCodeNum[0]-1], gCap.sAlmMZID);
 		if (m_nErrNo == 9182) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
-														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[0], gCap.nConsecutiveMZCount[1], gCap.sAlmMZID);
+														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[1], gCap.nConsecutiveMZCount[1][gCap.nCosmeticCodeNum[1]-1], gCap.sAlmMZID);
 	/*	if (m_nErrNo == 9183) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
 														gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[2], gCap.nGiMZCnt[2], gAlm.sAlmLotID[0]);
 		if (m_nErrNo == 9184) strErrPick.Format(" #==> [%s] 측정 Error [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      설비 문제여부를 확인해야 합니다.#      [%s]",
@@ -301,6 +301,8 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
  		g_objInspector.Set_StatusUpdate(INSPECTOR_ALL, 4);
 		g_objDispatcher.Set_StatusUpdate(2);	// 0:Stop, 1:Run, 2:Error
+
+		gCap.bErrorShowDone = TRUE;
 		SetTimer(0, 100, NULL);
 		
 	} else {

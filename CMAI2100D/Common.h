@@ -89,7 +89,7 @@ public:
 	void Move_Position(int nAxis, int nMoveIdx, double dSpeed = 1.0);
 	void Move_Override(int nAxis, int nMoveIdx, double dAt);
 
-	void Show_Error(int nErrNo);
+	void Show_Error(int nErrNo, int nType = 0);
 	void Show_ErrorT(int nErrNo);
 	void Set_ErrorSubMessage(CString sErrSubMsg);
 	void Show_Alarm(CString sMsg, int nFm=0);	//nFm=1:Host
