@@ -89,8 +89,8 @@ void OCAPCosmeticDlg::OnBnClickedCancel()
 
 void OCAPCosmeticDlg::OnBnClickedOk()
 {
-	int		nData1, nData2, nData3, nData4, nData5;
-	double	dData1, dData2, dData3, dData4;
+	int		nData1, nData2, nData3, nData5;
+	double	dData1, dData2, dData3;
 	CString strData, strLog;
 
 	CIniFileCS INI(gsCurrentDir + "\\System\\OCAPData.ini");
@@ -109,7 +109,7 @@ void OCAPCosmeticDlg::OnBnClickedOk()
 		
 	m_stcMinCount.GetWindowText(strData); nData5 = atoi(strData); INI.Set_Integer("OPTION", "MODULE_MIN_PER_MZ", nData5);
 
-	strLog.Format("[OCAP Option] OnBnClickedOk - Data1(%d,%0.3lf) Data2(%d,%0.3lf) Data3(%d,%0.3lf)  Data4(%d,%0.3lf) Skip(%d)", nData1, dData1, nData2, dData2, nData3, dData3, nData4, dData4, nData5);
+	strLog.Format("[OCAP Option] OnBnClickedOk - Data1(%d,%0.3lf) Data2(%d,%0.3lf) Data3(%d,%0.3lf)   Skip(%d)", nData1, dData1, nData2, dData2, nData3, dData3, nData5);
 	g_objLogFile.Save_HandlerLog(strLog);
 
 	g_objDataManager.Read_OCAPData();
@@ -410,13 +410,13 @@ void OCAPCosmeticDlg::Display_Status()
 	//
 
 
-	if (gCap.nMZCycle < 0 || gCap.nMZCycle > 49) return;
+	if (gCap.nMZCycle_Cosmetic < 0 || gCap.nMZCycle_Cosmetic > 49) return;
 
 	int nD = 0;
-	int nS = gCap.nMZCycle - 1;
+	int nS = gCap.nMZCycle_Cosmetic - 1;
 	if (nS < 0) nS = 49;
 	for(int i=nS; i>=0; i--) {
-		if (gCap.sDate[i].GetLength() < 1) break;
+		if (gCap.sDate_Cosmetic[i].GetLength() < 1) break;
 		nD++;
 		Display_Grid(nD, i);
 	}
@@ -433,30 +433,30 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
 
-	str.Format(_T("%s"), gCap.sDate[nIx]);
+	str.Format(_T("%s"), gCap.sDate_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 0, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 0, str);
 
-	str.Format(_T("%s"), gCap.sTime[nIx]);
+	str.Format(_T("%s"), gCap.sTime_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 1, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 1, str);
 
-	str.Format(_T("%s"), gCap.sMZID[nIx]);
+	str.Format(_T("%s"), gCap.sMZID_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 2, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 2, str);
 
-	str.Format(_T("%d"), gCap.nTotCount[nIx]);
+	str.Format(_T("%d"), gCap.nTotCount_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 3, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 3, str);
 
 	//	str.Format(_T("%d"), gCap.nGoodCount[nIx] + gCap.nROSNGCount[nIx] + gCap.nROSRfCount[nIx]);
 	
 
-	str.Format(_T("%d"), gCap.nGoodCount[nIx]);
+	str.Format(_T("%d"), gCap.nGoodCount_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 5, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 5, str);
 
-	str.Format(_T("%d"), gCap.nConsmeticNGCount[nIx]);
+	str.Format(_T("%d"), gCap.nNGCount_Consmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 6, str);
 
@@ -469,7 +469,7 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		m_grdData.Set_CellText(nDp, i, str);
 	}
 	
-	str.Format(_T("%d"), gCap.nGoodCount[nIx]+ temp);
+	str.Format(_T("%d"), gCap.nGoodCount_Cosmetic[nIx]+ temp);
 	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 4, str);
 
@@ -593,27 +593,27 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZid, CString sType)
 			gCap.nConsecutiveMZCount[0][i]++; 
 		}
 		
-		gCap.sAlmMZID = sMZid;
-		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent  = dPer;
-		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		gCap.sAlmMZID_Cosmetic = sMZid;
+		gCap.sAlmDefectName_Cosmetic.Format("%s", gCap.sCosmeticName[i]);
+		gCap.dAlmDefectPercent_Cosmetic  = dPer;
+		gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 				
-		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
-		else gCap.nMZCycle++;
+		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
+		else gCap.nMZCycle_Cosmetic++;
 
 		SYSTEMTIME time;
 		GetLocalTime(&time);
 
 		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+		gCap.sDate_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
 
 		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+		gCap.sTime_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
 
-		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
-		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZid;
+		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 		gCap.nCosmeticCodeNum[0] = i+1;
 
 		Display_Status();		
@@ -673,27 +673,27 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZid, CString sType)
 			gCap.nConsecutiveMZCount[1][i]++; 
 		}
 		
-		gCap.sAlmMZID = sMZid;
-		gCap.sAlmDefectName.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent  = dPer;
-		gCap.nAlmNGCount   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		gCap.sAlmMZID_Cosmetic = sMZid;
+		gCap.sAlmDefectName_Cosmetic.Format("%s", gCap.sCosmeticName[i]);
+		gCap.dAlmDefectPercent_Cosmetic  = dPer;
+		gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 
-		if(gCap.nMZCycle == 50)  gCap.nMZCycle = 1;
-		else gCap.nMZCycle++;
+		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
+		else gCap.nMZCycle_Cosmetic++;
 
 		SYSTEMTIME time;
 		GetLocalTime(&time);
 
 		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate[gCap.nMZCycle-1] = m_strLog;
+		gCap.sDate_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
 
 		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime[gCap.nMZCycle-1] = m_strLog;
+		gCap.sTime_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
 
-		gCap.sMZID[gCap.nMZCycle - 1] = sMZid;
-		gCap.nTotCount[gCap.nMZCycle - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount[gCap.nMZCycle - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nConsmeticNGCount[gCap.nMZCycle - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
+		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZid;
+		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
+		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
 		gCap.nCosmeticCodeNum[1] = i+1;
 	
 
@@ -814,18 +814,18 @@ void OCAPCosmeticDlg::Check_DEFECTF(int nNo)
 void OCAPCosmeticDlg::OnBnClickedBtnTest()
 {
 
-	gCap.nMZCycle = 4;
-	gCap.sDate[0] = "1/1";	
-	gCap.sDate[1] = "1/1";	
-	gCap.sDate[2] = "1/1";	
-	gCap.sDate[3] = "1/1";	
+	gCap.nMZCycle_Cosmetic = 4;
+	gCap.sDate_Cosmetic[0] = "1/1";	
+	gCap.sDate_Cosmetic[1] = "1/1";	
+	gCap.sDate_Cosmetic[2] = "1/1";	
+	gCap.sDate_Cosmetic[3] = "1/1";	
 
 
-	gCap.sTime[0] = "01:01";			
-	gCap.sMZID[0] = "AAAAAAAAAA";			
-	gCap.nTotCount[0] = 320;		
-	gCap.nGoodCount[0] = 2;		
-	gCap.nConsmeticNGCount[0] = 150;
+	gCap.sTime_Cosmetic[0] = "01:01";			
+	gCap.sMZID_Cosmetic[0] = "AAAAAAAAAA";			
+	gCap.nTotCount_Cosmetic[0] = 320;		
+	gCap.nGoodCount_Cosmetic[0] = 2;		
+	gCap.nNGCount_Consmetic[0] = 150;
 
 	gCap.nCosmeticDefectMZ[0][0] = 15;
 	gCap.nCosmeticDefectMZ[0][1] = 16;
