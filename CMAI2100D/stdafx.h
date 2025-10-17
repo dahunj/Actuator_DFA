@@ -429,19 +429,29 @@ typedef struct {
 	int nOcapMzIndex;
 	int nOcapCarrierIndex;
 
+	int nLotIndex_NG;
+	int nLotIndex_Good;
+
 	int nCarrierCosmeticDefect[50][28];
 	int nCarrierFAIDefect[50][28];
 	int nCarrierGood[28];
 	int nTotalCntCarrier[28]; //  
 	
-	int nCosmeticDefectMZ[50][50]; //50가지 종류의 불량, 50개의 매거진 루프 
+	int nCosmeticDefectMZ[50][50][8]; //50가지 종류의 불량,  50개의 매거진 루프, 매거진 당 8개 랏 
 	int nCosmeticDefectTotal;
 
-	int nFAIDefectMZ[50][50];
 
-	int nGoodInMZ[50];
-	int nTotalCntMZ[50]; // 동시에 돌수 있는 MZ 수는 최대 4개, 하지만 50개로 바꿈 
+
+
+	int nGoodInMZ[50][8]; // 매거진당 8개 랏 
 	
+
+	int nTotalCnt_MZ[50];
+	int nGoodCnt_MZ[50];
+	int nNGCnt_MZ[50];
+	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
+
+
 	double dLimitPercent[10];
 	
 	CString		sCosmeticName[50];

@@ -31,7 +31,7 @@ void OCAPCosmeticDlg::DoDataExchange(CDataExchange* pDX)
 	for (int i = 0; i < 2; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
 	for (int i = 0; i < 7; i++) DDX_Control(pDX, IDC_LABEL_0 + i, m_Label[i]);
 	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_OCAP_CONS_MZ_0 + i, m_stcConsMZ[i]);
-	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_OCAP_NG_PERCENT_0 + i, m_stcConsMZ[i]);
+	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_OCAP_NG_PERCENT_0 + i, m_stcPercent[i]);
 	DDX_Control(pDX, IDC_STC_OCAP_MIN_COUNT, m_stcMinCount);
 	DDX_Control(pDX, IDC_GRD_OCAP_DATA, m_grdData);
 }
@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(OCAPCosmeticDlg, CDialogEx)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_CONS_MZ_0, IDC_STC_OCAP_CONS_MZ_2, OnStcConstMagazineClick)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_NG_PERCENT_0, IDC_STC_OCAP_NG_PERCENT_2, OnStcNGPercentClick)
 	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPCosmeticDlg::OnBnClickedBtnTest)
+	ON_STN_CLICKED(IDC_STC_OCAP_MIN_COUNT, &OCAPCosmeticDlg::OnStnClickedStcOcapMinCount)
 END_MESSAGE_MAP()
 
 
@@ -194,7 +195,7 @@ void OCAPCosmeticDlg::Display_Option()
 
 void OCAPCosmeticDlg::OnStcConstMagazineClick(UINT nID)
 {
-	int nIndex = nID - IDC_STC_OCAP_VALUE_0;
+	int nIndex = nID - IDC_STC_OCAP_CONS_MZ_0;
 
 	CString strOld, strNew, strTemp;
 	m_stcConsMZ[nIndex].GetWindowText(strOld);
@@ -247,44 +248,7 @@ void OCAPCosmeticDlg::OnStcConstMagazineClick(UINT nID)
 		}
 		m_stcConsMZ[nIndex].SetWindowText(strNew);
 	}
-	//else if(nIndex == 2) // 매거진당 모듈 최소 수량 
-	//{
-	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
-
-	//	int nLen = strNew.GetLength();
-	//	if (nLen < 1) return;
-	//	m_stcOption[nIndex].SetWindowText(strNew);
-	//}
-	//
-	//else if(nIndex == 1) //조건 1, 불량율 
-	//{
-	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-	//	m_stcOption[nIndex].SetWindowText(strNew);
-	//}
-	//else if(nIndex == 4) //조건 2, 불량율 
-	//{
-	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-	//	m_stcOption[nIndex].SetWindowText(strNew);
-	//}
-	//
-	//else if(nIndex == 6) //조건 3, 불량율 
-	//{
-	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-	//	m_stcOption[nIndex].SetWindowText(strNew);
-	//}
-	//else if(nIndex == 7)
-	//{
-
-	//}
-	//else if(nIndex == 8)
-	//{
-
-	//}
-
 }
-
-
-
 
 void OCAPCosmeticDlg::OnStcNGPercentClick(UINT nID)
 {
@@ -292,9 +256,7 @@ void OCAPCosmeticDlg::OnStcNGPercentClick(UINT nID)
 
 	CString strOld, strNew, strTemp;
 	m_stcConsMZ[nIndex].GetWindowText(strOld);
-
-	
-	
+		
 	if(nIndex == 0) //조건 1, 불량율 
 	{
 		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
@@ -311,15 +273,20 @@ void OCAPCosmeticDlg::OnStcNGPercentClick(UINT nID)
 		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
 		m_stcPercent[nIndex].SetWindowText(strNew);
 	}
+}
 
-	if(nIndex == 0) // 매거진당 모듈 최소 수량 
-	{
-		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
+void OCAPCosmeticDlg::OnStnClickedStcOcapMinCount()
+{
+	// 매거진당 모듈 최소 수량 
+	CString strOld, strNew;
 
-		int nLen = strNew.GetLength();
-		if (nLen < 1) return;
-		m_stcPercent[nIndex].SetWindowText(strNew);
-	}
+	m_stcMinCount.GetWindowText(strOld);
+
+	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
+
+	int nLen = strNew.GetLength();
+	if (nLen < 1) return;
+	m_stcMinCount.SetWindowText(strNew);
 
 }
 
@@ -463,8 +430,8 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 	int temp = 0;
 	for(int i = 7; i < (7 + gCap.nCosmeticCount); i++)
 	{
-		temp += gCap.nCosmeticDefectMZ[i-7][nIx];
-		str.Format(_T("%d"), gCap.nCosmeticDefectMZ[i-7][nIx]); 
+		temp += gCap.nCosmeticCnt_MZ[i-7][nIx];
+		str.Format(_T("%d"), gCap.nCosmeticCnt_MZ[i-7][nIx]); 
 		m_grdData.Set_CellFont(nDp, i, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, i, str);
 	}
@@ -535,192 +502,35 @@ void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, CString sType)
 	
 	if(sType == "GOOD")
 	{
-		gCap.nGoodInMZ[gCap.nOcapMzIndex] += gCap.nCarrierGood[nSlotNo];
-		strLog.Format("AddCarToMZ,gCap.nGoodInMZ:%d, nSlotNo: %d  CurrentMZ index:%d", gCap.nGoodInMZ[gCap.nOcapMzIndex],nSlotNo, gCap.nOcapMzIndex);
+		gCap.nGoodInMZ[gCap.nOcapMzIndex][gCap.nLotIndex_Good] += gCap.nCarrierGood[nSlotNo];
+		strLog.Format("AddCarToMZ,gCap.nGoodInMZ:%d, nSlotNo: %d", gCap.nGoodInMZ[gCap.nLotIndex_Good],nSlotNo);
 		g_objLogFile.Save_TestLog(strLog);
 
+		gCap.nLotIndex_Good++;
 	}		
 	else if(sType == "NG")
 	{
 		for(int i = 0; i < 50; i++)
-		{
-			gCap.nFAIDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierFAIDefect[i][nSlotNo];
-			gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] += gCap.nCarrierCosmeticDefect[i][nSlotNo];
+		{			
+			gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex][gCap.nLotIndex_NG] += gCap.nCarrierCosmeticDefect[i][nSlotNo];
 			
-			strLog.Format("AddCarToMZ,gCap.nCosmeticDefectMZ:%d,nSlotNo:%d,nOcapMzIndex:%d", gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex],nSlotNo,gCap.nOcapMzIndex);
+			strLog.Format("AddCarToMZ,gCap.nCosmeticDefectMZ:%d,nSlotNo:%d", gCap.nCosmeticDefectMZ[i][gCap.nLotIndex_NG],nSlotNo);
 			g_objLogFile.Save_TestLog(strLog);
 		}	
-		
+		gCap.nLotIndex_NG++;
 	}
 
 }
 
-void OCAPCosmeticDlg::AddMZOut(CString sMZid, CString sType)
+void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 {
 	CString strLog; 
 		
 	if(sType == "NG") return;
 	
-	double dPer = 0;
-		
-	//Cosmetic case 1 check 
-	for(int i = 0; i < 50; i++)
-	{
-		int nCntTemp = 0;
-		for(int j = 0; j < 50; j++)
-		{			
-			nCntTemp += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];			
-			g_objLogFile.Save_TestLog(strLog);
-		}
-		gCap.nTotalCntMZ[gCap.nOcapMzIndex] = gCap.nGoodInMZ[gCap.nOcapMzIndex] + nCntTemp;
-
-		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		
-		// 불량율 OCAP 기준보다 낮으면 Continue
-		if (dPer < gCap.dDefectPercent[0])
-		{			
-			continue;			
-		}		
-
-		// 연속 횟수 도달시 알람 발생 
-		if(gCap.nConsecutiveMZCount[0][i] + 1 < gCap.nConsecutiveMZLimit[0])
-		{
-			gCap.nConsecutiveMZCount[0][i]++;
-			continue;
-		}
-		else
-		{
-			gCap.nConsecutiveMZCount[0][i]++; 
-		}
-		
-		gCap.sAlmMZID_Cosmetic = sMZid;
-		gCap.sAlmDefectName_Cosmetic.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent_Cosmetic  = dPer;
-		gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
-				
-		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
-		else gCap.nMZCycle_Cosmetic++;
-
-		SYSTEMTIME time;
-		GetLocalTime(&time);
-
-		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
-
-		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
-
-		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZid;
-		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
-		gCap.nCosmeticCodeNum[0] = i+1;
-
-		Display_Status();		
-
-		if(gCap.nTotalCntMZ[gCap.nOcapMzIndex] > gCap.nMinModuleCnt )
-		{
-			gCap.bErrorShowDone = FALSE;
-			g_objCommon.Show_Error(9181,1);
-		}
-
-		//에러창 쓰레드라서 
-		int nTick = 0;
-		while(!gCap.bErrorShowDone)
-		{
-			nTick++;
-			if(nTick > 50) break;
-		} 
-		gCap.bErrorShowDone = FALSE;
-
-		memset(gCap.nConsecutiveMZCount[0],0,sizeof(int)*50); //에러율 초과 발생시 연속 발생 횟수 초기화 
-		gCap.bOCAPDone[0] = TRUE;
-
-		//후처리 		
-		break;
-		
-	}
-
-	////Cosmetic Case 2 Check 
-	for(int i = 0; i < 50; i++)
-	{
-		//if(gCap.bOCAPDone[0]) break;
-
-		int nCntTemp = 0;
-		for(int j = 0; j < 50; j++)
-		{
-			nCntTemp += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];			
-			g_objLogFile.Save_TestLog(strLog);
-		}
-		gCap.nTotalCntMZ[gCap.nOcapMzIndex] = gCap.nGoodInMZ[gCap.nOcapMzIndex] + nCntTemp;
-
-		dPer = (gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-
-		if (dPer < gCap.dDefectPercent[1])
-		{
-
-			continue;			
-		}
-				
-		// 연속 횟수 도달시 알람 발생 
-		if(gCap.nConsecutiveMZCount[1][i] + 1 < gCap.nConsecutiveMZLimit[1])
-		{
-			gCap.nConsecutiveMZCount[1][i]++;
-			continue;
-		}
-		else
-		{
-			gCap.nConsecutiveMZCount[1][i]++; 
-		}
-		
-		gCap.sAlmMZID_Cosmetic = sMZid;
-		gCap.sAlmDefectName_Cosmetic.Format("%s", gCap.sCosmeticName[i]);
-		gCap.dAlmDefectPercent_Cosmetic  = dPer;
-		gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
-
-		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
-		else gCap.nMZCycle_Cosmetic++;
-
-		SYSTEMTIME time;
-		GetLocalTime(&time);
-
-		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
-		gCap.sDate_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
-
-		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
-		gCap.sTime_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
-
-		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZid;
-		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCntMZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodInMZ[gCap.nOcapMzIndex];
-		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex];
-		gCap.nCosmeticCodeNum[1] = i+1;
-	
-
-		Display_Status();
-
-		if(gCap.nTotalCntMZ[gCap.nOcapMzIndex] > gCap.nMinModuleCnt )
-		{
-			gCap.bErrorShowDone = FALSE;
-			g_objCommon.Show_Error(9182, 1);
-			
-		}
-
-		//에러창 쓰레드라서 
-		int nTick = 0;
-		while(!gCap.bErrorShowDone)
-		{			
-			nTick++;
-			if(nTick > 50) break;
-		} 
-		gCap.bErrorShowDone = FALSE;
-		memset(gCap.nConsecutiveMZCount[1],0,sizeof(int)*50); //에러율 초과 발생시 연속 발생 횟수 초기화 
-		gCap.bOCAPDone[1] = TRUE;
-		
-		//후처리 		
-		break;
-	}
-
+	Check_CosmeticDefect(0, sMZID);
+	Check_CosmeticDefect(1, sMZID);
+	Check_CosmeticDefect(2, sMZID);
 	//
 	////Cosmetic Case 3 Check 
 	//for(int i = 0; i < 50; i++)
@@ -801,9 +611,102 @@ void OCAPCosmeticDlg::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
 	
 }
 
-void OCAPCosmeticDlg::Check_DEFECT(CString sMZID)
+void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 {
-	
+	double dPer = 0;
+
+	//Cosmetic case 1 check 
+	for(int i = 0; i < 50; i++)
+	{
+		if(nType != 0)
+		{
+			if(gCap.bOCAPDone[nType-1] == TRUE) break; // 앞번호 조건이 알람 우선순위 
+		}
+		
+		for(int j = 0; j < 8; j++)
+		{
+			gCap.nGoodCnt_MZ[gCap.nOcapMzIndex] += gCap.nGoodInMZ[gCap.nOcapMzIndex][j];	
+		}	
+		for(int j = 0; j < 50; j++)
+		{	
+			for(int k = 0; k < 8; k++)
+			{
+				gCap.nNGCnt_MZ[gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[j][gCap.nOcapMzIndex][k - 1];	
+			}					
+		}		
+		gCap.nTotalCnt_MZ[gCap.nOcapMzIndex] = gCap.nGoodCnt_MZ[gCap.nOcapMzIndex] + gCap.nNGCnt_MZ[gCap.nOcapMzIndex];
+						
+		for(int j = 0; j < 8; j++)
+		{
+			gCap.nCosmeticCnt_MZ[i][gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex][j];
+		}
+
+		dPer = (gCap.nCosmeticCnt_MZ[i][gCap.nOcapMzIndex] * 100.0) / gCap.nTotalCnt_MZ[gCap.nOcapMzIndex];
+
+		// 불량율 OCAP 기준보다 낮으면 Continue
+		if (dPer < gCap.dDefectPercent[nType])
+		{			
+			continue;			
+		}		
+
+		// 연속 횟수 도달시 알람 발생 
+		if(gCap.nConsecutiveMZCount[nType][i] + 1 < gCap.nConsecutiveMZLimit[nType])
+		{
+			gCap.nConsecutiveMZCount[nType][i]++;
+			continue;
+		}
+		else
+		{
+			gCap.nConsecutiveMZCount[nType][i]++; 
+		}
+
+		gCap.sAlmMZID_Cosmetic = sMZID;
+		gCap.sAlmDefectName_Cosmetic.Format("%s", gCap.sCosmeticName[i]);
+		gCap.dAlmDefectPercent_Cosmetic  = dPer;
+		gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticDefectMZ[i][gCap.nOcapMzIndex][gCap.nLotIndex_Good - 1];
+
+		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
+		else gCap.nMZCycle_Cosmetic++;
+
+		SYSTEMTIME time;
+		GetLocalTime(&time);
+
+		m_strLog.Format("%04d/%02d/%02d", time.wYear, time.wMonth, time.wDay);
+		gCap.sDate_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
+
+		m_strLog.Format("%02d:%02d:%02d.%03d", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
+		gCap.sTime_Cosmetic[gCap.nMZCycle_Cosmetic-1] = m_strLog;
+
+		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZID;
+		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCnt_MZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodCnt_MZ[gCap.nOcapMzIndex];
+		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticCnt_MZ[i][gCap.nOcapMzIndex];
+		gCap.nCosmeticCodeNum[nType] = i+1;
+
+		Display_Status();		
+
+		if(gCap.nTotalCnt_MZ[gCap.nOcapMzIndex] > gCap.nMinModuleCnt )
+		{
+			gCap.bErrorShowDone = FALSE;
+			g_objCommon.Show_Error(9185 + nType, 1);
+		}
+
+		//에러창 쓰레드라서 
+		int nTick = 0;
+		while(!gCap.bErrorShowDone)
+		{
+			nTick++;
+			if(nTick > 50) break;
+		} 
+		gCap.bErrorShowDone = FALSE;
+
+		memset(gCap.nConsecutiveMZCount[nType],0,sizeof(int)*50); //에러율 초과 발생시 연속 발생 횟수 초기화 
+		gCap.bOCAPDone[nType] = TRUE;
+
+		//후처리 		
+		break;
+
+	}
 }
 
 void OCAPCosmeticDlg::Check_DEFECTF(int nNo)
@@ -827,13 +730,15 @@ void OCAPCosmeticDlg::OnBnClickedBtnTest()
 	gCap.nGoodCount_Cosmetic[0] = 2;		
 	gCap.nNGCount_Consmetic[0] = 150;
 
-	gCap.nCosmeticDefectMZ[0][0] = 15;
-	gCap.nCosmeticDefectMZ[0][1] = 16;
-	gCap.nCosmeticDefectMZ[0][2] = 17;
-	gCap.nCosmeticDefectMZ[0][3] = 18;
+	//gCap.nCosmeticDefectMZ[0][0] = 15;
+	//gCap.nCosmeticDefectMZ[0][1] = 16;
+	//gCap.nCosmeticDefectMZ[0][2] = 17;
+	//gCap.nCosmeticDefectMZ[0][3] = 18;
 
 
 	Display_Status();
 
 	
 }
+
+

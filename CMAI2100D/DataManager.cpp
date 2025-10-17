@@ -759,7 +759,7 @@ BOOL CDataManager::Read_OCAPData()
 	}
 	gCap.nMinModuleCnt	= INI.Get_Integer("OPTION", "MODULE_MIN_PER_MZ", 0);
 
-	for (int i = 0; i < 50; i++) 
+	for (int i = 0; i < 20; i++) 
 	{
 		strKey.Format("%02d", i + 1);
 		gCap.sFAIName[i] = INI.Get_String("FAI-NAME", strKey, "");

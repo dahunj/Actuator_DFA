@@ -621,12 +621,17 @@ void CSequenceMain::Set_ClearRunData(int nType)
 	for(int i=0; i< 5; i++) gData.nNG_MC[i][1] = 0;
 
 	if(nType == 0 )
-	{		
-		memset(gCap.nFAIDefectMZ, 0,sizeof(int)*50*50);
-		memset(gCap.nCosmeticDefectMZ, 0,sizeof(int)*50*50);
-		memset(gCap.nGoodInMZ, 0,sizeof(int)*50);
-		memset(gCap.nTotalCntMZ, 0,sizeof(int)*50);
+	{			
+		memset(gCap.nCosmeticDefectMZ, 0,sizeof(int)*50*50*8);
+		memset(gCap.nGoodInMZ, 0,sizeof(int)*50*8);
 		
+		memset(gCap.nTotalCnt_MZ, 0,sizeof(int)*50);
+		memset(gCap.nGoodCnt_MZ, 0,sizeof(int)*50);
+		memset(gCap.nNGCnt_MZ, 0,sizeof(int)*50);
+		
+		gCap.nLotIndex_NG = 0;
+		gCap.nLotIndex_Good = 0;
+
 		gCap.nOcapMzIndex = 0;
 		gCap.nOcapCarrierIndex = 0;
 
