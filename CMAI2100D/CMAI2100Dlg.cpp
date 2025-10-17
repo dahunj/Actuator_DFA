@@ -16,7 +16,7 @@
 #include "SetupDlg.h"
 #include "ProhibitDlg.h"
 #include "MonitorDlg.h"
-#include "OCAPCosmeticProcess.h"
+#include "OCAPCosmeticDlg.h"
 #include "ErrorDlg.h"
 #include "AlarmDlg.h"
 #include "Inspector.h"
@@ -30,6 +30,7 @@
 #include "SequenceInit.h"
 #include "SequenceMain.h"
 #include "NoWorkDlg.h"
+#include "OCAPSelectDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -116,15 +117,14 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	g_objCarrierRFID_NG.Create(NULL, NULL, WS_CHILD, CRect(0,0,0,0), this, 0);
 	g_objMesAgent.Create(NULL, NULL, WS_CHILD, CRect(0,0,0,0), this, 0);
 	g_objDispatcher.Create(NULL, NULL, WS_CHILD, CRect(0,0,0,0), this, 0);
-
+	g_dlgOCAPSelect.Create(COCAPSelectDlg::IDD, this);
 	g_dlgOperator.Create(COperatorDlg::IDD, this);
 	g_dlgInitial.Create(CInitialDlg::IDD, this);
 	g_dlgWork.Create(CWorkDlg::IDD, this);
 	g_dlgManual.Create(CManualDlg::IDD, this);
 	g_dlgSetup.Create(CSetupDlg::IDD, this);
 	g_dlgProhibit.Create(CProhibitDlg::IDD, this);
-	g_dlgMonitor.Create(CMonitorDlg::IDD, this);
-	g_dlgOCAP.Create(OCAPCosmeticProcess::IDD, this);
+	g_dlgMonitor.Create(CMonitorDlg::IDD, this);	
 	g_dlgError.Create(CErrorDlg::IDD, this);
 	g_dlgAlarm.Create(CAlarmDlg::IDD, this);
 	g_dlgNoWork.Create(CNoWorkDlg::IDD, this);
@@ -196,7 +196,7 @@ void CCMAI2100Dlg::OnDestroy()
 	g_dlgAlarm.DestroyWindow();
 	g_dlgError.DestroyWindow();
 	g_dlgMonitor.DestroyWindow();
-	g_dlgOCAP.DestroyWindow();
+	g_dlgOCAPSelect.DestroyWindow();
 	g_dlgProhibit.DestroyWindow();
 	g_dlgSetup.DestroyWindow();
 	g_dlgManual.DestroyWindow();
@@ -410,11 +410,13 @@ void CCMAI2100Dlg::OnBnClickedRdoMainSetup()
 	}
 
 	int nUser = 0;
-	if (g_objCommon.Show_Password(nUser) == IDOK) {
+	if (g_objCommon.Show_Password(nUser) == IDOK)
+	{
 		g_dlgSetup.Set_LoginUser(nUser);
 		Set_CurrentMode(MODE_SETUP);
-
-	} else {
+	}
+	else
+	{
 		if (m_nMainMode == MODE_INITIAL) m_rdoMainInitial.SetCheck(TRUE);
 		if (m_nMainMode == MODE_WORK) m_rdoMainWork.SetCheck(TRUE);
 		if (m_nMainMode == MODE_MANUAL) m_rdoMainManual.SetCheck(TRUE);
@@ -436,8 +438,8 @@ void CCMAI2100Dlg::OnBnClickedBtnMainMonitor()
 
 void CCMAI2100Dlg::OnBnClickedBtnMainOCAP()
 {
-	if (g_dlgOCAP.IsWindowVisible()) g_dlgOCAP.ShowWindow(SW_HIDE);
-	else g_dlgOCAP.ShowWindow(SW_SHOW);	
+	if (g_dlgOCAPSelect.IsWindowVisible()) g_dlgOCAPSelect.ShowWindow(SW_HIDE);
+	else g_dlgOCAPSelect.ShowWindow(SW_SHOW);	
 }
 
 void CCMAI2100Dlg::OnBnClickedBtnMainExit()

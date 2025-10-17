@@ -1,50 +1,53 @@
-﻿// OCAPCosmeticProcess.cpp : 구현 파일입니다.
+﻿// OCAPCosmeticDlg.cpp : 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "CMAI2100.h"
-#include "OCAPCosmeticProcess.h"
+#include "OCAPCosmeticDlg.h"
 #include "Common.h"
 #include "LogFile.h"
 #include "DataManager.h"
 #include "afxdialogex.h"
 
 
-// OCAPCosmeticProcess 대화 상자입니다.
-OCAPCosmeticProcess g_dlgOCAP;
+// OCAPCosmeticDlg 대화 상자입니다.
+OCAPCosmeticDlg g_dlgOCAPCosmetic;
 
-IMPLEMENT_DYNAMIC(OCAPCosmeticProcess, CDialogEx)
+IMPLEMENT_DYNAMIC(OCAPCosmeticDlg, CDialogEx)
 
-OCAPCosmeticProcess::OCAPCosmeticProcess(CWnd* pParent /*=NULL*/)
-	: CDialogEx(OCAPCosmeticProcess::IDD, pParent)
+OCAPCosmeticDlg::OCAPCosmeticDlg(CWnd* pParent /*=NULL*/)
+	: CDialogEx(OCAPCosmeticDlg::IDD, pParent)
 {
 
 }
 
-OCAPCosmeticProcess::~OCAPCosmeticProcess()
+OCAPCosmeticDlg::~OCAPCosmeticDlg()
 {
 }
 
-void OCAPCosmeticProcess::DoDataExchange(CDataExchange* pDX)
+void OCAPCosmeticDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	for (int i = 0; i < 2; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
 	for (int i = 0; i < 7; i++) DDX_Control(pDX, IDC_LABEL_0 + i, m_Label[i]);
-	for (int i = 0; i < 9; i++) DDX_Control(pDX, IDC_STC_OCAP_VALUE_0 + i, m_stcOption[i]);
+	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_OCAP_CONS_MZ_0 + i, m_stcConsMZ[i]);
+	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_OCAP_NG_PERCENT_0 + i, m_stcConsMZ[i]);
+	DDX_Control(pDX, IDC_STC_OCAP_MIN_COUNT, m_stcMinCount);
 	DDX_Control(pDX, IDC_GRD_OCAP_DATA, m_grdData);
 }
 
 
-BEGIN_MESSAGE_MAP(OCAPCosmeticProcess, CDialogEx)
+BEGIN_MESSAGE_MAP(OCAPCosmeticDlg, CDialogEx)
 	ON_WM_SHOWWINDOW()
-	ON_BN_CLICKED(IDCANCEL, &OCAPCosmeticProcess::OnBnClickedCancel)
-	ON_BN_CLICKED(IDOK,		&OCAPCosmeticProcess::OnBnClickedOk)
-	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_VALUE_0, IDC_STC_OCAP_VALUE_8, OnStcOptionClick)
-	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPCosmeticProcess::OnBnClickedBtnTest)
+	ON_BN_CLICKED(IDCANCEL, &OCAPCosmeticDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDOK,		&OCAPCosmeticDlg::OnBnClickedOk)
+	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_CONS_MZ_0, IDC_STC_OCAP_CONS_MZ_2, OnStcConstMagazineClick)
+	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_NG_PERCENT_0, IDC_STC_OCAP_NG_PERCENT_2, OnStcNGPercentClick)
+	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPCosmeticDlg::OnBnClickedBtnTest)
 END_MESSAGE_MAP()
 
 
-BOOL OCAPCosmeticProcess::OnInitDialog() 
+BOOL OCAPCosmeticDlg::OnInitDialog() 
 {
 	CDialogEx::OnInitDialog();
 
@@ -56,7 +59,7 @@ BOOL OCAPCosmeticProcess::OnInitDialog()
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-BOOL OCAPCosmeticProcess::PreTranslateMessage(MSG* pMsg) 
+BOOL OCAPCosmeticDlg::PreTranslateMessage(MSG* pMsg) 
 {
 	if (pMsg->message == WM_KEYDOWN && (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE))
 		return TRUE;
@@ -64,7 +67,7 @@ BOOL OCAPCosmeticProcess::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void OCAPCosmeticProcess::OnShowWindow(BOOL bShow, UINT nStatus) 
+void OCAPCosmeticDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
 {
 	CDialogEx::OnShowWindow(bShow, nStatus);
 
@@ -76,15 +79,15 @@ void OCAPCosmeticProcess::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
-// OCAPCosmeticProcess 메시지 처리기입니다.
+// OCAPCosmeticDlg 메시지 처리기입니다.
 
-void OCAPCosmeticProcess::OnBnClickedCancel()
+void OCAPCosmeticDlg::OnBnClickedCancel()
 {
 	ShowWindow(SW_HIDE);
 }
 
 
-void OCAPCosmeticProcess::OnBnClickedOk()
+void OCAPCosmeticDlg::OnBnClickedOk()
 {
 	int		nData1, nData2, nData3, nData4, nData5;
 	double	dData1, dData2, dData3, dData4;
@@ -96,15 +99,15 @@ void OCAPCosmeticProcess::OnBnClickedOk()
 		return;
 	}
 
-	m_stcOption[0].GetWindowText(strData); nData1 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_01", nData1);
-	m_stcOption[1].GetWindowText(strData); dData1 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_01", dData1, "%0.3lf");
-	m_stcOption[3].GetWindowText(strData); nData2 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_02", nData2);
-	m_stcOption[4].GetWindowText(strData); dData2 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_02", dData2, "%0.3lf");
-	m_stcOption[5].GetWindowText(strData); nData3 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_03", nData3);
-	m_stcOption[6].GetWindowText(strData); dData3 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_03", dData3, "%0.3lf");
-	m_stcOption[7].GetWindowText(strData); nData4 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_04", nData4);
-	m_stcOption[8].GetWindowText(strData); dData4 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_04", dData4, "%0.3lf");
-	m_stcOption[2].GetWindowText(strData); nData5 = atoi(strData); INI.Set_Integer("OPTION", "MODULE_MIN_PER_MZ", nData5);
+	m_stcConsMZ[0].GetWindowText(strData); nData1 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_01", nData1);
+	m_stcConsMZ[1].GetWindowText(strData); nData2 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_02", nData2);
+	m_stcConsMZ[2].GetWindowText(strData); nData3 = atoi(strData); INI.Set_Integer("OPTION", "CONS_MZ_COUNT_03", nData3);
+	
+	m_stcPercent[0].GetWindowText(strData); dData1 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_01", dData1, "%0.3lf");
+	m_stcPercent[1].GetWindowText(strData); dData2 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_02", dData2, "%0.3lf");
+	m_stcPercent[2].GetWindowText(strData); dData3 = atof(strData); INI.Set_Double("OPTION", "DEFECT_PERCENT_03", dData3, "%0.3lf");
+		
+	m_stcMinCount.GetWindowText(strData); nData5 = atoi(strData); INI.Set_Integer("OPTION", "MODULE_MIN_PER_MZ", nData5);
 
 	strLog.Format("[OCAP Option] OnBnClickedOk - Data1(%d,%0.3lf) Data2(%d,%0.3lf) Data3(%d,%0.3lf)  Data4(%d,%0.3lf) Skip(%d)", nData1, dData1, nData2, dData2, nData3, dData3, nData4, dData4, nData5);
 	g_objLogFile.Save_HandlerLog(strLog);
@@ -114,30 +117,32 @@ void OCAPCosmeticProcess::OnBnClickedOk()
 	Display_Status();
 }
 
-void OCAPCosmeticProcess::Initial_Controls() 
+void OCAPCosmeticDlg::Initial_Controls() 
 {
 	for (int i = 0; i < 2; i++) m_Group[i].Init_Ctrl("바탕", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
 	for (int i = 0; i < 6; i++) m_Label[i].Init_Ctrl("바탕", 12, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80));
 	m_Label[0].Init_Ctrl("바탕", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
 	m_Label[4].Init_Ctrl("바탕", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	m_Label[5].Init_Ctrl("바탕", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	m_Label[6].Init_Ctrl("바탕", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));
-	for (int i = 0; i < 9; i++) m_stcOption[i].Init_Ctrl("바탕", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
+	m_Label[5].Init_Ctrl("바탕", 12, TRUE, RGB(0x00, 0x00, 0x00), RGB(0x99, 0x99, 0x00));	
+	
+	for (int i = 0; i < 3; i++) m_stcConsMZ[i].Init_Ctrl("바탕", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
 	
 }
 
-void OCAPCosmeticProcess::Display_Option()
+void OCAPCosmeticDlg::Display_Option()
 {
 	CString strData;
-	strData.Format("%d", gCap.nConsecutiveMZLimit[0]);	m_stcOption[0].SetWindowText(strData);
-	strData.Format("%0.3lf", gCap.dDefectPercent[0]);	m_stcOption[1].SetWindowText(strData);
-	strData.Format("%d", gCap.nConsecutiveMZLimit[1]);	m_stcOption[3].SetWindowText(strData);
-	strData.Format("%0.3lf", gCap.dDefectPercent[1]);	m_stcOption[4].SetWindowText(strData);
-	strData.Format("%d", gCap.nConsecutiveMZLimit[2]);	m_stcOption[5].SetWindowText(strData);
-	strData.Format("%0.3lf", gCap.dDefectPercent[2]);	m_stcOption[6].SetWindowText(strData);
-	strData.Format("%d", gCap.nConsecutiveMZLimit[3]);	m_stcOption[7].SetWindowText(strData);
-	strData.Format("%0.3lf", gCap.dDefectPercent[3]);	m_stcOption[8].SetWindowText(strData);
-	strData.Format("%d", gCap.nMinModuleCnt);			m_stcOption[2].SetWindowText(strData);
+	strData.Format("%d", gCap.nConsecutiveMZLimit[0]);	m_stcConsMZ[0].SetWindowText(strData);
+	
+	strData.Format("%d", gCap.nConsecutiveMZLimit[1]);	m_stcConsMZ[1].SetWindowText(strData);
+	
+	strData.Format("%d", gCap.nConsecutiveMZLimit[2]);	m_stcConsMZ[2].SetWindowText(strData);
+
+	strData.Format("%0.3lf", gCap.dDefectPercent[0]);	m_stcPercent[0].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[1]);	m_stcPercent[1].SetWindowText(strData);
+	strData.Format("%0.3lf", gCap.dDefectPercent[2]);	m_stcPercent[2].SetWindowText(strData);
+
+	strData.Format("%d", gCap.nMinModuleCnt);			m_stcMinCount.SetWindowText(strData);
 
 	//CIniFileCS INI(gsCurrentDir + "\\System\\OCAPData.ini");
 	//if (!INI.Check_File()) {
@@ -187,12 +192,12 @@ void OCAPCosmeticProcess::Display_Option()
 	
 }
 
-void OCAPCosmeticProcess::OnStcOptionClick(UINT nID)
+void OCAPCosmeticDlg::OnStcConstMagazineClick(UINT nID)
 {
 	int nIndex = nID - IDC_STC_OCAP_VALUE_0;
 
 	CString strOld, strNew, strTemp;
-	m_stcOption[nIndex].GetWindowText(strOld);
+	m_stcConsMZ[nIndex].GetWindowText(strOld);
 
 	if(nIndex == 0) // 조건 1, 매거진 연속 수량 
 	{
@@ -208,22 +213,9 @@ void OCAPCosmeticProcess::OnStcOptionClick(UINT nID)
 				return;
 			}
 		}
-		m_stcOption[nIndex].SetWindowText(strNew);
+		m_stcConsMZ[nIndex].SetWindowText(strNew);
 	}
-	else if(nIndex == 1) //조건 1, 불량율 
-	{
-		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-		m_stcOption[nIndex].SetWindowText(strNew);
-	}
-	else if(nIndex == 2) // 매거진당 모듈 최소 수량 
-	{
-		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
-
-		int nLen = strNew.GetLength();
-		if (nLen < 1) return;
-		m_stcOption[nIndex].SetWindowText(strNew);
-	}
-	else if(nIndex == 3) // 조건 2, 매거진 연속 수량
+	else if(nIndex == 1) // 조건 2, 매거진 연속 수량
 	{
 		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
 
@@ -237,14 +229,9 @@ void OCAPCosmeticProcess::OnStcOptionClick(UINT nID)
 				return;
 			}
 		}
-		m_stcOption[nIndex].SetWindowText(strNew);
+		m_stcConsMZ[nIndex].SetWindowText(strNew);
 	}
-	else if(nIndex == 4) //조건 2, 불량율 
-	{
-		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-		m_stcOption[nIndex].SetWindowText(strNew);
-	}
-	else if(nIndex == 5) // 조건 3, 매거진 연속 수량
+	else if(nIndex == 2) // 조건 3, 매거진 연속 수량
 	{
 		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
 
@@ -258,25 +245,85 @@ void OCAPCosmeticProcess::OnStcOptionClick(UINT nID)
 				return;
 			}
 		}
-		m_stcOption[nIndex].SetWindowText(strNew);
+		m_stcConsMZ[nIndex].SetWindowText(strNew);
 	}
-	else if(nIndex == 6) //조건 3, 불량율 
+	//else if(nIndex == 2) // 매거진당 모듈 최소 수량 
+	//{
+	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
+
+	//	int nLen = strNew.GetLength();
+	//	if (nLen < 1) return;
+	//	m_stcOption[nIndex].SetWindowText(strNew);
+	//}
+	//
+	//else if(nIndex == 1) //조건 1, 불량율 
+	//{
+	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
+	//	m_stcOption[nIndex].SetWindowText(strNew);
+	//}
+	//else if(nIndex == 4) //조건 2, 불량율 
+	//{
+	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
+	//	m_stcOption[nIndex].SetWindowText(strNew);
+	//}
+	//
+	//else if(nIndex == 6) //조건 3, 불량율 
+	//{
+	//	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
+	//	m_stcOption[nIndex].SetWindowText(strNew);
+	//}
+	//else if(nIndex == 7)
+	//{
+
+	//}
+	//else if(nIndex == 8)
+	//{
+
+	//}
+
+}
+
+
+
+
+void OCAPCosmeticDlg::OnStcNGPercentClick(UINT nID)
+{
+	int nIndex = nID - IDC_STC_OCAP_NG_PERCENT_0;
+
+	CString strOld, strNew, strTemp;
+	m_stcConsMZ[nIndex].GetWindowText(strOld);
+
+	
+	
+	if(nIndex == 0) //조건 1, 불량율 
 	{
 		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
-		m_stcOption[nIndex].SetWindowText(strNew);
+		m_stcPercent[nIndex].SetWindowText(strNew);
 	}
-	else if(nIndex == 7)
+	else if(nIndex == 1) //조건 2, 불량율 
 	{
-
+		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
+		m_stcPercent[nIndex].SetWindowText(strNew);
 	}
-	else if(nIndex == 8)
+	
+	else if(nIndex == 2) //조건 3, 불량율 
 	{
+		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;	
+		m_stcPercent[nIndex].SetWindowText(strNew);
+	}
 
+	if(nIndex == 0) // 매거진당 모듈 최소 수량 
+	{
+		if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
+
+		int nLen = strNew.GetLength();
+		if (nLen < 1) return;
+		m_stcPercent[nIndex].SetWindowText(strNew);
 	}
 
 }
 
-void OCAPCosmeticProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPCosmeticDlg::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -320,7 +367,7 @@ void OCAPCosmeticProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 
 }
 
-void OCAPCosmeticProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPCosmeticDlg::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -350,7 +397,7 @@ void OCAPCosmeticProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 	}
 }
 
-void OCAPCosmeticProcess::Display_Status()
+void OCAPCosmeticDlg::Display_Status()
 {
 	
 	//gCap.nMZCycle = 1;
@@ -381,7 +428,7 @@ void OCAPCosmeticProcess::Display_Status()
 	}*/
 }
 
-void OCAPCosmeticProcess::Display_Grid(int nDp, int nIx)
+void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 {
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
@@ -430,7 +477,7 @@ void OCAPCosmeticProcess::Display_Grid(int nDp, int nIx)
 	
 }
 
-void OCAPCosmeticProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx)
+void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx)
 {
 	CString strTemp;
 
@@ -481,7 +528,7 @@ void OCAPCosmeticProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJu
 	}
 }
 
-void OCAPCosmeticProcess::AddCarToMZ(int nSlotNo, CString sType)
+void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, CString sType)
 {
 	CString strLog; 
 
@@ -508,7 +555,7 @@ void OCAPCosmeticProcess::AddCarToMZ(int nSlotNo, CString sType)
 
 }
 
-void OCAPCosmeticProcess::AddMZOut(CString sMZid, CString sType)
+void OCAPCosmeticDlg::AddMZOut(CString sMZid, CString sType)
 {
 	CString strLog; 
 		
@@ -736,35 +783,35 @@ void OCAPCosmeticProcess::AddMZOut(CString sMZid, CString sType)
 }
 
 
-void OCAPCosmeticProcess::Set_AddMZData(int nPortNo)
+void OCAPCosmeticDlg::Set_AddMZData(int nPortNo)
 {
 	
 }
 
 
-void OCAPCosmeticProcess::DelMZData(int nMZNo)
+void OCAPCosmeticDlg::DelMZData(int nMZNo)
 {
 	
 }
 
 
 
-void OCAPCosmeticProcess::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
+void OCAPCosmeticDlg::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
 {
 	
 }
 
-void OCAPCosmeticProcess::Check_DEFECT(CString sMZID)
+void OCAPCosmeticDlg::Check_DEFECT(CString sMZID)
 {
 	
 }
 
-void OCAPCosmeticProcess::Check_DEFECTF(int nNo)
+void OCAPCosmeticDlg::Check_DEFECTF(int nNo)
 {
 }
 
 
-void OCAPCosmeticProcess::OnBnClickedBtnTest()
+void OCAPCosmeticDlg::OnBnClickedBtnTest()
 {
 
 	gCap.nMZCycle = 4;

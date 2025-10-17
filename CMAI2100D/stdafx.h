@@ -441,12 +441,8 @@ typedef struct {
 
 	int nGoodInMZ[50];
 	int nTotalCntMZ[50]; // 동시에 돌수 있는 MZ 수는 최대 4개, 하지만 50개로 바꿈 
-
-
+	
 	double dLimitPercent[10];
-
-	CString		sFAIName[50];		// FAI이름-Display
-	CString		sFAICode[50];		// FAI-NG-Code
 	
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
@@ -461,14 +457,12 @@ typedef struct {
 	int			nConsecutiveNGCnt[4][50];
 	int			nCosmeticCodeNum[4];
 	
-
 	CString		sAlmOCAP;
 	CString		sAlmMZID;
 	CString		sAlmDefectName;
 	double		dAlmDefectPercent;
 	int			nAlmNGCount;
 	
-
 	//display
 	int			nMZCycle;
 	CString		sDate[50];			//날자(07/31)
@@ -477,10 +471,40 @@ typedef struct {
 	int			nTotCount[50];		//투입-Module수
 	int			nGoodCount[50];		//양품수
 	int			nConsmeticNGCount[50];
-
-
+	
 	BOOL		bOCAPDone[3]; // 3가지 조건 
 	BOOL		bErrorShowDone;
+
+
+	//기존 변수들
+	//int			nMZCycle;
+	//CString		sDate[50];			//날자(07/31)
+	//CString		sTime[50];			//시간(07:31)
+	//CString		sMZID[50];			//양품MZ
+	CString		sLotID[50][8];		//LotID
+	//int			nTotCount[50];		//투입-Module수
+	//int			nGoodCount[50];		//양품수
+	int			nROSNGCount[50];	//ROS-NG수
+	int			nROSRfCount[50];	//ROS-Repaier수
+	int			nBCRCount[50];		//Barcode[NG수
+	int			nMESCount[50];		//MES[NG수
+	int			nMCCount[50];		//MC[NG수
+	int			nCount[50][20];		//MZ,FAI별 발생수
+	int			nFCount[50][20];	//MZ,FAI별 발생수
+
+	CString		sFAIName[20];		//FAI이름-Display
+	CString		sFAICode[20];		//FAI-NG-Code
+	double		dGiDefect[4];		//불량율%
+	int			nGiMZCnt[4];		//MZ수량(알람발생MZ대상수)
+	int			nGiMinCnt;			//MZ당최소 Module수량(이하면 알람발생 제외처리)
+
+	//CString		sAlmMZID;
+	CString		sAlmFAIName;
+	double		dAlmDefect;
+	int			nAlmCount;
+
+
+
 } GLOVAL_OCAP;
 
 typedef struct {

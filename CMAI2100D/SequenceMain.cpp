@@ -15,7 +15,7 @@
 #include "CarrierRFID_Load.h"
 #include "CarrierRFID_Good.h"
 #include "CarrierRFID_NG.h"
-#include "OCAPCosmeticProcess.h"
+#include "OCAPCosmeticDlg.h"
 #include <math.h>
 
 CSequenceMain g_objSequenceMain;
@@ -1506,8 +1506,8 @@ BOOL CSequenceMain::Check_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 				//	gCap.nGoodCnt[nPortNo-1]++;
 				//}					
 
-				//g_dlgOCAP.Set_AddDEFECT();
-				//g_dlgOCAP.Set_AddMZData(gData.nPortNo_NGTray[n1NSNo-5]);
+				//g_dlgOCAPCosmetic.Set_AddDEFECT();
+				//g_dlgOCAPCosmetic.Set_AddMZData(gData.nPortNo_NGTray[n1NSNo-5]);
 
 
 
@@ -4712,7 +4712,7 @@ BOOL CSequenceMain::Run_Transfer2()
 	case 45:
 		if (m_pDX03->iTransferRTrayExist) 
 		{
-			//g_dlgOCAP.AddCarToMZ(gData.nPortNo_NGTray[gData.nTransferX2Pos-7]-1, "NG", gCap.nCarrierMZIndex[1]);
+			//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_NGTray[gData.nTransferX2Pos-7]-1, "NG", gCap.nCarrierMZIndex[1]);
 			gCap.nTransferMZIndex[1] = gCap.nCarrierMZIndex[1]; gCap.nCarrierMZIndex[1] = 0;
 			
 			gData.sLotID_Tansfer[1] = gData.sLotID_NGTray[gData.nTransferX2Pos-7];
@@ -4787,7 +4787,7 @@ BOOL CSequenceMain::Run_Transfer2()
 	case 55:
 		if (m_pDX03->iTransferRTrayExist) 
 		{
-			//g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[gData.nTransferX2Pos-9] - 1, "GOOD", gCap.nCarrierMZIndex[0]);
+			//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[gData.nTransferX2Pos-9] - 1, "GOOD", gCap.nCarrierMZIndex[0]);
 			gCap.nTransferMZIndex[0] = gCap.nCarrierMZIndex[0];gCap.nCarrierMZIndex[0] = 0;
 
 			gData.sLotID_Tansfer[1] = gData.sLotID_GoodTray[gData.nTransferX2Pos-9];
@@ -10356,7 +10356,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			m_sLog.Format("UnloadPicker %d To NGTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
 			if(gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 						
-			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_NGTray[n1NSNo-5]-1, "NG",gData.InfoNgTray[n1PosY-1][n1PosX-1], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
+			g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_NGTray[n1NSNo-5]-1, "NG",gData.InfoNgTray[n1PosY-1][n1PosX-1], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 			
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][6] = 1;
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][7] = (n1PosY-1) * 4 + n1PosX;
@@ -10396,7 +10396,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 		} else {
 			if (Check_LotEndUnloadNG(gData.sLotID_UnloadPicker[n1No-1], gData.nPortNo_UnloadPicker[n1No-1], n1No)) 
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_UnloadPicker[n1No-1]-1,"NG");
+				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_UnloadPicker[n1No-1]-1,"NG");
 //				if (m_nNGStage1Case == 30)   m_nNGStage1Case = 31;
 //				if (m_nNGStage2Case == 30)   m_nNGStage2Case = 31;
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
@@ -10523,7 +10523,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 				m_sLog.Format("UnloadPicker %d To GoodTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1]);
 				if(gTracking.sMZID_GoodTray[n1PosY-1][n1PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
-				g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_GoodTray[n1NSNo-7]-1, "GOOD",0,"", gCap.nCarrierMZIndex[0]);
+				g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_GoodTray[n1NSNo-7]-1, "GOOD",0,"", gCap.nCarrierMZIndex[0]);
 
 				if (gData.InfoGoodTray[n1PosY-1][n1PosX-1+i] > 0) 
 				{
@@ -10549,7 +10549,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 			if (Check_GooodTrayFull()) 
 			{
-				//g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
+				//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -10564,7 +10564,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 			if (Check_LotEndUnloadPicker(sLotID, nPortNo))
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
+				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -10972,7 +10972,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 			m_sLog.Format("UnloadPicker %d To NGTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
 			if(gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
-			g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_NGTray[n2NSNo-5]-1, "NG",gData.InfoNgTray[n2PosY-1][n2PosX-1], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
+			g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_NGTray[n2NSNo-5]-1, "NG",gData.InfoNgTray[n2PosY-1][n2PosX-1], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 		
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][6] = 1;
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][7] = (n2PosY-1) * 4 + n2PosX;
@@ -11012,7 +11012,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 		} else {
 			if (Check_LotEndUnloadNG(gData.sLotID_UnloadPicker[n2No-1], gData.nPortNo_UnloadPicker[n2No-1], n2No)) 
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_UnloadPicker[n2No-1]-1,"NG");
+				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_UnloadPicker[n2No-1]-1,"NG");
 //				if (m_nNGStage1Case == 30)   m_nNGStage1Case = 31;
 //				if (m_nNGStage2Case == 30)   m_nNGStage2Case = 31;
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
@@ -11141,7 +11141,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 				m_sLog.Format("UnloadPicker %d To GoodTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1]);
 				if(gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
-				g_dlgOCAP.AddModuleToCarrier(gData.nPortNo_GoodTray[n2NSNo-7]-1, "GOOD",0,"", gCap.nCarrierMZIndex[0]);
+				g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_GoodTray[n2NSNo-7]-1, "GOOD",0,"", gCap.nCarrierMZIndex[0]);
 				
 				if (gData.InfoGoodTray[n2PosY-1][n2PosX-1+i] > 0) 
 				{
@@ -11168,7 +11168,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 		{
 			if (Check_GooodTrayFull())
 			{
-				//g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
+				//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
 
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
@@ -11184,7 +11184,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 
 			if (Check_LotEndUnloadPicker(sLotID, nPortNo)) 
 			{
-				g_dlgOCAP.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
+				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -13165,7 +13165,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		break;
 	case 19:
 			gCap.nCVMZIndex[1] = gCap.nTransferMZIndex[1];
-			g_dlgOCAP.AddMZOut(gTracking.sMZID_NGCV, "NG");
+			g_dlgOCAPCosmetic.AddMZOut(gTracking.sMZID_NGCV, "NG");
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		break;
@@ -13264,7 +13264,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 	case 32:
 		if (!m_pDX19->iULCV1FCnt1) {
 			gCap.nCVMZIndex[0] = gCap.nTransferMZIndex[0];
-			g_dlgOCAP.AddMZOut(gTracking.sMZID_GOODCV, "GOOD");
+			g_dlgOCAPCosmetic.AddMZOut(gTracking.sMZID_GOODCV, "GOOD");
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase = 0; m_tULCVElevatorLoop.Set_LoopTime(10000);
 

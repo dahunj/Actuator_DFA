@@ -340,7 +340,13 @@
     <ClInclude Include="FifoTaskProcessor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="OCAPCosmeticProcess.h">
+    <ClInclude Include="OCAPCosmeticDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OCAPSelectDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OCAPProcess.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -531,7 +537,13 @@
     <ClCompile Include="FifoTaskProcessor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="OCAPCosmeticProcess.cpp">
+    <ClCompile Include="OCAPCosmeticDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OCAPSelectDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OCAPProcess.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
