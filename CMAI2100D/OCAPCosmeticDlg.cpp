@@ -625,16 +625,16 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		
 		for(int j = 0; j < 8; j++)
 		{
-			gCap.nGoodCnt_MZ[gCap.nOcapMzIndex] += gCap.nGoodInMZ[gCap.nOcapMzIndex][j];	
+			gCap.nGoodCnt_MZ[i][gCap.nOcapMzIndex] += gCap.nGoodInMZ[gCap.nOcapMzIndex][j];	
 		}	
 		for(int j = 0; j < 50; j++)
 		{	
 			for(int k = 0; k < 8; k++)
 			{
-				gCap.nNGCnt_MZ[gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[j][gCap.nOcapMzIndex][k - 1];	
+				gCap.nNGCnt_MZ[i][gCap.nOcapMzIndex] += gCap.nCosmeticDefectMZ[j][gCap.nOcapMzIndex][k - 1];	
 			}					
 		}		
-		gCap.nTotalCnt_MZ[gCap.nOcapMzIndex] = gCap.nGoodCnt_MZ[gCap.nOcapMzIndex] + gCap.nNGCnt_MZ[gCap.nOcapMzIndex];
+		gCap.nTotalCnt_MZ[gCap.nOcapMzIndex] = gCap.nGoodCnt_MZ[i][gCap.nOcapMzIndex] + gCap.nNGCnt_MZ[i][gCap.nOcapMzIndex];
 						
 		for(int j = 0; j < 8; j++)
 		{
@@ -679,7 +679,7 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 
 		gCap.sMZID_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = sMZID;
 		gCap.nTotCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nTotalCnt_MZ[gCap.nOcapMzIndex];
-		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodCnt_MZ[gCap.nOcapMzIndex];
+		gCap.nGoodCount_Cosmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nGoodCnt_MZ[i][gCap.nOcapMzIndex];
 		gCap.nNGCount_Consmetic[gCap.nMZCycle_Cosmetic - 1] = gCap.nCosmeticCnt_MZ[i][gCap.nOcapMzIndex];
 		gCap.nCosmeticCodeNum[nType] = i+1;
 

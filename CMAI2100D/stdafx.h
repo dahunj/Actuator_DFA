@@ -447,8 +447,8 @@ typedef struct {
 	
 
 	int nTotalCnt_MZ[50];
-	int nGoodCnt_MZ[50];
-	int nNGCnt_MZ[50];
+	int nGoodCnt_MZ[50][50]; //50번의 연산을 위해, 1번째: NG 종류, 2번째:매거진 루프 개수 
+	int nNGCnt_MZ[50][50];
 	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
 
 
