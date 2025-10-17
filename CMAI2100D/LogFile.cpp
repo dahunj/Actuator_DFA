@@ -1108,10 +1108,16 @@ void CLogFile::Save_BarcodeLog(CString sLog)
 	}
 }
 
-void CLogFile::Save_OCAPDataLog(int nIdx)
+void CLogFile::Save_OCAPFAILog(int nIdx)
 {
-	
+
 }
+
+void CLogFile::Save_OCAPCosmeticLog(int nIdx)
+{
+
+}
+
 
 void CLogFile::Save_RFBarData(int nType, CString strDataID, int nCount)
 {

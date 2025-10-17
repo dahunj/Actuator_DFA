@@ -1,17 +1,17 @@
 #pragma once
 
-// OCAPProcess 대화 상자입니다.
+// OCAPCosmeticProcess 대화 상자입니다.
 
-class OCAPProcess : public CDialogEx
+class OCAPCosmeticProcess : public CDialogEx
 {
-	DECLARE_DYNAMIC(OCAPProcess)
+	DECLARE_DYNAMIC(OCAPCosmeticProcess)
 
 public:
-	OCAPProcess(CWnd* pParent = NULL);   // 표준 생성자입니다.
-	virtual ~OCAPProcess();
+	OCAPCosmeticProcess(CWnd* pParent = NULL);   // 표준 생성자입니다.
+	virtual ~OCAPCosmeticProcess();
 
 // 대화 상자 데이터입니다.
-	enum { IDD = IDD_OCAP_DLG };
+	enum { IDD = IDD_OCAP_COSMETIC_DLG };
 	CGroupCS		m_Group[2];
 	CLabelCS		m_Label[7];
 	CStaticCS		m_stcOption[9];
@@ -56,4 +56,4 @@ public:
 	afx_msg void OnBnClickedBtnTest();
 };
 
-extern OCAPProcess g_dlgOCAP;
+extern OCAPCosmeticProcess g_dlgOCAP;

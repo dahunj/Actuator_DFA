@@ -15,7 +15,7 @@
 #include "CarrierRFID_Load.h"
 #include "CarrierRFID_Good.h"
 #include "CarrierRFID_NG.h"
-#include "OCAPProcess.h"
+#include "OCAPCosmeticProcess.h"
 #include <math.h>
 
 CSequenceMain g_objSequenceMain;

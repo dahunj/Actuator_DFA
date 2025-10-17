@@ -1,31 +1,31 @@
-﻿// OCAPProcess.cpp : 구현 파일입니다.
+﻿// OCAPCosmeticProcess.cpp : 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "CMAI2100.h"
-#include "OCAPProcess.h"
+#include "OCAPCosmeticProcess.h"
 #include "Common.h"
 #include "LogFile.h"
 #include "DataManager.h"
 #include "afxdialogex.h"
 
 
-// OCAPProcess 대화 상자입니다.
-OCAPProcess g_dlgOCAP;
+// OCAPCosmeticProcess 대화 상자입니다.
+OCAPCosmeticProcess g_dlgOCAP;
 
-IMPLEMENT_DYNAMIC(OCAPProcess, CDialogEx)
+IMPLEMENT_DYNAMIC(OCAPCosmeticProcess, CDialogEx)
 
-OCAPProcess::OCAPProcess(CWnd* pParent /*=NULL*/)
-	: CDialogEx(OCAPProcess::IDD, pParent)
+OCAPCosmeticProcess::OCAPCosmeticProcess(CWnd* pParent /*=NULL*/)
+	: CDialogEx(OCAPCosmeticProcess::IDD, pParent)
 {
 
 }
 
-OCAPProcess::~OCAPProcess()
+OCAPCosmeticProcess::~OCAPCosmeticProcess()
 {
 }
 
-void OCAPProcess::DoDataExchange(CDataExchange* pDX)
+void OCAPCosmeticProcess::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	for (int i = 0; i < 2; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
@@ -35,16 +35,16 @@ void OCAPProcess::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(OCAPProcess, CDialogEx)
+BEGIN_MESSAGE_MAP(OCAPCosmeticProcess, CDialogEx)
 	ON_WM_SHOWWINDOW()
-	ON_BN_CLICKED(IDCANCEL, &OCAPProcess::OnBnClickedCancel)
-	ON_BN_CLICKED(IDOK,		&OCAPProcess::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &OCAPCosmeticProcess::OnBnClickedCancel)
+	ON_BN_CLICKED(IDOK,		&OCAPCosmeticProcess::OnBnClickedOk)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_VALUE_0, IDC_STC_OCAP_VALUE_8, OnStcOptionClick)
-	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPProcess::OnBnClickedBtnTest)
+	ON_BN_CLICKED(IDC_BTN_TEST, &OCAPCosmeticProcess::OnBnClickedBtnTest)
 END_MESSAGE_MAP()
 
 
-BOOL OCAPProcess::OnInitDialog() 
+BOOL OCAPCosmeticProcess::OnInitDialog() 
 {
 	CDialogEx::OnInitDialog();
 
@@ -56,7 +56,7 @@ BOOL OCAPProcess::OnInitDialog()
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-BOOL OCAPProcess::PreTranslateMessage(MSG* pMsg) 
+BOOL OCAPCosmeticProcess::PreTranslateMessage(MSG* pMsg) 
 {
 	if (pMsg->message == WM_KEYDOWN && (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE))
 		return TRUE;
@@ -64,7 +64,7 @@ BOOL OCAPProcess::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void OCAPProcess::OnShowWindow(BOOL bShow, UINT nStatus) 
+void OCAPCosmeticProcess::OnShowWindow(BOOL bShow, UINT nStatus) 
 {
 	CDialogEx::OnShowWindow(bShow, nStatus);
 
@@ -76,15 +76,15 @@ void OCAPProcess::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
-// OCAPProcess 메시지 처리기입니다.
+// OCAPCosmeticProcess 메시지 처리기입니다.
 
-void OCAPProcess::OnBnClickedCancel()
+void OCAPCosmeticProcess::OnBnClickedCancel()
 {
 	ShowWindow(SW_HIDE);
 }
 
 
-void OCAPProcess::OnBnClickedOk()
+void OCAPCosmeticProcess::OnBnClickedOk()
 {
 	int		nData1, nData2, nData3, nData4, nData5;
 	double	dData1, dData2, dData3, dData4;
@@ -114,7 +114,7 @@ void OCAPProcess::OnBnClickedOk()
 	Display_Status();
 }
 
-void OCAPProcess::Initial_Controls() 
+void OCAPCosmeticProcess::Initial_Controls() 
 {
 	for (int i = 0; i < 2; i++) m_Group[i].Init_Ctrl("바탕", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
 	for (int i = 0; i < 6; i++) m_Label[i].Init_Ctrl("바탕", 12, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80));
@@ -126,7 +126,7 @@ void OCAPProcess::Initial_Controls()
 	
 }
 
-void OCAPProcess::Display_Option()
+void OCAPCosmeticProcess::Display_Option()
 {
 	CString strData;
 	strData.Format("%d", gCap.nConsecutiveMZLimit[0]);	m_stcOption[0].SetWindowText(strData);
@@ -187,7 +187,7 @@ void OCAPProcess::Display_Option()
 	
 }
 
-void OCAPProcess::OnStcOptionClick(UINT nID)
+void OCAPCosmeticProcess::OnStcOptionClick(UINT nID)
 {
 	int nIndex = nID - IDC_STC_OCAP_VALUE_0;
 
@@ -276,7 +276,7 @@ void OCAPProcess::OnStcOptionClick(UINT nID)
 
 }
 
-void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPCosmeticProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -320,7 +320,7 @@ void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 
 }
 
-void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPCosmeticProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -350,7 +350,7 @@ void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 	}
 }
 
-void OCAPProcess::Display_Status()
+void OCAPCosmeticProcess::Display_Status()
 {
 	
 	//gCap.nMZCycle = 1;
@@ -381,7 +381,7 @@ void OCAPProcess::Display_Status()
 	}*/
 }
 
-void OCAPProcess::Display_Grid(int nDp, int nIx)
+void OCAPCosmeticProcess::Display_Grid(int nDp, int nIx)
 {
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
@@ -430,7 +430,7 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	
 }
 
-void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx)
+void OCAPCosmeticProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx)
 {
 	CString strTemp;
 
@@ -481,7 +481,7 @@ void OCAPProcess::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CSt
 	}
 }
 
-void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
+void OCAPCosmeticProcess::AddCarToMZ(int nSlotNo, CString sType)
 {
 	CString strLog; 
 
@@ -508,7 +508,7 @@ void OCAPProcess::AddCarToMZ(int nSlotNo, CString sType)
 
 }
 
-void OCAPProcess::AddMZOut(CString sMZid, CString sType)
+void OCAPCosmeticProcess::AddMZOut(CString sMZid, CString sType)
 {
 	CString strLog; 
 		
@@ -736,35 +736,35 @@ void OCAPProcess::AddMZOut(CString sMZid, CString sType)
 }
 
 
-void OCAPProcess::Set_AddMZData(int nPortNo)
+void OCAPCosmeticProcess::Set_AddMZData(int nPortNo)
 {
 	
 }
 
 
-void OCAPProcess::DelMZData(int nMZNo)
+void OCAPCosmeticProcess::DelMZData(int nMZNo)
 {
 	
 }
 
 
 
-void OCAPProcess::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
+void OCAPCosmeticProcess::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
 {
 	
 }
 
-void OCAPProcess::Check_DEFECT(CString sMZID)
+void OCAPCosmeticProcess::Check_DEFECT(CString sMZID)
 {
 	
 }
 
-void OCAPProcess::Check_DEFECTF(int nNo)
+void OCAPCosmeticProcess::Check_DEFECTF(int nNo)
 {
 }
 
 
-void OCAPProcess::OnBnClickedBtnTest()
+void OCAPCosmeticProcess::OnBnClickedBtnTest()
 {
 
 	gCap.nMZCycle = 4;

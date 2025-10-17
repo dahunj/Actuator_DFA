@@ -16,7 +16,7 @@
 #include "SetupDlg.h"
 #include "ProhibitDlg.h"
 #include "MonitorDlg.h"
-#include "OCAPProcess.h"
+#include "OCAPCosmeticProcess.h"
 #include "ErrorDlg.h"
 #include "AlarmDlg.h"
 #include "Inspector.h"
@@ -124,7 +124,7 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	g_dlgSetup.Create(CSetupDlg::IDD, this);
 	g_dlgProhibit.Create(CProhibitDlg::IDD, this);
 	g_dlgMonitor.Create(CMonitorDlg::IDD, this);
-	g_dlgOCAP.Create(OCAPProcess::IDD, this);
+	g_dlgOCAP.Create(OCAPCosmeticProcess::IDD, this);
 	g_dlgError.Create(CErrorDlg::IDD, this);
 	g_dlgAlarm.Create(CAlarmDlg::IDD, this);
 	g_dlgNoWork.Create(CNoWorkDlg::IDD, this);
