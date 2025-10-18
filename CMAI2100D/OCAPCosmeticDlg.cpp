@@ -567,9 +567,9 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 	Check_CosmeticDefect(2, sMZID);
 
 	//Only Vision 
+	Check_CosmeticDefect(3, sMZID);
 	Check_CosmeticDefect(4, sMZID);
 	Check_CosmeticDefect(5, sMZID);
-	Check_CosmeticDefect(6, sMZID);
 	
 	if(gCap.nMZIdx_Cosmetic == 49)
 	{
@@ -591,11 +591,15 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 	else gCap.nMZIdx_Cosmetic++;
 
 
-	if(gCap.bOCAPDone[0] == TRUE || gCap.bOCAPDone[1] == TRUE || gCap.bOCAPDone[2] == TRUE)
+	if(gCap.bOCAPDone[0] == TRUE || gCap.bOCAPDone[1] == TRUE || gCap.bOCAPDone[2] == TRUE ||
+		gCap.bOCAPDone[3] == TRUE || gCap.bOCAPDone[4] == TRUE || gCap.bOCAPDone[5] == TRUE)
 	{
 		gCap.bOCAPDone[0] = FALSE;
 		gCap.bOCAPDone[1] = FALSE;
 		gCap.bOCAPDone[2] = FALSE;
+		gCap.bOCAPDone[3] = FALSE;
+		gCap.bOCAPDone[4] = FALSE;
+		gCap.bOCAPDone[5] = FALSE;
 	}
 }
 
@@ -608,11 +612,11 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 	for(int i = 0; i < 50; i++)
 	{
 
-		if(nType != 0)
+		if(gCap.bOCAPDone[0] == TRUE || gCap.bOCAPDone[1] == TRUE || gCap.bOCAPDone[2] == TRUE ||
+			gCap.bOCAPDone[3] == TRUE || gCap.bOCAPDone[4] == TRUE || gCap.bOCAPDone[5] == TRUE)
 		{
-			if(gCap.bOCAPDone[nType-1] == TRUE) break; // 앞번호 조건이 알람 우선순위 
+			break;
 		}
-
 		double dPercentLimit = 0;
 		int	   nConsecutiveMZLimit = 0;	
 
@@ -627,10 +631,11 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		}
 
 		gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;
+		gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;
 		for(int j = 0; j < 50; j++)
 		{				
-			if(nType > 2) gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeticCnt_MZ[j][gCap.nMZIdx_Cosmetic];
-			else gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeVisionCnt_MZ[j][gCap.nMZIdx_Cosmetic];
+			gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeticCnt_MZ[j][gCap.nMZIdx_Cosmetic];
+			gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeVisionCnt_MZ[j][gCap.nMZIdx_Cosmetic];
 		}		
 		gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic] = gCap.nGoodCnt_MZ[gCap.nMZIdx_Cosmetic] + gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic];
 		
