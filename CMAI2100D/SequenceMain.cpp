@@ -622,8 +622,8 @@ void CSequenceMain::Set_ClearRunData(int nType)
 
 	if(nType == 0 )
 	{			
-		memset(gCap.nCosmeticDefectMZ, 0,sizeof(int)*50*50*8);
-		memset(gCap.nGoodInMZ, 0,sizeof(int)*50*8);
+		memset(gCap.nDefectCnt_Cosmetic, 0,sizeof(int)*50*50*8);
+		memset(gCap.nGoodCnt_Cosmetic, 0,sizeof(int)*50*8);
 		
 		memset(gCap.nTotalCnt_MZ, 0,sizeof(int)*50);
 		memset(gCap.nGoodCnt_MZ, 0,sizeof(int)*50);
@@ -632,12 +632,11 @@ void CSequenceMain::Set_ClearRunData(int nType)
 		gCap.nLotIndex_NG = 0;
 		gCap.nLotIndex_Good = 0;
 
-		gCap.nOcapMzIndex = 0;
+		gCap.nMZIdx_Cosmetic = 0;
 		gCap.nOcapCarrierIndex = 0;
 
-		memset(gCap.nCarrierCosmeticDefect, 0,sizeof(int)*50*28);
-		memset(gCap.nCarrierFAIDefect, 0,sizeof(int)*50*28);
-		memset(gCap.nCarrierGood, 0,sizeof(int)*28);
+		memset(gCap.nDefectCntInCarr_Cosmetic, 0,sizeof(int)*50*28);
+		memset(gCap.nGoodCntInCarr_Cosmetic, 0,sizeof(int)*28);
 		memset(gCap.nTotalCntCarrier, 0,sizeof(int)*28);
 
 		gCap.bErrorShowDone = FALSE;

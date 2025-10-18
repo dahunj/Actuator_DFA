@@ -426,33 +426,23 @@ typedef struct {
 	int nTransferMZIndex[2];
 	int nCVMZIndex[2];
 
-	int nOcapMzIndex;
+	int nMZIdx_Cosmetic;
 	int nOcapCarrierIndex;
 
 	int nLotIndex_NG;
 	int nLotIndex_Good;
 
-	int nCarrierCosmeticDefect[50][28];
-	int nCarrierFAIDefect[50][28];
-	int nCarrierGood[28];
+	int nDefectCntInCarr_Cosmetic[50][28];	
+	int nGoodCntInCarr_Cosmetic[28];
 	int nTotalCntCarrier[28]; //  
 	
-	int nCosmeticDefectMZ[50][50][8]; //50가지 종류의 불량,  50개의 매거진 루프, 매거진 당 8개 랏 
-	int nCosmeticDefectTotal;
-
-
-
-
-	int nGoodInMZ[50][8]; // 매거진당 8개 랏 
+	int nDefectCnt_Cosmetic[50][50][8]; //50가지 종류의 불량,  50개의 매거진 루프, 매거진 당 8개 랏 
+	int nGoodCnt_Cosmetic[50][8]; // 매거진당 8개 랏 
 	
-
 	int nTotalCnt_MZ[50];
-	int nGoodCnt_MZ[50][50]; //50번의 연산을 위해, 1번째: NG 종류, 2번째:매거진 루프 개수 
-	int nNGCnt_MZ[50][50];
+	int nGoodCnt_MZ[50]; //50번의 연산을 위해, 1번째: NG 종류, 2번째:매거진 루프 개수 
+	int nNGCnt_MZ[50];
 	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
-
-
-	double dLimitPercent[10];
 	
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
