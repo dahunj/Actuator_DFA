@@ -300,6 +300,7 @@ typedef struct {
 	int		nJudge_I[30][10][40][6];	//2:G, 3:NG,     5:BAR_NOREAD, 6:MES_NG, 7:FAI치수불량
 	int		nJudge_R[30][10][40];		//2:G, 3:ROS_NG, 4:ROS_Repair
 	CString sNGCode_I[30][10][40][6];
+	CString sNGCode_Vision[30][10][40][6];
 //	CString sNGCode_R[30][10][40];
 	CString sBarCode[30][10][40];
 	int		nRosJugCount[30][15];		//0:Count, 1:Good, 2:TOver 3:NG, 4:Repair, 5:Bar_NoRead,MES-NG,MC, 6:FAI_NG(치수불량), 7:Bar, 8:MES-NG, 9:MC, 10:Ros Skip, 11:허수불량, 12:불량차감, 13FAI_RECOFAIL_SP
@@ -432,30 +433,43 @@ typedef struct {
 	int nLotIndex_NG;
 	int nLotIndex_Good;
 
+	//With ADJ
 	int nDefectCntInCarr_Cosmetic[50][28];	
 	int nGoodCntInCarr_Cosmetic[28];
-	int nTotalCntCarrier[28]; //  
 	
+
 	int nDefectCnt_Cosmetic[50][50][8]; //50가지 종류의 불량,  50개의 매거진 루프, 매거진 당 8개 랏 
 	int nGoodCnt_Cosmetic[50][8]; // 매거진당 8개 랏 
 	
+	//Only Vision 
+	int nDefectCntInCarr_CosmeVision[50][28];		
+
+	int nDefectCnt_CosmeVision[50][50][8]; //50가지 종류의 불량, 50개의 매거진 루프, 매거진 당 8개 랏 	
+	int nNGVisionCnt_MZ[50];		
+	int nCosmeVisionCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
+	
+	//Commonly Used 
+	int nTotalCntCarrier[28]; //  
+
 	int nTotalCnt_MZ[50];
-	int nGoodCnt_MZ[50]; //50번의 연산을 위해, 1번째: NG 종류, 2번째:매거진 루프 개수 
-	int nNGCnt_MZ[50];
+	int nGoodCnt_MZ[50]; // 1번째: NG 종류, 2번째:매거진 루프 개수 
+	int nNGCnt_MZ[50];	
 	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
+
+
 	
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
 	int			nCosmeticCount;		// 외관 에러 항목 개수 
 
-	double		dDefectPercent[4];		// 설정된 불량율%
-	int			nConsecutiveMZLimit[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
+	double		dDefectPercent[3];		// 설정된 불량율%
+	int			nConsecutiveMZLimit[3];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
 	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
-	int			nConsecutiveMZCount[4][50];
-	int			nConsecutiveModuleCnt[4][50];
-	int			nConsecutiveGoodCnt[4][50];
-	int			nConsecutiveNGCnt[4][50];
-	int			nCosmeticCodeNum[4];
+	int			nConsecutiveMZCount[6][50];
+	int			nConsecutiveModuleCnt[6][50];
+	int			nConsecutiveGoodCnt[6][50];
+	int			nConsecutiveNGCnt[6][50];
+	int			nCosmeticCodeNum[6];
 	
 	CString		sAlmMZID_Cosmetic;
 	CString		sAlmDefectName_Cosmetic;
@@ -471,7 +485,7 @@ typedef struct {
 	int			nGoodCount_Cosmetic[50];		//양품수
 	int			nNGCount_Consmetic[50];
 	
-	BOOL		bOCAPDone[3]; // 3가지 조건 
+	BOOL		bOCAPDone[6]; // 3가지 조건 
 	BOOL		bErrorShowDone;
 
 

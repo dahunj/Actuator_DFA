@@ -46,7 +46,7 @@ private:
 	void Display_Grid(int nDp, int nIndex);
 
 public:
-	void AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, int& nCurrentMzIdx);
+	void AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, CString sNGCodeVision, int& nCurrentMzIdx);
 	void AddCarToMZ(int nSlotNo, CString sType); //Type - 0 :Good, 1: NG 
 	void AddMZOut(CString sMZID, CString sType);
 

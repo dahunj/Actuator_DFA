@@ -199,7 +199,7 @@ LRESULT CInspector::OnUdpReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "COMPLETE") Get_ScanComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4]);
 
 		} else if (strCmd == "INSPECT") {
-			if (strOp == "COMPLETE") Get_InspectComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4], strArg[5], strArg[6], strArg[7], strArg[8], strArg[9], strRecv);
+			if (strOp == "COMPLETE") Get_InspectComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4], strArg[5], strArg[6], strArg[7], strArg[8], strArg[9], strArg[10], strRecv);
 
 		} else if (strCmd == "AMOVE") {
 			if (strOp == "REQUEST") Get_AMoveRequest(nInspector, strArg[0], strArg[1]);
@@ -319,7 +319,7 @@ void CInspector::Get_ScanComplete(int nInspector, CString sType, CString sLotID,
 	if (sType == "A1")					{ gData.bAlignScanDone = TRUE; return; }
 }
 
-void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLotID, CString sPortNo, CString sTrayNo, CString sCMNo, CString sJudge, CString sNGCode, CString sImageCnt1, CString sImageCnt2, CString sMarginal, CString sRcvData)
+void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLotID, CString sPortNo, CString sTrayNo, CString sCMNo, CString sJudge, CString sNGCode, CString sImageCnt1, CString sImageCnt2, CString sMarginal,CString sNGCodeVision, CString sRcvData)
 {
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 
@@ -357,22 +357,22 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
-		//gCap.nCarrierGood[nPortNo -1]++;
-		
+		gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCodeVision;
+				
 		strLog.Format("INSPECT,COMPLETE,GOOD,Empty");
 		g_objLogFile.Save_TestLog(strLog);
 	}
 	else
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
+		gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCodeVision;
 
-		if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
+		/*if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
 		{
 			for(int i = 0; i < 50; i++)
 			{
 				if(sNGCode == gCap.sFAICode[i])
 				{
-					//gCap.nCarrierFAIDefect[i][nPortNo -1]++;
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sFAICode[i]);
 					g_objLogFile.Save_TestLog(strLog);
 				}
@@ -384,12 +384,11 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				if(sNGCode == gCap.sCosmeticCode[i])
 				{
-					//gCap.nCarrierCosmeticDefect[i][nPortNo -1]++;
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sCosmeticCode[i]);
 					g_objLogFile.Save_TestLog(strLog);
 				}
 			}			
-		}
+		}*/
 	}
 	
 	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
@@ -564,7 +563,6 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		gLot.nRosJugCount[nPortNo-1][10]++;
 		return;
 	}
-
 	
 #endif
 	if		(nNGSize > 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	}

@@ -27,6 +27,8 @@ COCAPSelectDlg::~COCAPSelectDlg()
 void COCAPSelectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BTN_COSMETIC, m_btnCosmeticOCAP);
+	DDX_Control(pDX, IDC_BTN_FAI, m_btnFAIOCAP);
 }
 
 
@@ -47,6 +49,8 @@ BOOL COCAPSelectDlg::OnInitDialog()
 
 	g_dlgOCAPCosmetic.Create(OCAPCosmeticDlg::IDD, this);
 
+	m_btnCosmeticOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0x00), 0, 0);
+	m_btnFAIOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0x00), 0, 0);
 	return TRUE;  
 	
 }
