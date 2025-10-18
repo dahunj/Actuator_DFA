@@ -473,6 +473,7 @@ typedef struct {
 	
 	CString		sAlmMZID_Cosmetic;
 	CString		sAlmDefectName_Cosmetic;
+	CString		sAlmDefectCode_Cosmetic;
 	double		dAlmDefectPercent_Cosmetic;
 	int			nAlmNGCount_Cosmetic;
 	

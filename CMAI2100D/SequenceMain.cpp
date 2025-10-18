@@ -13260,7 +13260,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		if (m_nUnloadConveyorCase == 0) {
 			m_sLog.Format("[MZTransfer: Unload] Good-Conveyor(1F) => MZID(%s)", gData.sMZID[8]);
 			g_objLogFile.Save_HandlerLog(m_sLog);
-			gData.sMZID[8] = "";
+			
 			m_nUnloadConveyorCase = 1;	//1F±¸µ¿
 			if (Check_ModuleEmpty()) Set_JobTack(2);
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
@@ -13275,7 +13275,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 	case 32:
 		if (!m_pDX19->iULCV1FCnt1) {
 			gCap.nCVMZIndex[0] = gCap.nTransferMZIndex[0];
-			g_dlgOCAPCosmetic.AddMZOut(gTracking.sMZID_GOODCV, "GOOD");
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
+			gData.sMZID[8] = "";
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase = 0; m_tULCVElevatorLoop.Set_LoopTime(10000);
 
