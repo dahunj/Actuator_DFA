@@ -336,6 +336,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 
 	int nVNo = (sType == "B1" ? 1 : (sType == "AG" ? 2 : (sType == "T1" ? 3 : (sType == "TG" ? 4 : (sType == "T2" ? 5 : 0)))));
 
+
 	if (pEquipData->bUseNGSize) { if (sJudge == "N" || sJudge == "X" || sJudge == "R") sJudge = "G"; }
 	if (sType == "B1" || sType == "AG") { if (sNGCode == "MC" || sNGCode == "ROI_FAIL") sNGCode = "MCBTM"; }
 	if (sNGCode.Left(5) == "FDFAI") { sNGCode = sNGCode.Right(sNGCode.GetLength()-1); gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1] = 1; }
@@ -357,15 +358,13 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
-		gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCodeVision;
-				
 		strLog.Format("INSPECT,COMPLETE,GOOD,Empty");
 		g_objLogFile.Save_TestLog(strLog);
 	}
 	else
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
-		gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCodeVision;
+		
 
 		/*if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
 		{
@@ -390,7 +389,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			}			
 		}*/
 	}
-	
+	if(sNGCodeVision.GetLength() > 0) gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
 	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] + nImage2;	//외관불량수

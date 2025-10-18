@@ -488,7 +488,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 		}		
 	}
 	//Only Vision Good이어도 코드는 NG
-	if(sNGCode !="")
+	if(sNGCodeVision !="")
 	{
 		for(int i = 0; i < 50; i++)
 		{
@@ -503,8 +503,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, CString sType)
 {
 	CString strLog; 
-
-	
+		
 	if(sType == "GOOD")
 	{
 		gCap.nGoodCnt_Cosmetic[gCap.nMZIdx_Cosmetic][gCap.nLotIndex_Good] = gCap.nGoodCntInCarr_Cosmetic[nSlotNo];
@@ -520,13 +519,17 @@ void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, CString sType)
 		{			
 			gCap.nDefectCnt_Cosmetic[i][gCap.nMZIdx_Cosmetic][gCap.nLotIndex_NG] = gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];
 			gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic] += gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];
-			gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] += gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo];
 			strLog.Format("AddCarToMZ,gCap.nCosmeticDefectMZ:%d,nSlotNo:%d", gCap.nDefectCnt_Cosmetic[i][gCap.nLotIndex_NG],nSlotNo);
 			g_objLogFile.Save_TestLog(strLog);
 		}	
 		gCap.nLotIndex_NG++;
 	}
-
+	//Only Vsion 별도 
+	for(int i = 0; i < 50; i++)
+	{	
+		gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] += gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo];
+	}
+	
 }
 
 void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
@@ -596,7 +599,8 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 			nConsecutiveMZLimit = gCap.nConsecutiveMZLimit[nType -3];
 		}
 		else{
-
+			dPercentLimit = gCap.dDefectPercent[nType];
+			nConsecutiveMZLimit = gCap.nConsecutiveMZLimit[nType];
 		}
 
 		gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;

@@ -750,7 +750,7 @@ BOOL CDataManager::Read_OCAPData()
 
 	CString strKey;
 	
-	for(int i=0; i<4; i++) 
+	for(int i=0; i<3; i++) 
 	{
 		strKey.Format("DEFECT_PERCENT_%02d", i + 1);
 		gCap.dDefectPercent[i] = INI.Get_Double("OPTION", strKey, 0.0);
