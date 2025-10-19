@@ -436,6 +436,9 @@ typedef struct {
 	//ADJ Overwritten
 	int nDefectCntInCarr_Cosmetic[50][28];	//md(module) in Carrier , NG category 50, 28 lot 
 	int nGoodCntInCarr_Cosmetic[28]; // 28 lot 
+
+	int nMDGoodCntOutput[50];
+	int nMDNGCntOutput[50];
 	
 	int nDefectCnt_Cosmetic[50][50][28]; //50가지 종류의 불량,  50개의 매거진 루프, 28개 랏 
 	int nGoodCnt_Cosmetic[50][28]; // 28개 랏 

@@ -970,6 +970,86 @@ BOOL CSequenceMain::Check_LotEndLast(CString sLotID)
 	return TRUE;
 }
 
+BOOL CSequenceMain::Check_LastCarrMZ(CString sMZID)
+{
+	if (sMZID.GetLength() < 2) return TRUE;
+	
+	if (sMZID == gTracking.sMZID_LoadMZElev)
+	{
+		return FALSE;
+	}
+	if (sMZID == gTracking.sMZID_Trasnfer1)
+	{
+		return FALSE;
+	}
+	if (sMZID == gData.sMZID_LoadStage[0])
+	{
+		return FALSE;
+	}
+	if (sMZID == gData.sMZID_LoadStage[1])
+	{
+		return FALSE;
+	}
+	
+	for(int i = 0; i < 10; i++)
+	{
+		for(int j = 0; j < 4; j++)
+		{
+			if (sMZID == gTracking.sMZID_LoadStageModule[0][i][j]) return FALSE;
+			if (sMZID == gTracking.sMZID_LoadStageModule[1][i][j]) return FALSE;
+		}
+	}
+
+	for(int i = 0; i < 2; i++)
+	{
+		for(int j = 0; j < PICK_CNT; j++)
+		{
+			if (sMZID == gTracking.sMZID_LoadPicker[i][j]) return FALSE;
+			if (sMZID == gTracking.sMZID_UnloadPicker[i][j]) return FALSE;
+		}
+	}
+
+	for(int i = 0; i < 4; i++)
+	{
+		for(int j = 0; j < PICK_CNT; j++)
+		{
+			if (sMZID == gTracking.sMZID_InspectStage[i][j]) return FALSE;			
+		}
+	}
+	for(int i = 0; i < 10; i++)
+	{
+		for(int j = 0; j < 4; j++)
+		{
+			if (sMZID == gTracking.sMZID_NGTray[i][j])
+			{
+				return FALSE;
+			}
+			if (sMZID == gTracking.sMZID_GoodTray[i][j])
+			{
+				return FALSE;
+			}
+			if (sMZID == gTracking.sMZID_Transfer2[i][j])
+			{
+				return FALSE;
+			}
+		}
+	}
+
+	//for(int i = 0; i < 28; i++)
+	//{
+	//	for(int j = 0; j < 10; j++)
+	//	{
+	//		for(int k = 0; k < 4; j++)
+	//		{
+	//			//if (sMZID == gTracking.sMZID_GoodMZElev[i][j][k]) return FALSE;
+	//			//if (sMZID == gTracking.sMZID_NGMZElev[i][j][k]) return FALSE;				
+	//		}
+	//	}
+	//}
+
+	return TRUE;
+}
+
 BOOL CSequenceMain::Check_MZEndUnload(CString sLotID, int nPortNo, int nPickNo)
 {
 	if (sLotID.GetLength() < 1) return FALSE;
@@ -4717,7 +4797,6 @@ BOOL CSequenceMain::Run_Transfer2()
 	case 45:
 		if (m_pDX03->iTransferRTrayExist) 
 		{
-			//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_NGTray[gData.nTransferX2Pos-7]-1, "NG", gCap.nCarrierMZIndex[1]);
 			gCap.nTransferMZIndex[1] = gCap.nCarrierMZIndex[1]; gCap.nCarrierMZIndex[1] = 0;
 			
 			gData.sLotID_Tansfer[1] = gData.sLotID_NGTray[gData.nTransferX2Pos-7];
@@ -4792,7 +4871,7 @@ BOOL CSequenceMain::Run_Transfer2()
 	case 55:
 		if (m_pDX03->iTransferRTrayExist) 
 		{
-			//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[gData.nTransferX2Pos-9] - 1, "GOOD", gCap.nCarrierMZIndex[0]);
+			
 			gCap.nTransferMZIndex[0] = gCap.nCarrierMZIndex[0];gCap.nCarrierMZIndex[0] = 0;
 
 			gData.sLotID_Tansfer[1] = gData.sLotID_GoodTray[gData.nTransferX2Pos-9];
@@ -4815,8 +4894,6 @@ BOOL CSequenceMain::Run_Transfer2()
 					if(gTracking.sMZID_Transfer2[y][x] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 				}
 			}
-
-
 			if (m_nGoodStage1Case == 60) m_nGoodStage1Case = 61;
 			if (m_nGoodStage2Case == 60) m_nGoodStage2Case = 61;
 			m_nTransfer2Case = 60; m_tTransfer2Loop.Set_LoopTime(5000);
@@ -10555,7 +10632,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 			if (Check_GooodTrayFull()) 
 			{
-				//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
+				
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -11175,8 +11252,6 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 		{
 			if (Check_GooodTrayFull())
 			{
-				//g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
-
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -13272,7 +13347,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 	case 32:
 		if (!m_pDX19->iULCV1FCnt1) {
 			gCap.nCVMZIndex[0] = gCap.nTransferMZIndex[0];
-			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
+			//g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 			gData.sMZID[8] = "";
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase = 0; m_tULCVElevatorLoop.Set_LoopTime(10000);
@@ -14285,7 +14360,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 				if (Check_LotEndLast(m_sGdMZInLot[i]) == FALSE) nFound++;
 			}
 			if (nFound == 0) 
-			{	
+			{					
 				m_nNGMZElevatorCase = 40;				
 			}
 		}
@@ -14366,6 +14441,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			gLot.sCarID_GD[nPNo] = gData.sCarID_Elevator[1];
 			gLot.nSlotNo_GD[nPNo] = gData.nMZSlotNo[2] = nSlotNo;
 
+			
 			for(int y = 0; y < 10; y++)
 			{
 				for(int x = 0; x < 4; x++)
@@ -14381,6 +14457,11 @@ BOOL CSequenceMain::Run_GDMZElevator()
 					}
 				}
 			}
+
+			if(Check_LastCarrMZ(gTracking.sMZID_GOODCV)) 
+			{
+				g_dlgOCAPCosmetic.AddMZOut(gLot.sMZID_GD[nPNo], "GOOD");
+			}			
 
 			gData.sCarID_Elevator[1] = gData.sLotID_UnMZ[1] = "";
 			gData.nPortNo_UnMZ[1] = 0;
@@ -14554,8 +14635,10 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			else
 			{
 				g_objLogFile.Save_TestLog("MCC,31,LD1FConveyor,5-2,Barcode No use so MZ Count add");
-				gLot.nMZCountGD++;
-				sMZID.Format("MZID%02d-LOAD", gLot.nMZCountGD);
+				/*gLot.nMZCountGD++;
+				sMZID.Format("MZID%02d-LOAD", gLot.nMZCountGD);*/
+
+				sMZID.Format("MZID%d-LOAD", g_objCommon.Get_Random(1, 9999) );
 				m_nLD1FConveyorCase = 7; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			}
 		break;
@@ -15235,7 +15318,7 @@ BOOL CSequenceMain::Run_Simulation()
 			if (gData.nSimCount == 0 || gData.nSimCount == 4) { nS =  0; nE =  8; }
 			if (gData.nSimCount == 1 || gData.nSimCount == 5) { nS =  8; nE = 16; }
 			if (gData.nSimCount == 2 || gData.nSimCount == 6) { nS = 16; nE = 24; }
-			if (gData.nSimCount == 3 || gData.nSimCount == 7) { nS = 24; nE = 32; }
+			if (gData.nSimCount == 3 || gData.nSimCount == 7) { nS = 24; nE = 28; }
 			if (gData.nSimCount > 7) 
 			{
 				gData.nSimCount = 0;

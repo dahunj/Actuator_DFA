@@ -475,7 +475,7 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		gCap.sMZID_Cosmetic[nIx], gCap.nTotCount_Cosmetic[nIx], gCap.nGoodCount_Cosmetic[nIx]+ nTemp, 
 		gCap.nGoodCount_Cosmetic[nIx], gCap.sAlmDefectCode_Cosmetic, gCap.nNGCount_Consmetic[nIx], dPer);
 	strLog += strTemp;
-	g_objLogFile.Save_OCAPCosmeticLog(strLog);
+	//g_objLogFile.Save_OCAPCosmeticLog(strLog);
 	
 }
 
@@ -627,7 +627,7 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 
 void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 {
-	double dPer = 0;
+	double dPer = 0, dPerV = 0, dPerADJ = 0;
 
 	//Cosmetic case 1 check 
 	for(int i = 0; i < 50; i++)
@@ -659,9 +659,11 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 			gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeVisionCnt_MZ[j][gCap.nMZIdx_Cosmetic];
 		}		
 		gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic] = gCap.nGoodCnt_MZ[gCap.nMZIdx_Cosmetic] + gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic];
-		
-		if(nType > 2) dPer = (gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
-		else dPer = (gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
+
+		dPerV = (gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
+		dPerADJ = (gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
+		if(nType > 2) dPer = dPerADJ;
+		else dPer = dPerV;
 
 		// 불량율 OCAP 기준보다 낮으면 Continue
 		if (dPer < dPercentLimit || _isnan(dPer))
@@ -729,7 +731,36 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		memset(gCap.nConsecutiveMZCount[nType],0,sizeof(int)*50); //에러율 초과 발생시 연속 발생 횟수 초기화 
 		gCap.bOCAPDone[nType] = TRUE;
 
-		//후처리 		
+		// Log 
+		int nTemp = 0;
+		CString str, strLog, strTemp;
+		double dPer1 =0, dPer2 =0;
+		strTemp = "";
+		for(int i = 0; i < gCap.nCosmeticCount; i++)
+		{		
+			if(gCap.nTotCount_Cosmetic[gCap.nMZIdx_Cosmetic] != 0)
+			{
+				dPer1 = (double)(gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic]*100/gCap.nTotCount_Cosmetic[gCap.nMZIdx_Cosmetic]);
+				if (_isnan(dPer1)) dPer1 = 0;
+
+				dPer2 = (double)(gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic]*100/gCap.nTotCount_Cosmetic[gCap.nMZIdx_Cosmetic]);
+				if (_isnan(dPer2)) dPer2 = 0;
+			}					
+
+			nTemp += gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic];
+			str.Format(_T("%d (%0.1lf%%) - %d (%0.1lf%%)"), gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic], dPer1, gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic], dPer2); 
+			strTemp += "," + str;	
+
+			dPer1 = 0;
+			dPer2 = 0;
+		}		
+		strLog.Format(_T("%s,%s,%s,%d,%d,%d,%s,%d(%0.1lf%%)"), gCap.sDate_Cosmetic[gCap.nMZIdx_Cosmetic], gCap.sTime_Cosmetic[gCap.nMZIdx_Cosmetic],
+			gCap.sMZID_Cosmetic[gCap.nMZIdx_Cosmetic], gCap.nTotCount_Cosmetic[gCap.nMZIdx_Cosmetic], gCap.nGoodCount_Cosmetic[gCap.nMZIdx_Cosmetic]+ nTemp, 
+			gCap.nGoodCount_Cosmetic[gCap.nMZIdx_Cosmetic], gCap.sAlmDefectCode_Cosmetic, gCap.nNGCount_Consmetic[gCap.nMZIdx_Cosmetic], dPer);
+		strLog += strTemp;
+		g_objLogFile.Save_OCAPCosmeticLog(strLog);
+
+		//알람 발생시 for 루프 break;		
 		break;
 
 	}

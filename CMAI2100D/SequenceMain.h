@@ -195,6 +195,7 @@ private:
 	BOOL Check_LotEndTray(CString sLotID, int nPortNo);
 	BOOL Check_LotEndCarrier(CString sLotID, int nPortNo);
 	BOOL Check_LotEndLast(CString sLotID);
+	BOOL Check_LastCarrMZ(CString sMZID);
 	BOOL Check_MZEndUnload(CString sLotID, int nPortNo, int nPickNo);
 	BOOL Check_Load12Empy();
 	BOOL Check_AlignData(int nPortNo);
