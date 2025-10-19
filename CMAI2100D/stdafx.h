@@ -433,31 +433,25 @@ typedef struct {
 	int nLotIndex_NG;
 	int nLotIndex_Good;
 
-	//With ADJ
-	int nDefectCntInCarr_Cosmetic[50][28];	
-	int nGoodCntInCarr_Cosmetic[28];
+	//ADJ Overwritten
+	int nDefectCntInCarr_Cosmetic[50][28];	//md(module) in Carrier , NG category 50, 28 lot 
+	int nGoodCntInCarr_Cosmetic[28]; // 28 lot 
 	
-
-	int nDefectCnt_Cosmetic[50][50][8]; //50가지 종류의 불량,  50개의 매거진 루프, 매거진 당 8개 랏 
-	int nGoodCnt_Cosmetic[50][8]; // 매거진당 8개 랏 
+	int nDefectCnt_Cosmetic[50][50][28]; //50가지 종류의 불량,  50개의 매거진 루프, 28개 랏 
+	int nGoodCnt_Cosmetic[50][28]; // 28개 랏 
 	
 	//Only Vision 
 	int nDefectCntInCarr_CosmeVision[50][28];		
-
-	int nDefectCnt_CosmeVision[50][50][8]; //50가지 종류의 불량, 50개의 매거진 루프, 매거진 당 8개 랏 	
+		
 	int nNGVisionCnt_MZ[50];		
 	int nCosmeVisionCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
 	
 	//Commonly Used 
-	int nTotalCntCarrier[28]; //  
-
 	int nTotalCnt_MZ[50];
 	int nGoodCnt_MZ[50]; // 1번째: NG 종류, 2번째:매거진 루프 개수 
 	int nNGCnt_MZ[50];	
 	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
-
-
-	
+		
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
 	int			nCosmeticCount;		// 외관 에러 항목 개수 
@@ -465,10 +459,7 @@ typedef struct {
 	double		dDefectPercent[3];		// 설정된 불량율%
 	int			nConsecutiveMZLimit[3];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
 	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
-	int			nConsecutiveMZCount[6][50];
-	int			nConsecutiveModuleCnt[6][50];
-	int			nConsecutiveGoodCnt[6][50];
-	int			nConsecutiveNGCnt[6][50];
+	int			nConsecutiveMZCount[6][50];	
 	int			nCosmeticCodeNum[6];
 	
 	CString		sAlmMZID_Cosmetic;
