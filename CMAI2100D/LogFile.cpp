@@ -1113,9 +1113,44 @@ void CLogFile::Save_OCAPFAILog(int nIdx)
 
 }
 
-void CLogFile::Save_OCAPCosmeticLog(int nIdx)
+void CLogFile::Save_OCAPCosmeticLog(CString sLog)
 {
+	CString strTitle, strTemp;
+	CString strPath = gsCurrentDir + "\\LOG\\OCAPCOSMETIC";
 
+	Create_Folder(strPath);
+
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+
+	CString strFile, strSave;
+	strFile.Format("%s\\%04d%02d%02d_Cosmetic.csv", strPath, time.wYear, time.wMonth, time.wDay);
+
+	CFile file;
+	if (file.Open(strFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone)) {
+		try {
+			file.SeekToEnd();
+
+			if (file.GetLength() < 1) {
+				strTitle.Format("LogTime,Date,Time,MZID,Input,Output,GOOD,OCAP Code, OCAP Count");
+				for(int i = 0; i < gCap.nCosmeticCount; i++)
+				{
+					strTemp.Format(",%s", gCap.sCosmeticCode[i]);
+					strTitle += strTemp;
+				}
+				strTitle+= "\r\n";
+				file.Write(strTitle, strTitle.GetLength());
+			}
+
+			strSave.Format("[%02d:%02d:%02d %03d], %s\r\n", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds, sLog);
+
+			file.Write(strSave, strSave.GetLength());
+			file.Close();
+
+		} catch (CFileException *pEx) {
+			pEx->Delete();
+		}
+	}
 }
 
 

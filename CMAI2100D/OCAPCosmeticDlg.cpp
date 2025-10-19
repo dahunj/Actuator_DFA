@@ -304,14 +304,14 @@ void OCAPCosmeticDlg::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 	long lTotalH = pGrid->Get_GridHeight();
 	long lCellW = lTotalW / nCols;
 	long lCellH = (lTotalH / nRows) + 2;
-	long  lWidth[7]= { 140,   140,      140,          60,     60,      60,    100  };
-	CString sTxt[7]= {"날짜","시간","배출매거진ID", "투입", "완공", "양품", "OCAP NG"};
+	long  lWidth[8]= { 140,   140,      140,          60,     60,      60,    160 , 100 };
+	CString sTxt[8]= {"날짜","시간","배출매거진ID", "투입", "완공", "양품", "OCAP Code", "OCAP Count"};
 	long  lWidthName[2]= { 40, 50 };
 
 	for (int i=0; i<nRows; i++)
 	{
 		pGrid->Set_RowHeight(i, lCellH);
-		for (int j=0; j<7; j++) 
+		for (int j=0; j<8; j++) 
 		{
 			if(i==0) 
 			{
@@ -325,11 +325,11 @@ void OCAPCosmeticDlg::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 	for (int i=0; i < nRows; i++)
 	{
 		pGrid->Set_RowHeight(i, lCellH);
-		for (int j=7; j < (7 + gCap.nCosmeticCount); j++) 
+		for (int j=8; j < (8 + gCap.nCosmeticCount); j++) 
 		{
 			if(i==0) 
 			{	
-				sTemp.Format("%s(V,A)", gCap.sCosmeticCode[j-7]);
+				sTemp.Format("%s(V,A)", gCap.sCosmeticCode[j-8]);
 				pGrid->Set_ColWidth(j, 180); pGrid->Set_CellText(i, j, sTemp);
 				pGrid->Set_CellBackClr(i, j, RGB(0xCC, 0xCC, 0xCC));
 			}
@@ -404,11 +404,12 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 {
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
-
+	CString strLog, strTemp;
+	
 	str.Format(_T("%s"), gCap.sDate_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 0, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 0, str);
-
+	
 	str.Format(_T("%s"), gCap.sTime_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 1, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 1, str);
@@ -420,13 +421,14 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 	str.Format(_T("%d"), gCap.nTotCount_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 3, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 3, str);
-
-	//	str.Format(_T("%d"), gCap.nGoodCount[nIx] + gCap.nROSNGCount[nIx] + gCap.nROSRfCount[nIx]);
-	
-
+		
 	str.Format(_T("%d"), gCap.nGoodCount_Cosmetic[nIx]);
 	m_grdData.Set_CellFont(nDp, 5, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 5, str);
+	
+	str.Format(_T("%s"), gCap.sAlmDefectCode_Cosmetic);
+	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 6, str);
 
 	double dPer = 0;
 	if(gCap.nTotCount_Cosmetic[nIx] != 0)
@@ -434,27 +436,30 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		dPer = (double)(gCap.nNGCount_Consmetic[nIx]*100/gCap.nTotCount_Cosmetic[nIx]);
 		if (_isnan(dPer)) dPer = 0;
 	}
-
 	str.Format(_T("%d (%0.1lf%%)"), gCap.nNGCount_Consmetic[nIx], dPer);
-	m_grdData.Set_CellFont(nDp, 6, str, 10, FALSE);
-	m_grdData.Set_CellText(nDp, 6, str);
+	m_grdData.Set_CellFont(nDp, 7, str, 10, FALSE);
+	m_grdData.Set_CellText(nDp, 7, str);
+	
 
 	int nTemp = 0;
 	double dPer1 = 0, dPer2 = 0;
-	
-	for(int i = 7; i < (7 + gCap.nCosmeticCount); i++)
+
+	strTemp = "";
+	for(int i = 8; i < (8 + gCap.nCosmeticCount); i++)
 	{		
 		if(gCap.nTotCount_Cosmetic[nIx] != 0)
 		{
-			dPer1 = (double)(gCap.nCosmeticCnt_MZ[i-7][nIx]*100/gCap.nTotCount_Cosmetic[nIx]);
+			dPer1 = (double)(gCap.nCosmeticCnt_MZ[i-8][nIx]*100/gCap.nTotCount_Cosmetic[nIx]);
 			if (_isnan(dPer1)) dPer1 = 0;
 
-			dPer2 = (double)(gCap.nCosmeVisionCnt_MZ[i-7][nIx]*100/gCap.nTotCount_Cosmetic[nIx]);
+			dPer2 = (double)(gCap.nCosmeVisionCnt_MZ[i-8][nIx]*100/gCap.nTotCount_Cosmetic[nIx]);
 			if (_isnan(dPer2)) dPer2 = 0;
 		}					
 		
-		nTemp += gCap.nCosmeticCnt_MZ[i-7][nIx];
-		str.Format(_T("%d (%0.1lf%%), %d (%0.1lf%%)"), gCap.nCosmeticCnt_MZ[i-7][nIx], dPer1, gCap.nCosmeVisionCnt_MZ[i-7][nIx], dPer2); 
+		nTemp += gCap.nCosmeticCnt_MZ[i-8][nIx];
+		str.Format(_T("%d (%0.1lf%%) - %d (%0.1lf%%)"), gCap.nCosmeticCnt_MZ[i-8][nIx], dPer1, gCap.nCosmeVisionCnt_MZ[i-8][nIx], dPer2); 
+		strTemp += "," + str;
+		
 		m_grdData.Set_CellFont(nDp, i, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, i, str);
 
@@ -466,7 +471,11 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 4, str);
 
-	
+	strLog.Format(_T("%s,%s,%s,%d,%d,%d,%s,%d(%0.1lf%%)"), gCap.sDate_Cosmetic[nIx], gCap.sTime_Cosmetic[nIx],
+		gCap.sMZID_Cosmetic[nIx], gCap.nTotCount_Cosmetic[nIx], gCap.nGoodCount_Cosmetic[nIx]+ nTemp, 
+		gCap.nGoodCount_Cosmetic[nIx], gCap.sAlmDefectCode_Cosmetic, gCap.nNGCount_Consmetic[nIx], dPer);
+	strLog += strTemp;
+	g_objLogFile.Save_OCAPCosmeticLog(strLog);
 	
 }
 
@@ -584,7 +593,7 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 	Check_CosmeticDefect(3, sMZID);
 	Check_CosmeticDefect(4, sMZID);
 	Check_CosmeticDefect(5, sMZID);
-	
+			
 	if(gCap.nMZIdx_Cosmetic == 49)
 	{
 		gCap.nMZIdx_Cosmetic = 0;
