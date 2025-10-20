@@ -95,11 +95,11 @@
 #define PICK_CNT		8
 
 #ifdef CARRIER_TYPE_MEM
-	#define MAIN_VERSION	"Vd 3.1.6m"
+	#define MAIN_VERSION	"Vd 3.1.7m"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	0.0
 #else
-	#define MAIN_VERSION	"Vd 3.1.6v"
+	#define MAIN_VERSION	"Vd 3.1.7v"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	8.0
 #endif

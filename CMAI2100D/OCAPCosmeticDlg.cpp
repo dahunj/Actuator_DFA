@@ -791,17 +791,6 @@ void OCAPCosmeticDlg::DelMZData(int nMZNo)
 }
 
 
-
-void OCAPCosmeticDlg::Set_AddDEFECT(CString sMZid,int nPortNo, int nInfo)
-{
-
-}
-
-void OCAPCosmeticDlg::Check_DEFECTF(int nNo)
-{
-}
-
-
 void OCAPCosmeticDlg::OnBnClickedBtnTest()
 {
 

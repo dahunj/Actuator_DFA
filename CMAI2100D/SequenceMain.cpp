@@ -14542,6 +14542,7 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 {
 	static int nMZExit = 0;
 	static CString sMZID;
+	static int nLDMZNum;
 
 	switch (m_nLD1FConveyorCase)
 	{
@@ -14636,7 +14637,11 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 				/*gLot.nMZCountGD++;
 				sMZID.Format("MZID%02d-LOAD", gLot.nMZCountGD);*/
 
-				sMZID.Format("MZID%d-LOAD", g_objCommon.Get_Random(1, 9999) );
+				int nTemp = g_objCommon.Get_Random(1, 9999);
+				if(nTemp == nLDMZNum) nTemp++;
+				sMZID.Format("MZID%d-LOAD", nTemp );
+				nLDMZNum = nTemp;
+
 				m_nLD1FConveyorCase = 7; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 			}
 		break;
