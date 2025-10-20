@@ -2303,7 +2303,8 @@ void CSequenceMain::Set_LotEnd(CString sLotID, int nPortNo, CString sMZID, CStri
 //	g_objInspector.Set_LotEnd(INSPECTOR_ALL, gLot.sLotID[nNo], nPortNo);
 	g_objDispatcher.Set_LotEnd(nPortNo);
 	g_dlgOCAP.Set_AddMZData(nPortNo);
-	
+	g_dlgOCAPCosmetic.Set_AddMZData(nPortNo);
+
 	gData.nDay_TotalCnt += gLot.nCmCount[nNo];
 	gData.nDay_NGCnt += gLot.nNgCount[nNo];
 	gData.nDay_GoodCnt += gLot.nGoodCount[nNo];
@@ -10477,8 +10478,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			m_nUnloadPicker1Case++; m_tUnloadPicker1Loop.Set_LoopTime(30000);
 		} else {
 			if (Check_LotEndUnloadNG(gData.sLotID_UnloadPicker[n1No-1], gData.nPortNo_UnloadPicker[n1No-1], n1No)) 
-			{
-				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_UnloadPicker[n1No-1]-1,"NG");
+			{				
 //				if (m_nNGStage1Case == 30)   m_nNGStage1Case = 31;
 //				if (m_nNGStage2Case == 30)   m_nNGStage2Case = 31;
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
@@ -10646,8 +10646,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			for(int i=0; i<10; i++) gData.InfoUnloadPick[n1No-1][i] = 0;
 
 			if (Check_LotEndUnloadPicker(sLotID, nPortNo))
-			{
-				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n1NSNo-7]-1,"GOOD");
+			{				
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -11094,8 +11093,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 			m_nUnloadPicker2Case++; m_tUnloadPicker2Loop.Set_LoopTime(30000);
 		} else {
 			if (Check_LotEndUnloadNG(gData.sLotID_UnloadPicker[n2No-1], gData.nPortNo_UnloadPicker[n2No-1], n2No)) 
-			{
-				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_UnloadPicker[n2No-1]-1,"NG");
+			{				
 //				if (m_nNGStage1Case == 30)   m_nNGStage1Case = 31;
 //				if (m_nNGStage2Case == 30)   m_nNGStage2Case = 31;
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
@@ -11266,7 +11264,6 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 
 			if (Check_LotEndUnloadPicker(sLotID, nPortNo)) 
 			{
-				g_dlgOCAPCosmetic.AddCarToMZ(gData.nPortNo_GoodTray[n2NSNo-7]-1,"GOOD");
 				if (m_nGoodStage1Case == 30) m_nGoodStage1Case = 31;
 				if (m_nGoodStage2Case == 30) m_nGoodStage2Case = 31;
 			}
@@ -13320,6 +13317,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		{
 			g_objMesAgent.Set_MGZIDRemove("G", gData.sMZID[8], gData.sRecipeName);
 			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 		}
 		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		break;
@@ -13347,7 +13345,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 	case 32:
 		if (!m_pDX19->iULCV1FCnt1) {
 			gCap.nCVMZIndex[0] = gCap.nTransferMZIndex[0];
-			//g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 			gData.sMZID[8] = "";
 			g_objCommon.Move_Position(AX_ULCV_ELEVATOR_Z, 2);	//TransferDown
 			m_nULCVElevatorCase = 0; m_tULCVElevatorLoop.Set_LoopTime(10000);
@@ -14458,10 +14456,10 @@ BOOL CSequenceMain::Run_GDMZElevator()
 				}
 			}
 
-			if(Check_LastCarrMZ(gTracking.sMZID_GOODCV)) 
+			/*if(Check_LastCarrMZ(gTracking.sMZID_GOODCV)) 
 			{
 				g_dlgOCAPCosmetic.AddMZOut(gLot.sMZID_GD[nPNo], "GOOD");
-			}			
+			}		*/	
 
 			gData.sCarID_Elevator[1] = gData.sLotID_UnMZ[1] = "";
 			gData.nPortNo_UnMZ[1] = 0;

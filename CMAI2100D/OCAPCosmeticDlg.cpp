@@ -467,7 +467,8 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		dPer2 = 0;
 	}
 	
-	str.Format(_T("%d"), gCap.nGoodCount_Cosmetic[nIx]+ nTemp);
+	//str.Format(_T("%d"), gCap.nGoodCount_Cosmetic[nIx]+ nTemp);
+	str.Format(_T("%d"), gCap.nTotCount_Cosmetic[nIx]);	
 	m_grdData.Set_CellFont(nDp, 4, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 4, str);
 
@@ -530,35 +531,34 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 	}
 }
 
-void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, CString sType)
+void OCAPCosmeticDlg::AddCarToMZ(int nSlotNo, int nIdx)
 {
 	CString strLog; 
 	//ADJ Overitten 	
-	if(sType == "GOOD")
-	{
-		gCap.nGoodCnt_Cosmetic[gCap.nMZIdx_Cosmetic][gCap.nLotIndex_Good] = gCap.nGoodCntInCarr_Cosmetic[nSlotNo];
-		gCap.nGoodCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nGoodCntInCarr_Cosmetic[nSlotNo];
-		strLog.Format("AddCarToMZ,gCap.nGoodInMZ:%d, nSlotNo: %d", gCap.nGoodCnt_Cosmetic[gCap.nLotIndex_Good],nSlotNo);
-		g_objLogFile.Save_TestLog(strLog);
 
-		gCap.nLotIndex_Good++;
-	}		
-	else if(sType == "NG")
-	{
-		for(int i = 0; i < 50; i++)
-		{			
-			gCap.nDefectCnt_Cosmetic[i][gCap.nMZIdx_Cosmetic][gCap.nLotIndex_NG] = gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];
-			gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic] += gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];
-			strLog.Format("AddCarToMZ,gCap.nCosmeticDefectMZ:%d,nSlotNo:%d", gCap.nDefectCnt_Cosmetic[i][gCap.nLotIndex_NG],nSlotNo);
-			g_objLogFile.Save_TestLog(strLog);
-		}	
-		gCap.nLotIndex_NG++;
-	}
+	gCap.sMZID_Cosmetic[nIdx] = gLot.sMZID_GD[nSlotNo];
+	//GOOD
+	gCap.nGoodCnt_MZ[nIdx] += gCap.nGoodCntInCarr_Cosmetic[nSlotNo];
+	
+	gCap.nGoodCnt_Cosmetic[nIdx][gCap.nLotIndex_Good] = gCap.nGoodCntInCarr_Cosmetic[nSlotNo];
+	
+	//NG
+	for(int i = 0; i < 50; i++)
+	{			
+		gCap.nDefectCnt_Cosmetic[i][nIdx][gCap.nLotIndex_NG] = gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];
+		gCap.nCosmeticCnt_MZ[i][nIdx] += gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo];	
+	}	
+	
+	gCap.nLotIndex_Good++;
+	gCap.nLotIndex_NG++;
+
 	//Only Vsion 별도 
 	for(int i = 0; i < 50; i++)
 	{	
-		gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] += gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo];
+		gCap.nCosmeVisionCnt_MZ[i][nIdx] += gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo];
+		gCap.nNGVisionCnt_MZ[nIdx] += gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo];
 	}
+	
 
 	if(gCap.nLotIndex_Good > 27)
 	{
@@ -594,7 +594,8 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 	Check_CosmeticDefect(4, sMZID);
 	Check_CosmeticDefect(5, sMZID);
 			
-	if(gCap.nMZIdx_Cosmetic == 49)
+	gCap.nMZIdx_Cosmetic++;
+	if(gCap.nMZIdx_Cosmetic >= 50)
 	{
 		gCap.nMZIdx_Cosmetic = 0;
 
@@ -609,7 +610,6 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 		memset(gCap.nNGVisionCnt_MZ, 0, sizeof(int)*50);
 		memset(gCap.nCosmeVisionCnt_MZ, 0, sizeof(int)*50*50);		
 	}
-	else gCap.nMZIdx_Cosmetic++;
 
 
 	if(gCap.bOCAPDone[0] == TRUE || gCap.bOCAPDone[1] == TRUE || gCap.bOCAPDone[2] == TRUE ||
@@ -632,12 +632,18 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 	//Cosmetic case 1 check 
 	for(int i = 0; i < 50; i++)
 	{
-
 		if(gCap.bOCAPDone[0] == TRUE || gCap.bOCAPDone[1] == TRUE || gCap.bOCAPDone[2] == TRUE ||
 			gCap.bOCAPDone[3] == TRUE || gCap.bOCAPDone[4] == TRUE || gCap.bOCAPDone[5] == TRUE)
 		{
 			break;
 		}
+		gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;
+		for(int j = 0; j < 50; j++) //50 종류 
+		{				
+			gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeticCnt_MZ[j][gCap.nMZIdx_Cosmetic];		
+		}		
+		gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic] = gCap.nGoodCnt_MZ[gCap.nMZIdx_Cosmetic] + gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic];
+
 		double dPercentLimit = 0;
 		int	   nConsecutiveMZLimit = 0;	
 
@@ -650,16 +656,7 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 			dPercentLimit = gCap.dDefectPercent[nType];
 			nConsecutiveMZLimit = gCap.nConsecutiveMZLimit[nType];
 		}
-
-		gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;
-		gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] = 0;
-		for(int j = 0; j < 50; j++)
-		{				
-			gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeticCnt_MZ[j][gCap.nMZIdx_Cosmetic];
-			gCap.nNGVisionCnt_MZ[gCap.nMZIdx_Cosmetic] += gCap.nCosmeVisionCnt_MZ[j][gCap.nMZIdx_Cosmetic];
-		}		
-		gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic] = gCap.nGoodCnt_MZ[gCap.nMZIdx_Cosmetic] + gCap.nNGCnt_MZ[gCap.nMZIdx_Cosmetic];
-
+				
 		dPerV = (gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
 		dPerADJ = (gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic] * 100.0) / gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic];
 		if(nType > 2) dPer = dPerADJ;
@@ -690,9 +687,9 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		if(nType > 2) gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeticCnt_MZ[i][gCap.nMZIdx_Cosmetic];
 		else gCap.nAlmNGCount_Cosmetic   = gCap.nCosmeVisionCnt_MZ[i][gCap.nMZIdx_Cosmetic];
 
-		if(gCap.nMZCycle_Cosmetic == 50)  gCap.nMZCycle_Cosmetic = 1;
-		else gCap.nMZCycle_Cosmetic++;
-
+		gCap.nMZCycle_Cosmetic++;
+		if(gCap.nMZCycle_Cosmetic > 50)  gCap.nMZCycle_Cosmetic = 1;
+		
 		SYSTEMTIME time;
 		GetLocalTime(&time);
 
@@ -768,13 +765,29 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 
 void OCAPCosmeticDlg::Set_AddMZData(int nPortNo)
 {
-
+	int nNo = nPortNo - 1;
+	for (int i=0; i<50; i++) {
+		if (gLot.sMZID_GD[nNo] == gCap.sMZID_Cosmetic[i]) {
+			AddCarToMZ(nNo, i);
+			return;
+		}
+	}
+	//First Lot after MZ Change
+	if (gCap.nMZIdx_Cosmetic < 0 || gCap.nMZIdx_Cosmetic >= 50) gCap.nMZIdx_Cosmetic = 0;
+	DelMZData(gCap.nMZIdx_Cosmetic);
+	AddCarToMZ(nNo, gCap.nMZIdx_Cosmetic);
 }
 
 
 void OCAPCosmeticDlg::DelMZData(int nMZNo)
 {
-
+	if (nMZNo < 0 || nMZNo > 49) return;
+	gCap.sDate[nMZNo] = gCap.sTime[nMZNo] = gCap.sMZID[nMZNo] = "";
+	gCap.nTotalCnt_MZ[nMZNo] = gCap.nGoodCnt_MZ[nMZNo] = gCap.nNGCnt_MZ[nMZNo] = gCap.nNGVisionCnt_MZ[nMZNo] = 0;
+	for(int j=0; j<50; j ++) {
+		gCap.nCosmeticCnt_MZ[j][nMZNo] = gCap.nCosmeVisionCnt_MZ[j][nMZNo] = 0;
+	}
+	for(int j=0; j<8; j ++) gCap.sLotID[nMZNo][j] = "";
 }
 
 

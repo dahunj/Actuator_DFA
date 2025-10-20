@@ -47,7 +47,7 @@ private:
 
 public:
 	void AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, CString sNGCodeVision, int& nCurrentMzIdx);
-	void AddCarToMZ(int nSlotNo, CString sType); //Type - 0 :Good, 1: NG 
+	void AddCarToMZ(int nSlotNo, int nIdx); //Type - 0 :Good, 1: NG 
 	void AddMZOut(CString sMZID, CString sType);
 
 	void Check_CosmeticDefect(int nType, CString sMZID);
@@ -55,12 +55,16 @@ public:
 	
 	void Display_Status();
 	void Set_AddMZData(int nPortNo);
+	void DelMZData(int nMZNo);
+
+
 	void Set_AddDEFECT(CString sMZid, int nPortNo, int nInfo);
 	
+
 	void Check_DEFECTF(int nNo);
 	
 	
-	void DelMZData(int nMZNo);
+	
 	afx_msg void OnBnClickedBtnTest();
 	afx_msg void OnStnClickedStcOcapMinCount();
 };
