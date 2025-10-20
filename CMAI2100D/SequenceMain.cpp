@@ -14938,7 +14938,7 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 			if (!m_tLD2FConveyorLoop.Waiting_Time(3000)) break;
 			m_nLD2FConveyorCase++; m_tLD2FConveyorLoop.Set_LoopTime(5000);
 		} else {
-			 if (gData.nMZDoorOpen[0] == 0 && gData.nMZDoorOpen[1] == 0 && m_nNGMZElevatorCase == 0 && m_nMZTransferCase == 0 && m_nLDCVElevatorCase == 0 && (m_nNGStage1Case == 60 || m_nNGStage2Case == 60)) {
+			 if (gData.nMZDoorOpen[1] == 0 && m_nNGMZElevatorCase == 0 && m_nMZTransferCase == 0 && m_nLDCVElevatorCase == 0 && (m_nNGStage1Case == 60 || m_nNGStage2Case == 60)) {
 				g_objCommon.Show_Error(2940);
 				return FALSE;
 			}			

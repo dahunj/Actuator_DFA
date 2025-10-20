@@ -51,10 +51,9 @@ BOOL COCAPSelectDlg::OnInitDialog()
 	g_dlgOCAPCosmetic.Create(OCAPCosmeticDlg::IDD, this);
 	g_dlgOCAP.Create(OCAPProcess::IDD, this);
 
-	m_btnCosmeticOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0x00), 0, 0);
-	m_btnFAIOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0x00), 0, 0);
-	return TRUE;  
-	
+	m_btnCosmeticOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0x69, 0xFF, 0xB4), 0, 0);
+	m_btnFAIOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xC0, 0xCB), 0, 0);
+	return TRUE; 	
 }
 
 
