@@ -137,9 +137,7 @@ void OCAPCosmeticDlg::Display_Option()
 {
 	CString strData;
 	strData.Format("%d", gCap.nConsecutiveMZLimit[0]);	m_stcConsMZ[0].SetWindowText(strData);
-	
 	strData.Format("%d", gCap.nConsecutiveMZLimit[1]);	m_stcConsMZ[1].SetWindowText(strData);
-	
 	strData.Format("%d", gCap.nConsecutiveMZLimit[2]);	m_stcConsMZ[2].SetWindowText(strData);
 
 	strData.Format("%0.3lf", gCap.dDefectPercent[0]);	m_stcPercent[0].SetWindowText(strData);
@@ -584,12 +582,13 @@ void OCAPCosmeticDlg::AddMZOut(CString sMZID, CString sType)
 		
 	if(sType == "NG") return;
 	
-	//ADJ OverWritten
+	//Only Vision 
 	Check_CosmeticDefect(0, sMZID);
 	Check_CosmeticDefect(1, sMZID);
 	Check_CosmeticDefect(2, sMZID);
 
-	//Only Vision 
+	
+	//ADJ OverWritten
 	Check_CosmeticDefect(3, sMZID);
 	Check_CosmeticDefect(4, sMZID);
 	Check_CosmeticDefect(5, sMZID);
@@ -647,7 +646,7 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		double dPercentLimit = 0;
 		int	   nConsecutiveMZLimit = 0;	
 
-		if(nType > 2)
+		if(nType > 2) //ADJ Overwritten
 		{
 			dPercentLimit = gCap.dDefectPercent[nType - 3];
 			nConsecutiveMZLimit = gCap.nConsecutiveMZLimit[nType -3];

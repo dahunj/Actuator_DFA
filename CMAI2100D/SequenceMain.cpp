@@ -13319,9 +13319,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 		}
-#ifndef AJIN_BOARD_USE
-		g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
-#endif
+
 		
 		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		break;
@@ -13343,6 +13341,10 @@ BOOL CSequenceMain::Run_ULCVElevator()
 
 	case 31:
 		if (m_pDX19->iULCV1FCnt1) {
+
+#ifndef AJIN_BOARD_USE
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
+#endif
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
