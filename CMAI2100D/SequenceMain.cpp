@@ -13319,12 +13319,16 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 		}
-
+		else
+		{
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD"); //MES off 시 테스트 
+		}
 		
 		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		break;
 	case 29:
-		if (!m_pDX19->iULCV1FStop) {
+		if (!m_pDX19->iULCV1FStop) 
+		{
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		}
 		break;
@@ -13340,11 +13344,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		return TRUE;
 
 	case 31:
-		if (m_pDX19->iULCV1FCnt1) {
-
-#ifndef AJIN_BOARD_USE
-			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
-#endif
+		if (m_pDX19->iULCV1FCnt1) 
+		{
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		}
 		break;

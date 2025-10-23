@@ -364,8 +364,6 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
-		
-
 		/*if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
 		{
 			for(int i = 0; i < 50; i++)
@@ -389,8 +387,97 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			}			
 		}*/
 	}
-	if(sNGCodeVision.GetLength() > 0) gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
-	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+	
+	
+	int		nPreIdx = 0, nLaterIdx = 0;
+	CString sPreCode="", sLaterCode="";
+
+	//ADJ Written
+	BOOL bOVerWritten = FALSE;
+	if (sJudge != "G" && sNGCode.GetLength() > 0) 
+	{
+		sPreCode = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0];
+		for(int i = 0; i < 50; i++)
+		{
+			if(sPreCode =="")
+			{
+				gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+				strLog.Format("INSPECT,COMPLETE, PC:%d, NORMAL_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+				g_objLogFile.Save_TestLog(strLog);
+				break;
+			}
+
+			if(gCap.sCosmeticCode[i] == sPreCode)
+			{
+				nPreIdx = i;
+				
+				break;
+			}
+		}		
+
+		for(int i = 0; i < 50; i++)
+		{
+			if(gCap.sCosmeticCode[i] == sNGCode)
+			{
+				nLaterIdx = i;
+				if(nLaterIdx < nPreIdx)
+				{
+					gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+					strLog.Format("INSPECT,COMPLETE,PC:%d, OVER_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+					g_objLogFile.Save_TestLog(strLog);
+					bOVerWritten = TRUE;
+				}
+				
+			}
+		}		
+	}
+	
+	
+
+
+	//Only Vision 
+	BOOL bOVerWrittenV = FALSE;
+	nPreIdx = 0, nLaterIdx = 0;
+	sPreCode="", sLaterCode="";
+
+	if (sNGCode.GetLength() > 0) 
+	{
+		sPreCode = gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0];
+		for(int i = 0; i < 50; i++)
+		{
+			if(sPreCode =="")
+			{
+				gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
+				strLog.Format("INSPECT,COMPLETE,PC:%d,NORMAL_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+				g_objLogFile.Save_TestLog(strLog);
+				break;
+			}
+
+			if(gCap.sCosmeticCode[i] == sPreCode)
+			{
+				nPreIdx = i;
+				bOVerWrittenV = TRUE;
+				break;
+			}
+		}		
+				
+		for(int i = 0; i < 50; i++)
+		{
+			if(gCap.sCosmeticCode[i] == sNGCode)
+			{
+				 nLaterIdx = i;
+				 if(nLaterIdx < nPreIdx)
+				{
+					gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+					strLog.Format("INSPECT,COMPLETE,PC:%d,OVER_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+					g_objLogFile.Save_TestLog(strLog);
+				}				 
+			}
+		}		
+	}
+
+
+
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] + nImage2;	//외관불량수
 	
