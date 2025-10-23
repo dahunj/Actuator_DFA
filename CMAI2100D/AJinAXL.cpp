@@ -105,12 +105,12 @@ BOOL CAJinAXL::Initialize()
 	m_bThreadAJin = TRUE;
 	m_pThreadAJin = AfxBeginThread(Thread_AJin, NULL);
 
+#ifndef AJIN_BOARD_USE
 	if (!proc.Start())
 	{		
 		return FALSE;
 	}
-
-
+#endif
 	return TRUE;
 }
 

@@ -191,7 +191,20 @@ void CDataManager::Reset_RosData()
 
 void CDataManager::Reset_OCAPData()
 {
-	
+	gCap.nMZCycle = 0;
+	for(int i=0; i<50; i++) {
+		gCap.sDate[i] = gCap.sTime[i] = gCap.sMZID[i] = "";
+		gCap.nTotCount[i] = gCap.nGoodCount[i] = gCap.nROSNGCount[i] = gCap.nROSRfCount[i] = gCap.nBCRCount[i] = gCap.nMESCount[i] = gCap.nMCCount[i] = 0;
+		for(int j=0; j<20; j ++) {
+			gCap.nCount[i][j] = gCap.nFCount[i][j] = 0;
+		}
+		for(int j=0; j<8; j ++) {
+			gCap.sLotID[i][j] = "";
+		}
+	}
+	for(int j=0; j<20; j ++) {
+		gCap.sFAIName[j] = "";
+	}
 }
 
 BOOL CDataManager::Read_EquipData()
@@ -750,27 +763,44 @@ BOOL CDataManager::Read_OCAPData()
 
 	CString strKey;
 	
-	for(int i=0; i<4; i++) 
+	for(int i=0; i<4; i++) {
+		strKey.Format("DEFECTP_%02d", i + 1);
+		gCap.dGiDefect[i] = INI.Get_Double("OPTION", strKey, 0.0);
+		strKey.Format("MZ_COUNT_%02d", i + 1);
+		gCap.nGiMZCnt[i]  = INI.Get_Integer("OPTION", strKey, 0);
+	}
+	gCap.nGiMinCnt	= INI.Get_Integer("OPTION", "MZ_MIN_COUNT", 0);
+
+	for (int i = 0; i < 20; i++) {
+		strKey.Format("%02d", i + 1);
+		gCap.sFAIName[i] = INI.Get_String("DATA-NAME", strKey, "");
+		gCap.sFAICode[i] = INI.Get_String("DATA-CODE", strKey, "");
+	}
+	
+	
+	for(int i=0; i<3; i++) 
 	{
 		strKey.Format("DEFECT_PERCENT_%02d", i + 1);
 		gCap.dDefectPercent[i] = INI.Get_Double("OPTION", strKey, 0.0);
 		strKey.Format("CONS_MZ_COUNT_%02d", i + 1);
-		gCap.nConsecutiveMZCnt[i]  = INI.Get_Integer("OPTION", strKey, 0);
+		gCap.nConsecutiveMZLimit[i]  = INI.Get_Integer("OPTION", strKey, 0);
 	}
 	gCap.nMinModuleCnt	= INI.Get_Integer("OPTION", "MODULE_MIN_PER_MZ", 0);
 
-	for (int i = 0; i < 50; i++) 
+	for (int i = 0; i < 20; i++) 
 	{
 		strKey.Format("%02d", i + 1);
 		gCap.sFAIName[i] = INI.Get_String("FAI-NAME", strKey, "");
 		gCap.sFAICode[i] = INI.Get_String("FAI-CODE", strKey, "");
 	}
-
+	gCap.nCosmeticCount = 0;
 	for (int i = 0; i < 50; i++) 
 	{
 		strKey.Format("%02d", i + 1);
 		gCap.sCosmeticName[i] = INI.Get_String("COSMETIC-NAME", strKey, "");
 		gCap.sCosmeticCode[i] = INI.Get_String("COSMETIC-CODE", strKey, "");
+
+		if(gCap.sCosmeticName[i] != "" && gCap.sCosmeticCode[i] != "") gCap.nCosmeticCount++;
 	}
 
 	return TRUE;

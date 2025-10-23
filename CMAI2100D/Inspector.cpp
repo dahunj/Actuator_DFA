@@ -199,7 +199,7 @@ LRESULT CInspector::OnUdpReceive(WPARAM wLocalPort, LPARAM lParam)
 			if (strOp == "COMPLETE") Get_ScanComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4]);
 
 		} else if (strCmd == "INSPECT") {
-			if (strOp == "COMPLETE") Get_InspectComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4], strArg[5], strArg[6], strArg[7], strArg[8], strArg[9], strRecv);
+			if (strOp == "COMPLETE") Get_InspectComplete(nInspector, strArg[0], strArg[1], strArg[2], strArg[3], strArg[4], strArg[5], strArg[6], strArg[7], strArg[8], strArg[9], strArg[10], strRecv);
 
 		} else if (strCmd == "AMOVE") {
 			if (strOp == "REQUEST") Get_AMoveRequest(nInspector, strArg[0], strArg[1]);
@@ -319,7 +319,7 @@ void CInspector::Get_ScanComplete(int nInspector, CString sType, CString sLotID,
 	if (sType == "A1")					{ gData.bAlignScanDone = TRUE; return; }
 }
 
-void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLotID, CString sPortNo, CString sTrayNo, CString sCMNo, CString sJudge, CString sNGCode, CString sImageCnt1, CString sImageCnt2, CString sMarginal, CString sRcvData)
+void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLotID, CString sPortNo, CString sTrayNo, CString sCMNo, CString sJudge, CString sNGCode, CString sImageCnt1, CString sImageCnt2, CString sMarginal,CString sNGCodeVision, CString sRcvData)
 {
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 
@@ -335,6 +335,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sJudge != "G" && sJudge != "N"  && sJudge != "S"  && sJudge != "T" && sJudge != "W" && sJudge != "X" && sJudge != "R" && sJudge != "SS"  && sJudge != "TS" && sJudge != "WS" ) { g_objCommon.Show_Error(9105); return; }
 
 	int nVNo = (sType == "B1" ? 1 : (sType == "AG" ? 2 : (sType == "T1" ? 3 : (sType == "TG" ? 4 : (sType == "T2" ? 5 : 0)))));
+
 
 	if (pEquipData->bUseNGSize) { if (sJudge == "N" || sJudge == "X" || sJudge == "R") sJudge = "G"; }
 	if (sType == "B1" || sType == "AG") { if (sNGCode == "MC" || sNGCode == "ROI_FAIL") sNGCode = "MCBTM"; }
@@ -357,19 +358,20 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (sJudge == "G")
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
-		gCap.nGoodCnt[nPortNo -1]++;
+		strLog.Format("INSPECT,COMPLETE,GOOD,Empty");
+		g_objLogFile.Save_TestLog(strLog);
 	}
 	else
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = sNGCode;
-
-		if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
+		/*if(sJudge == "S" || sJudge == "T" || sJudge == "W" || sJudge == "SS" || sJudge == "TS" || sJudge == "WS")
 		{
 			for(int i = 0; i < 50; i++)
 			{
 				if(sNGCode == gCap.sFAICode[i])
 				{
-					gCap.nFAIDefectCnt[i][nPortNo -1]++;
+					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sFAICode[i]);
+					g_objLogFile.Save_TestLog(strLog);
 				}
 			}		
 		}
@@ -379,13 +381,103 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				if(sNGCode == gCap.sCosmeticCode[i])
 				{
-					gCap.nCosmeticDefectCnt[i][nPortNo -1]++;
+					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sCosmeticCode[i]);
+					g_objLogFile.Save_TestLog(strLog);
 				}
 			}			
-		}
+		}*/
 	}
 	
-	if (sJudge != "G" && sNGCode.GetLength() > 0) gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+	
+	int		nPreIdx = 0, nLaterIdx = 0;
+	CString sPreCode="", sLaterCode="";
+
+	//ADJ Written
+	BOOL bOVerWritten = FALSE;
+	if (sJudge != "G" && sNGCode.GetLength() > 0) 
+	{
+		sPreCode = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0];
+		for(int i = 0; i < 50; i++)
+		{
+			if(sPreCode =="")
+			{
+				gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+				strLog.Format("INSPECT,COMPLETE, PC:%d, NORMAL_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+				g_objLogFile.Save_TestLog(strLog);
+				break;
+			}
+
+			if(gCap.sCosmeticCode[i] == sPreCode)
+			{
+				nPreIdx = i;
+				
+				break;
+			}
+		}		
+
+		for(int i = 0; i < 50; i++)
+		{
+			if(gCap.sCosmeticCode[i] == sNGCode)
+			{
+				nLaterIdx = i;
+				if(nLaterIdx < nPreIdx)
+				{
+					gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+					strLog.Format("INSPECT,COMPLETE,PC:%d, OVER_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+					g_objLogFile.Save_TestLog(strLog);
+					bOVerWritten = TRUE;
+				}
+				
+			}
+		}		
+	}
+	
+	
+
+
+	//Only Vision 
+	BOOL bOVerWrittenV = FALSE;
+	nPreIdx = 0, nLaterIdx = 0;
+	sPreCode="", sLaterCode="";
+
+	if (sNGCode.GetLength() > 0) 
+	{
+		sPreCode = gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0];
+		for(int i = 0; i < 50; i++)
+		{
+			if(sPreCode =="")
+			{
+				gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
+				strLog.Format("INSPECT,COMPLETE,PC:%d,NORMAL_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+				g_objLogFile.Save_TestLog(strLog);
+				break;
+			}
+
+			if(gCap.sCosmeticCode[i] == sPreCode)
+			{
+				nPreIdx = i;
+				bOVerWrittenV = TRUE;
+				break;
+			}
+		}		
+				
+		for(int i = 0; i < 50; i++)
+		{
+			if(gCap.sCosmeticCode[i] == sNGCode)
+			{
+				 nLaterIdx = i;
+				 if(nLaterIdx < nPreIdx)
+				{
+					gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
+					strLog.Format("INSPECT,COMPLETE,PC:%d,OVER_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
+					g_objLogFile.Save_TestLog(strLog);
+				}				 
+			}
+		}		
+	}
+
+
+
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] + nImage2;	//외관불량수
 	
@@ -403,7 +495,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if (pEquipData->bUseTop2   && gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][5] < 2) return;
 
 	if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] > 1) {
-		strLog.Format("[Get_InspectComplete] Inspection Complete Allready Error => LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Bar(%s) Judge(%d) NC(%s)", sLotID, sPortNo, sTrayNo, nCMNo, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]);	g_objLogFile.Save_HandlerLog(strLog);
+		strLog.Format("[Get_InspectComplete] Inspection Complete Already Error => LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Bar(%s) Judge(%d) NC(%s)", sLotID, sPortNo, sTrayNo, nCMNo, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]);	g_objLogFile.Save_HandlerLog(strLog);
 		return;
 	}
 
@@ -557,7 +649,6 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		gLot.nRosJugCount[nPortNo-1][10]++;
 		return;
 	}
-
 	
 #endif
 	if		(nNGSize > 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	}
@@ -774,6 +865,9 @@ int CInspector::Get_VisionStatus(int nInspector)
 BOOL CInspector::Check_LotReady()
 {
 #ifndef AJIN_BOARD_USE
+	m_bLotReady1 == TRUE;
+	m_bLotReady2 == TRUE;
+	m_bLotReady3 == TRUE;
 	return TRUE;
 #else
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();

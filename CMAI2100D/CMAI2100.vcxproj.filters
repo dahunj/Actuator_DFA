@@ -337,10 +337,16 @@
     <ClInclude Include="CarrierRFID_NG.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="OCAPProcess.h">
+    <ClInclude Include="FifoTaskProcessor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FifoTaskProcessor.h">
+    <ClInclude Include="OCAPCosmeticDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OCAPSelectDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OCAPProcess.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -528,10 +534,16 @@
     <ClCompile Include="CarrierRFID_NG.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="OCAPProcess.cpp">
+    <ClCompile Include="FifoTaskProcessor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FifoTaskProcessor.cpp">
+    <ClCompile Include="OCAPCosmeticDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OCAPSelectDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="OCAPProcess.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

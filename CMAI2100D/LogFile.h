@@ -40,7 +40,8 @@ public:
 	void Save_OperatingRatio(CString sLog);
 	void Save_BarcodeLog(CString sLog);
 	void Save_RFBarData(int nType, CString strDataID, int nCount=0);	//0:BL1F, 1:BL2F, 2:BU1F, 3:BU2F, 4:RFL, 5:RFG, 6:RFN
-	void Save_OCAPDataLog(int nIdx);
+	void Save_OCAPFAILog(int nIdx);
+	void Save_OCAPCosmeticLog(CString sLog);
 
 	void Save_HomeTrackingLog(CString sLog);
 

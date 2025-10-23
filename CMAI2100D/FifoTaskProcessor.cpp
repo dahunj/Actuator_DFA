@@ -79,9 +79,7 @@ void FifoTaskProcessor::Stop()
 	EnterCriticalSection(&m_cs);
 	m_tasks.clear();
 	m_head = 0;				
-	
-
-	
+		
 	LeaveCriticalSection(&m_cs);
 
 	// 실행 카운터 정리

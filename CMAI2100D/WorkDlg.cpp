@@ -844,6 +844,17 @@ BOOL CWorkDlg::Work_Start()
 	pDX16->iLDCV1FCnt1 = TRUE;
 	pDX16->iLDCV1FCnt2 = TRUE;
 	pDX16->iLDCV1FCnt3 = TRUE;
+
+	pDX16->iLDCV1FCnt4 = TRUE;
+	pDX16->iLDCV2FCnt4 = TRUE;
+	pDX16->iLDCV1FCnt5 = TRUE;
+	pDX16->iLDCV2FCnt5 = TRUE;
+
+	pDX16->iLDCV1FCnt6 = TRUE;
+	pDX16->iLDCV2FCnt6 = TRUE;
+	pDX16->iLDCV1FCnt7 = TRUE;
+	pDX16->iLDCV2FCnt7 = TRUE;
+
 	pDX20->iMZTransExist = FALSE;
 	g_objAJinAXL.Move_Absolute(AX_ELEVATOR_Z2, 290);
 #endif

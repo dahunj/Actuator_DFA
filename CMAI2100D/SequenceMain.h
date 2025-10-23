@@ -195,6 +195,7 @@ private:
 	BOOL Check_LotEndTray(CString sLotID, int nPortNo);
 	BOOL Check_LotEndCarrier(CString sLotID, int nPortNo);
 	BOOL Check_LotEndLast(CString sLotID);
+	BOOL Check_LastCarrMZ(CString sMZID);
 	BOOL Check_MZEndUnload(CString sLotID, int nPortNo, int nPickNo);
 	BOOL Check_Load12Empy();
 	BOOL Check_AlignData(int nPortNo);
@@ -210,6 +211,7 @@ private:
 	int  Check_NGExist(int nPNo, int &nJNo);
 	int  Check_GoodExist(int nPNo, int &nPosX, int &nPosY);
 	BOOL Select_NGTrayPoketNo(int nType, int &nPosX, int &nPosY);
+	
 	BOOL Select_GoodTrayPoketNo(int nPNo, int nTNo, int &nPosX, int &nPosY);
 	BOOL Check_NGTrayFull();
 	BOOL Check_GooodTrayFull();
@@ -232,6 +234,8 @@ private:
 	void Set_NextLot(CString sLotID, DWORD dwTime);
 	void Set_AlignData(int nPortNo, int nStageNo);
 	void Set_AlignToStage(int nPortNo, int nStageNo);
+
+	void Search_NGFullPoint(int nType, int &nPosX, int &nPosY);
 
 public:
 	double	m_dBtmZ, m_dTop1Z, m_dTop2Z;

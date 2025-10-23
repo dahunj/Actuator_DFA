@@ -75,10 +75,9 @@
 #endif
 
 //****************************************************************************
-//#define AJIN_BOARD_USE
-#define CARRIER_TYPE_MEM
-//CARRIER_OFFSETY=0
+#define AJIN_BOARD_USE
 
+#define CARRIER_TYPE_MEM    //CARRIER_OFFSETY=0
 //#define CARRIER_TYPE_VARO	//CARRIER_OFFSETY=8
 //****************************************************************************
 
@@ -95,11 +94,11 @@
 #define PICK_CNT		8
 
 #ifdef CARRIER_TYPE_MEM
-	#define MAIN_VERSION	"Vd 3.1.6m"
+	#define MAIN_VERSION	"Vd 3.1.8m"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	0.0
 #else
-	#define MAIN_VERSION	"Vd 3.1.6v"
+	#define MAIN_VERSION	"Vd 3.1.8v"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	8.0
 #endif
@@ -267,6 +266,9 @@ typedef struct
 
 	int		nSimMzCntLoaded;
 
+	int		nPosXFull[10];
+	int		nPosYFull[10];
+
 } GLOVAL_DATA;
 
 typedef struct {
@@ -297,6 +299,7 @@ typedef struct {
 	int		nJudge_I[30][10][40][6];	//2:G, 3:NG,     5:BAR_NOREAD, 6:MES_NG, 7:FAI치수불량
 	int		nJudge_R[30][10][40];		//2:G, 3:ROS_NG, 4:ROS_Repair
 	CString sNGCode_I[30][10][40][6];
+	CString sNGCode_Vision[30][10][40][6];
 //	CString sNGCode_R[30][10][40];
 	CString sBarCode[30][10][40];
 	int		nRosJugCount[30][15];		//0:Count, 1:Good, 2:TOver 3:NG, 4:Repair, 5:Bar_NoRead,MES-NG,MC, 6:FAI_NG(치수불량), 7:Bar, 8:MES-NG, 9:MC, 10:Ros Skip, 11:허수불량, 12:불량차감, 13FAI_RECOFAIL_SP
@@ -416,40 +419,99 @@ typedef struct {
 } GLOVAL_MES;
 
 typedef struct {
-	int nCosmeticDefectCnt[50][30]; //50가지 NG, 30개의 Slot 
-	int nFAIDefectCnt[50][30];
-	int nTotalCntCarrier[30];
-	int nGoodCnt[30];
-
+	
 	//매거진 인덱스 정보 전달 : 캐리어 --> 트랜스퍼 피커 --> 컨베이어 
 	//0:Good . 1: NG
 	int nCarrierMZIndex[2];
 	int nTransferMZIndex[2];
 	int nCVMZIndex[2];
-	int nTotalCosmeticDefect[50][4];
-	int nTotalFAIDefect[50][4];
-	int nTotalGood[4];
-	int nTotalCntMZ[4]; // 동시에 돌수 있는 MZ 수는 최대 4개 
 
-	double dLimitPercent[10];
+	int nMZIdx_Cosmetic;
+	int nOcapCarrierIndex;
 
-	CString		sFAIName[50];		// FAI이름-Display
-	CString		sFAICode[50];		// FAI-NG-Code
+	int nLotIndex_NG;
+	int nLotIndex_Good;
+
+	//ADJ Overwritten
+	int nDefectCntInCarr_Cosmetic[50][28];	//md(module) in Carrier , NG category 50, 28 lot 
+	int nGoodCntInCarr_Cosmetic[28]; // 28 lot 
+
+	int nMDGoodCntOutput[50];
+	int nMDNGCntOutput[50];
 	
+	int nDefectCnt_Cosmetic[50][50][28]; //50가지 종류의 불량,  50개의 매거진 루프, 28개 랏 
+	int nGoodCnt_Cosmetic[50][28]; // 28개 랏 
+	
+	//Only Vision 
+	int nDefectCntInCarr_CosmeVision[50][28];		
+		
+	int nNGVisionCnt_MZ[50];		
+	int nCosmeVisionCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
+	
+	//Commonly Used 
+	int nTotalCnt_MZ[50];
+	int nGoodCnt_MZ[50]; // 1번째: NG 종류, 2번째:매거진 루프 개수 
+	int nNGCnt_MZ[50];	
+	int nCosmeticCnt_MZ[50][50]; //1번째 NG종류 50, 2번째 50개 매거진 루프
+		
 	CString		sCosmeticName[50];
 	CString		sCosmeticCode[50];
+	int			nCosmeticCount;		// 외관 에러 항목 개수 
 
-	double		dDefectPercent[4];		// 설정된 불량율%
-	int			nConsecutiveMZCnt[4];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
+	double		dDefectPercent[3];		// 설정된 불량율%
+	int			nConsecutiveMZLimit[3];	// MZ수량 (연속알람 발생 MZ 개수 설정된거)
 	int			nMinModuleCnt;			// MZ당최소 Module 수량 (이하면 알람발생 제외처리)
+	int			nConsecutiveMZCount[6][50];	
+	int			nCosmeticCodeNum[6];
 	
-	CString		sAlmOCAP;
-	CString		sAlmMZID;
-	CString		sAlmDefectName;
-	double		dAlmDefectPercent;
-	int			nAlmNGCount;
+	CString		sAlmMZID_Cosmetic;
+	CString		sAlmDefectName_Cosmetic;
+	CString		sAlmDefectCode_Cosmetic;
+	double		dAlmDefectPercent_Cosmetic;
+	int			nAlmNGCount_Cosmetic;
+	
+	//display
+	int			nMZCycle_Cosmetic;
+	CString		sDate_Cosmetic[50];			//날자(07/31)
+	CString		sTime_Cosmetic[50];			//시간(07:31)
+	CString		sMZID_Cosmetic[50];			//양품MZ
+	int			nTotCount_Cosmetic[50];		//투입-Module수
+	int			nGoodCount_Cosmetic[50];		//양품수
+	int			nNGCount_Consmetic[50];
+	
+	BOOL		bOCAPDone[6]; // 3가지 조건 
+	BOOL		bErrorShowDone;
 
-	
+
+	//기존 변수들
+	int			nMZCycle;
+	CString		sDate[50];			//날자(07/31)
+	CString		sTime[50];			//시간(07:31)
+	CString		sMZID[50];			//양품MZ
+	CString		sLotID[50][8];		//LotID
+	int			nTotCount[50];		//투입-Module수
+	int			nGoodCount[50];		//양품수
+	int			nROSNGCount[50];	//ROS-NG수
+	int			nROSRfCount[50];	//ROS-Repaier수
+	int			nBCRCount[50];		//Barcode[NG수
+	int			nMESCount[50];		//MES[NG수
+	int			nMCCount[50];		//MC[NG수
+	int			nCount[50][20];		//MZ,FAI별 발생수
+	int			nFCount[50][20];	//MZ,FAI별 발생수
+
+	CString		sFAIName[20];		//FAI이름-Display
+	CString		sFAICode[20];		//FAI-NG-Code
+	double		dGiDefect[4];		//불량율%
+	int			nGiMZCnt[4];		//MZ수량(알람발생MZ대상수)
+	int			nGiMinCnt;			//MZ당최소 Module수량(이하면 알람발생 제외처리)
+
+	CString		sAlmMZID;
+	CString		sAlmFAIName;
+	double		dAlmDefect;
+	int			nAlmCount;
+
+
+
 } GLOVAL_OCAP;
 
 typedef struct {
@@ -466,11 +528,11 @@ typedef struct {
 
 	CString sMZID_Transfer2[10][4];
 
-	CString sMZID_GoodMZElev[8][10][4];
-	CString sMZID_NGMZElev[8][10][4];
+	CString sMZID_GoodMZElev[28][10][4];
+	CString sMZID_NGMZElev[28][10][4];
 
-	CString sMZID_GoodMZ[8][10][4];
-	CString sMZID_NGMZ[8][10][4];
+	CString sMZID_GoodMZ[28][10][4];
+	CString sMZID_NGMZ[28][10][4];
 
 	CString sMZID_GOODCV;
 	CString sMZID_NGCV;
@@ -490,7 +552,7 @@ typedef struct {
 	CString		sModuleID[30][40];			//Port[30],Module[40], Barcode
 	CString		sHaimNGCd[30][40];			//Port[30],Module[40], HaimNG_Code
 	CString		sCosmeticNG[30][40];		//Port[30],Module[40], Cosmetic_Judge(NG)
-	int			nTrayOX[3][2];				//1:Exist
+	int			nTrayOX[3][2];				//0:Load, 1:NG, 2:Good,     1:Exist, Stage에 Tray가 있는지 여부 
 	CString		sBackData[30][2];
 	int			nBackCnt[30];
 } GLOVAL_NGCODE;

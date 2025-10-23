@@ -201,15 +201,30 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 		if (m_nErrNo == 9022 || m_nErrNo == 9023) strErrPick.Format(" #==> LotID[%s]", gMes.sHostLotID);
 		if (m_nErrNo == 9180) strErrPick.Format(" #[%s]비전 PC에서 Groval Align Fail이 발생하였습니다.#제품 Loading 상태를 확인해 주세요.", gAlm.sAlmLotID[1]);
 		
-		
-		if (m_nErrNo == 9181) strErrPick.Format(" #==> [%s] 불양률이 [%0.1lf%%] 발생했습니다. (설정: %0.1lf%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요.# [%s]",
-														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[0], gCap.nConsecutiveMZCnt[0], gCap.sAlmMZID);
+		if (m_nErrNo == 9181) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요.#      [%s]",
+			gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[0], gCap.nGiMZCnt[0], gAlm.sAlmLotID[0]);
 		if (m_nErrNo == 9182) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
-														gCap.sAlmDefectName, gCap.dAlmDefectPercent, gCap.dDefectPercent[0], gCap.nConsecutiveMZCnt[1], gCap.sAlmMZID);
-	/*	if (m_nErrNo == 9183) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
-														gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[2], gCap.nGiMZCnt[2], gAlm.sAlmLotID[0]);
+			gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[1], gCap.nGiMZCnt[1], gAlm.sAlmLotID[0]);
+		if (m_nErrNo == 9183) strErrPick.Format(" #==> [%s] 불양률이 [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
+			gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[2], gCap.nGiMZCnt[2], gAlm.sAlmLotID[0]);
 		if (m_nErrNo == 9184) strErrPick.Format(" #==> [%s] 측정 Error [%0.1f%%] 발생했습니다. (설정: %0.1f%%). 연속 %d회 발생되었습니다.#      설비 문제여부를 확인해야 합니다.#      [%s]",
-														gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[3], gCap.nGiMZCnt[3], gAlm.sAlmLotID[0]);*/
+			gCap.sAlmFAIName, gCap.dAlmDefect, gCap.dGiDefect[3], gCap.nGiMZCnt[3], gAlm.sAlmLotID[0]);
+		
+		if (m_nErrNo == 9185) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1lf%%] 발생, (설정: %0.1lf%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요.# [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[0], gCap.nConsecutiveMZCount[0][gCap.nCosmeticCodeNum[0]-1], gCap.sAlmMZID_Cosmetic);
+		if (m_nErrNo == 9186) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1f%%] 발생, (설정: %0.1f%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[1], gCap.nConsecutiveMZCount[1][gCap.nCosmeticCodeNum[1]-1], gCap.sAlmMZID_Cosmetic);
+		if (m_nErrNo == 9187) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1lf%%] 발생, (설정: %0.1lf%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요.# [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[2], gCap.nConsecutiveMZCount[2][gCap.nCosmeticCodeNum[2]-1], gCap.sAlmMZID_Cosmetic);
+		if (m_nErrNo == 9188) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1f%%] 발생, (설정: %0.1f%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[0], gCap.nConsecutiveMZCount[3][gCap.nCosmeticCodeNum[3]-1], gCap.sAlmMZID_Cosmetic);
+		if (m_nErrNo == 9189) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1f%%] 발생, (설정: %0.1f%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[1], gCap.nConsecutiveMZCount[4][gCap.nCosmeticCodeNum[4]-1], gCap.sAlmMZID_Cosmetic);
+		if (m_nErrNo == 9190) strErrPick.Format("#[%s (%s)] 불양률이 [%0.1f%%] 발생, (설정: %0.1f%%). 연속 %d회 발생되었습니다.# DFA공정에 내용전달 해주세요. AVI Master Sample 투입하여 Correlation 이상여부를 확인해 주세요.#      [%s]",
+			gCap.sAlmDefectName_Cosmetic, gCap.sAlmDefectCode_Cosmetic, gCap.dAlmDefectPercent_Cosmetic, gCap.dDefectPercent[2], gCap.nConsecutiveMZCount[5][gCap.nCosmeticCodeNum[5]-1], gCap.sAlmMZID_Cosmetic);
+		
+
+
 		if (m_nErrNo > 9200 && m_nErrNo < 9210) strErrPick.Format(" #==> [%s]비전에서 발생하였습니다.", gAlm.sAlmLotID[1]);
 		if (m_nErrNo == 9211) strErrPick.Format(" # Barcode [%s]", gAlm.sAlmLotID[1]);
 		if (m_nErrNo == 9030) strErrPick.Format(" #==> LotID[%s] RecipeID[%s] Code[%s] #   Text[%s]", gMes.sHostLotID, gMes.sHostRecipe, gMes.sHostCancelCode, gMes.sHostCancelText);
@@ -227,7 +242,7 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 			m_nErrNo == 7007 || m_nErrNo == 7507 ||
 			m_nErrNo == 8804 || m_nErrNo == 8806 || m_nErrNo == 8808 ||
 			m_nErrNo == 9002 || m_nErrNo == 9011 || m_nErrNo == 9015 || m_nErrNo == 9016 || m_nErrNo == 9017) {
-			m_btnErrRetry.EnableWindow(TRUE);
+				m_btnErrRetry.EnableWindow(TRUE);
 		} else {
 			m_btnErrRetry.EnableWindow(FALSE);
 		}
@@ -238,11 +253,11 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 			m_nErrNo == 8409 || m_nErrNo == 8609 ||
 			m_nErrNo == 2416 || m_nErrNo == 2426 || m_nErrNo == 2805 || m_nErrNo == 2906 ||
 			m_nErrNo == 2417 || m_nErrNo == 2427 || m_nErrNo == 2806 || m_nErrNo == 2907 ) {
-			if (m_nErrNo == 2416 || m_nErrNo == 2426 || m_nErrNo == 2805 || m_nErrNo == 2906 ||
-				m_nErrNo == 2417 || m_nErrNo == 2427 || m_nErrNo == 2806 || m_nErrNo == 2907 )
-				m_Label[8].SetWindowText("Magazine ID:");
-			else
-				m_Label[8].SetWindowText("Carrier ID:");
+				if (m_nErrNo == 2416 || m_nErrNo == 2426 || m_nErrNo == 2805 || m_nErrNo == 2906 ||
+					m_nErrNo == 2417 || m_nErrNo == 2427 || m_nErrNo == 2806 || m_nErrNo == 2907 )
+					m_Label[8].SetWindowText("Magazine ID:");
+				else
+					m_Label[8].SetWindowText("Carrier ID:");
 			m_stcCarrierID.ShowWindow(SW_SHOW);
 		} else {
 			m_stcCarrierID.ShowWindow(SW_HIDE);
@@ -298,6 +313,8 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
  		g_objInspector.Set_StatusUpdate(INSPECTOR_ALL, 4);
 		g_objDispatcher.Set_StatusUpdate(2);	// 0:Stop, 1:Run, 2:Error
+
+		gCap.bErrorShowDone = TRUE;
 		SetTimer(0, 100, NULL);
 		
 	} else {
