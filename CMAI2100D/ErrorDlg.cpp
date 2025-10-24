@@ -102,9 +102,7 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 		BringWindowToTop();				// 화면 위로...
 		m_btnErrOK.EnableWindow(TRUE);	//2018.8.24+
-
-		g_objCommon.Stop_Conveyor();
-
+		
 		CString strErrNo, strErrMsg, strErrPick, strShow, strLog, strNo, strCMNo, strInfo;
 		strErrNo.Format("%04d", m_nErrNo);
 		m_stcErrNo.SetWindowText(strErrNo);
@@ -119,9 +117,21 @@ void CErrorDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 		strErrMsg = INI.Get_String("ERROR", strErrNo, "");
 
-		if (m_nErrNo <= 20) pMainDlg->Set_MainState(STATE_EMER);
-		else				pMainDlg->Set_MainState(STATE_ALARM);
-
+		if(m_nErrNo == 9185 || m_nErrNo == 9186 || m_nErrNo == 9187 || m_nErrNo == 9188 || m_nErrNo == 9189 || m_nErrNo == 9190)
+		{
+			//pass
+		}
+		else if (m_nErrNo <= 20) 
+		{
+			pMainDlg->Set_MainState(STATE_EMER);
+			g_objCommon.Stop_Conveyor();
+		}
+		else
+		{
+			g_objCommon.Stop_Conveyor();
+			pMainDlg->Set_MainState(STATE_ALARM);
+		}		
+		
 		strErrPick = strNo = strCMNo = "";
 		if (m_nErrNo >= 5 && m_nErrNo <= 10) g_objCommon.Locking_MainDoor(FALSE);
 		if (m_nErrNo == 4009 || m_nErrNo == 4509) strErrPick.Format(" #==> Recipe[%s]", gData.sReadyRecipe);

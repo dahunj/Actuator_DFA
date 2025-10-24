@@ -13303,9 +13303,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		} 
 		else 
 		{
-
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
-			m_nULCVElevatorCase = 29; m_tULCVElevatorLoop.Set_LoopTime(5000);
+			m_nULCVElevatorCase = 29; m_tULCVElevatorLoop.Set_LoopTime(15000);
 		}
 		break;
 	case 27:
@@ -13322,14 +13321,12 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			g_objMesAgent.Set_MGZIDRemove("G", gData.sMZID[8], gData.sRecipeName);
 			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
-		}
-
-		
-		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
+		}		
+		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(15000);
 		break;
 	case 29:
 		if (!m_pDX19->iULCV1FStop) {
-			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
+			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(15000);
 		}
 		break;
 	case 30:
