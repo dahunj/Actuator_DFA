@@ -13300,7 +13300,11 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			if (!m_tULCVElevatorLoop.Waiting_Time(500)) break;
 			g_objBarcodeLot_Cognex.Set_Trigger(4, TRUE);	//1F
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
-		} else {
+		} 
+		else 
+		{
+
+			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 			m_nULCVElevatorCase = 29; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
@@ -13319,16 +13323,12 @@ BOOL CSequenceMain::Run_ULCVElevator()
 			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 		}
-		else
-		{
-			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD"); //MES off 시 테스트 
-		}
+
 		
 		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		break;
 	case 29:
-		if (!m_pDX19->iULCV1FStop) 
-		{
+		if (!m_pDX19->iULCV1FStop) {
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(3000);
 		}
 		break;
@@ -13344,8 +13344,9 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		return TRUE;
 
 	case 31:
-		if (m_pDX19->iULCV1FCnt1) 
-		{
+		if (m_pDX19->iULCV1FCnt1) {
+
+
 			m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(5000);
 		}
 		break;

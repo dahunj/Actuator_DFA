@@ -35,6 +35,7 @@ public:
 	void Save_ECMOutPut(int nPNo, int nTNo, int nMNo, int nStageNo, int nType);	//0:G, 1:NG
 	void Save_ECMDailyLot(CString sLog);
 	void Save_TestLog(CString sLog);
+	void Save_OCAPTestLog(CString sLog);
 	void Save_DailyLot(CString sLog);
 	void Save_LotLog(int nPortNo);
 	void Save_OperatingRatio(CString sLog);

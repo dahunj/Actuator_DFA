@@ -76,8 +76,9 @@
 
 //****************************************************************************
 #define AJIN_BOARD_USE
+#define CARRIER_TYPE_MEM
+//CARRIER_OFFSETY=0
 
-#define CARRIER_TYPE_MEM    //CARRIER_OFFSETY=0
 //#define CARRIER_TYPE_VARO	//CARRIER_OFFSETY=8
 //****************************************************************************
 
