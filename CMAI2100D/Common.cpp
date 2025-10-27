@@ -545,7 +545,6 @@ void CCommon::Show_Error(int nErrNo, int nType)
 			g_dlgError.Set_ErrorNumber(nErrNo);
 			g_dlgError.ShowWindow(SW_SHOW);
 		}
-
 	}
 	else{
 		g_csShowError.Lock();
