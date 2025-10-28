@@ -230,6 +230,7 @@ void CCMAI2100Dlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	gethostname(myCom, sizeof(myCom));
 	gData.sComName.Format("%s", myCom);
 	g_objCommon.MakeFolder(ECM_LOG);
+	g_objLogFile.Save_Interlock(0);
 
 	g_objDataManager.Read_EquipData();
 	g_objDataManager.Read_MoveData();
@@ -794,6 +795,19 @@ void CCMAI2100Dlg::Display_DateTime()
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 	if (pEquipData->bUseDoorLock) { m_stcDoorLock.Set_Text("Door 잠금"); m_stcDoorLock.Set_Color(RGB(0x00, 0x00, 0x00), RGB(0x00, 0xFF, 0x00)); }
 	else						  { m_stcDoorLock.Set_Text("Door 해제"); m_stcDoorLock.Set_Color(RGB(0xFF, 0xFF, 0x00), RGB(0xFF, 0x00, 0x00)); }
+
+
+
+	int nHour = 18; //datetime.GetHour();
+
+	if (gIt.nLogMM >=1 && gIt.nLogMM <=12 && gIt.nLogHH != nHour) 
+	{
+		g_objLogFile.Save_Interlock(1);
+		nHour++;
+	}
+
+	
+
 }
 
 void CCMAI2100Dlg::Exit_System(int nExitNo) 

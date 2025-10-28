@@ -979,12 +979,26 @@ void CCommon::Check_InsideLamp()
 			pDY14->oInsideLight = TRUE;
 			g_objAJinAXL.Write_Output(14);
 		}
-	} else {
+	} 
+	else
+	{
 		if (m_bInsideLight) {
 			m_bInsideLight = FALSE;
 			pDY14->oInsideLight = FALSE;
 			g_objAJinAXL.Write_Output(14);
 		}
+
+		EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
+		if (gData.bDoorOpen && !pEquipData->bUseDoorLock) {
+			CIniFileCS INI(gsCurrentDir + "\\System\\EquipData.ini");
+			if (INI.Check_File()) {
+				INI.Set_Bool("EQUIPMENT", "DOOR_LOCK", TRUE);
+			}
+			pEquipData->bUseDoorLock = TRUE;
+			gData.dwDoorStartTime = 0;
+			g_objDataManager.Read_EquipData();
+		}
+		gData.bDoorOpen = FALSE;
 	}
 }
 

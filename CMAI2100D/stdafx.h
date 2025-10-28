@@ -190,6 +190,7 @@ typedef struct
 	BOOL	bDoorLock;
 	BOOL	bAlarmShow;
 	BOOL	bJahwa;
+	BOOL	bDoorOpen;
 
 	int		nTransferXLock;			//1:Lock
 	int		nTransferX1Pos;			//1(LS1),2(LS2),3(L1),4(L2),5(EN),6(EG),7(NB),8(U1),9(U2),10(NG1),11(NG2),12(Good1),13(Good2)
@@ -558,6 +559,21 @@ typedef struct {
 	int			nBackCnt[30];
 } GLOVAL_NGCODE;
 extern GLOVAL_NGCODE* gNG;
+
+
+typedef struct {
+	int		nType;			//nType:1[정시], 2[해제] 3[설정]
+	int		nOpenStart;		//1:Start
+	DWORD	dwOpenStartTime;
+	int		nOpenTime;
+	int		nLogYY;		//등록년
+	int		nLogMM;		//등록월
+	int		nLogDD;		//등록날
+	int		nLogHH;		//등록시간
+} GLOVAL_INTERLOCKDATA;
+extern  GLOVAL_INTERLOCKDATA	gIt;
+
+
 
 /*
 typedef struct {

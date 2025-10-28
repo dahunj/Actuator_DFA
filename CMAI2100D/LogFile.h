@@ -51,6 +51,8 @@ public:
 	void Save_SpcMccLog(CString sLog, CString sLotID);
 	void Save_SpcMotionLog(CString sLog, CString sLotID);
 	void Save_SpcErrorLog(CString sLog, CString sLotID);
+	void Save_Interlock(int nType);					//nType:0[등록], 1[정시], 2[해제] 3[설정]
+
 
 	void Set_ID(CString sPCID, CString sMCode) { m_sPCID = sPCID; m_sMachineCode = sMCode; }
 };

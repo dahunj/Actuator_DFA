@@ -274,6 +274,10 @@ BOOL CDataManager::Read_EquipData()
 	m_EquipData.dEevatOffset	= INI.Get_Double("OPTION", "ELEVATOR_OFFSET", 0.0);
 	m_EquipData.bUseOppAlarm	= INI.Get_Bool("OPTION", "OPP_ALARM", FALSE);
 
+	if (gIt.nOpenStart == 0 && m_EquipData.bUseDoorLock == FALSE) g_objLogFile.Save_Interlock(2);
+	if (gIt.nOpenStart == 1 && m_EquipData.bUseDoorLock == TRUE)  g_objLogFile.Save_Interlock(3);
+
+
 	CString sLanguage		= INI.Get_String("OPTION", "LANGUAGE", "");
 	if (sLanguage == "ENG") gData.nLanguage = 1;
 	else					gData.nLanguage = 0;
