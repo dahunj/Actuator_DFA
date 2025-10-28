@@ -190,7 +190,7 @@
     <ClInclude Include="NoWorkDlg.h" />
     <ClInclude Include="NumPadDlg.h" />
     <ClInclude Include="OCAPCosmeticDlg.h" />
-    <ClInclude Include="OCAPProcess.h" />
+    <ClInclude Include="OCAPFaiDlg.h" />
     <ClInclude Include="OCAPSelectDlg.h" />
     <ClInclude Include="OperatorDlg.h" />
     <ClInclude Include="PasswordDlg.h" />
@@ -259,7 +259,7 @@
     <ClCompile Include="NoWorkDlg.cpp" />
     <ClCompile Include="NumPadDlg.cpp" />
     <ClCompile Include="OCAPCosmeticDlg.cpp" />
-    <ClCompile Include="OCAPProcess.cpp" />
+    <ClCompile Include="OCAPFaiDlg.cpp" />
     <ClCompile Include="OCAPSelectDlg.cpp" />
     <ClCompile Include="OperatorDlg.cpp" />
     <ClCompile Include="PasswordDlg.cpp" />

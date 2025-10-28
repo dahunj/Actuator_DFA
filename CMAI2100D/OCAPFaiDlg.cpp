@@ -1,31 +1,31 @@
-// OCAPProcess.cpp : 구현 파일입니다.
+// OCAPFaiDlg.cpp : 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "CMAI2100.h"
-#include "OCAPProcess.h"
+#include "OCAPFaiDlg.h"
 #include "Common.h"
 #include "LogFile.h"
 #include "DataManager.h"
 #include "afxdialogex.h"
 
 
-// OCAPProcess 대화 상자입니다.
-OCAPProcess g_dlgOCAP;
+// OCAPFaiDlg 대화 상자입니다.
+OCAPFaiDlg g_dlgOCAPFai;
 
-IMPLEMENT_DYNAMIC(OCAPProcess, CDialogEx)
+IMPLEMENT_DYNAMIC(OCAPFaiDlg, CDialogEx)
 
-OCAPProcess::OCAPProcess(CWnd* pParent /*=NULL*/)
-	: CDialogEx(OCAPProcess::IDD, pParent)
+OCAPFaiDlg::OCAPFaiDlg(CWnd* pParent /*=NULL*/)
+	: CDialogEx(OCAPFaiDlg::IDD, pParent)
 {
 
 }
 
-OCAPProcess::~OCAPProcess()
+OCAPFaiDlg::~OCAPFaiDlg()
 {
 }
 
-void OCAPProcess::DoDataExchange(CDataExchange* pDX)
+void OCAPFaiDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	for (int i = 0; i < 2; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
@@ -35,15 +35,15 @@ void OCAPProcess::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(OCAPProcess, CDialogEx)
+BEGIN_MESSAGE_MAP(OCAPFaiDlg, CDialogEx)
 	ON_WM_SHOWWINDOW()
-	ON_BN_CLICKED(IDCANCEL, &OCAPProcess::OnBnClickedCancel)
-	ON_BN_CLICKED(IDOK,		&OCAPProcess::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &OCAPFaiDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDOK,		&OCAPFaiDlg::OnBnClickedOk)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_OCAP_VALUE_0, IDC_STC_OCAP_VALUE_8, OnStcOptionClick)
 END_MESSAGE_MAP()
 
 
-BOOL OCAPProcess::OnInitDialog() 
+BOOL OCAPFaiDlg::OnInitDialog() 
 {
 	CDialogEx::OnInitDialog();
 
@@ -55,7 +55,7 @@ BOOL OCAPProcess::OnInitDialog()
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-BOOL OCAPProcess::PreTranslateMessage(MSG* pMsg) 
+BOOL OCAPFaiDlg::PreTranslateMessage(MSG* pMsg) 
 {
 	if (pMsg->message == WM_KEYDOWN && (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE))
 		return TRUE;
@@ -63,7 +63,7 @@ BOOL OCAPProcess::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void OCAPProcess::OnShowWindow(BOOL bShow, UINT nStatus) 
+void OCAPFaiDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
 {
 	CDialogEx::OnShowWindow(bShow, nStatus);
 
@@ -75,15 +75,15 @@ void OCAPProcess::OnShowWindow(BOOL bShow, UINT nStatus)
 	}
 }
 
-// OCAPProcess 메시지 처리기입니다.
+// OCAPFaiDlg 메시지 처리기입니다.
 
-void OCAPProcess::OnBnClickedCancel()
+void OCAPFaiDlg::OnBnClickedCancel()
 {
 	ShowWindow(SW_HIDE);
 }
 
 
-void OCAPProcess::OnBnClickedOk()
+void OCAPFaiDlg::OnBnClickedOk()
 {
 	int		nData1, nData2, nData3, nData4, nData5;
 	double	dData1, dData2, dData3, dData4;
@@ -113,7 +113,7 @@ void OCAPProcess::OnBnClickedOk()
 	Display_Status();
 }
 
-void OCAPProcess::Initial_Controls() 
+void OCAPFaiDlg::Initial_Controls() 
 {
 	for (int i = 0; i < 2; i++) m_Group[i].Init_Ctrl("바탕", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
 	for (int i = 0; i < 6; i++) m_Label[i].Init_Ctrl("바탕", 12, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80));
@@ -124,7 +124,7 @@ void OCAPProcess::Initial_Controls()
 	for (int i = 0; i < 9; i++) m_stcOption[i].Init_Ctrl("바탕", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
 }
 
-void OCAPProcess::Display_Option()
+void OCAPFaiDlg::Display_Option()
 {
 	CString strData;
 	strData.Format("%d", gCap.nGiMZCnt[0]);	     m_stcOption[0].SetWindowText(strData);
@@ -138,7 +138,7 @@ void OCAPProcess::Display_Option()
 	strData.Format("%d", gCap.nGiMinCnt);	     m_stcOption[2].SetWindowText(strData);
 }
 
-void OCAPProcess::OnStcOptionClick(UINT nID)
+void OCAPFaiDlg::OnStcOptionClick(UINT nID)
 {
 	int		nData = 0;
 	double	dData = 0.0;
@@ -155,7 +155,7 @@ void OCAPProcess::OnStcOptionClick(UINT nID)
 	m_stcOption[ID].SetWindowText(strNew);
 }
 
-void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPFaiDlg::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -206,7 +206,7 @@ void OCAPProcess::Initial_NameGrid(CGridCS *pGrid, int nRows, int nCols)
 	}
 }
 
-void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
+void OCAPFaiDlg::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 {
 	pGrid->Set_RowCount(nRows);
 	pGrid->Set_ColCount(nCols);
@@ -236,7 +236,7 @@ void OCAPProcess::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 	}
 }
 
-void OCAPProcess::Display_Status()
+void OCAPFaiDlg::Display_Status()
 {/*
 	gCap.nMZCycle = 1;
 	gCap.sDate[0] = "1/1";			//날자(07/31)
@@ -272,7 +272,7 @@ void OCAPProcess::Display_Status()
 	}
 }
 
-void OCAPProcess::Display_Grid(int nDp, int nIx)
+void OCAPFaiDlg::Display_Grid(int nDp, int nIx)
 {
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
@@ -366,7 +366,8 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 		nNo++;
 	}
 	nNo = 56;
-	for(int i=0; i<20; i++) {
+	for(int i=0; i<20; i++) 
+	{
 		str.Format(_T("%d"), gCap.nFCount[nIx][i]);
 		m_grdData.Set_CellFont(nDp, nNo, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, nNo, str);
@@ -383,7 +384,7 @@ void OCAPProcess::Display_Grid(int nDp, int nIx)
 	}
 }
 
-void OCAPProcess::Set_AddMZData(int nPortNo)
+void OCAPFaiDlg::Set_AddMZData(int nPortNo)
 {
 	int nNo = nPortNo - 1;
 	for (int i=0; i<50; i++) {
@@ -398,7 +399,7 @@ void OCAPProcess::Set_AddMZData(int nPortNo)
 	AddCarToMZ(nNo, gCap.nMZCycle);
 }
 
-void OCAPProcess::AddCarToMZ(int nNo, int nIdx)
+void OCAPFaiDlg::AddCarToMZ(int nNo, int nIdx)
 {
 	gCap.sMZID[nIdx]		= gLot.sMZID_GD[nNo];	//양품MZ
 	gCap.nTotCount[nIdx]	= gCap.nTotCount[nIdx]	 + gLot.nCmCount[nNo];			//투입-Module수
@@ -420,7 +421,7 @@ void OCAPProcess::AddCarToMZ(int nNo, int nIdx)
 	}
 }
 
-void OCAPProcess::DelMZData(int nMZNo)
+void OCAPFaiDlg::DelMZData(int nMZNo)
 {
 	if (nMZNo < 0 || nMZNo > 49) return;
 	gCap.sDate[nMZNo] = gCap.sTime[nMZNo] = gCap.sMZID[nMZNo] = "";
@@ -431,7 +432,7 @@ void OCAPProcess::DelMZData(int nMZNo)
 	for(int j=0; j<8; j ++) gCap.sLotID[nMZNo][j] = "";
 }
 
-void OCAPProcess::AddMZOut(CString sMZid)
+void OCAPFaiDlg::AddMZOut(CString sMZid)
 {
 	CString strLog;
 	if (gCap.sMZID[gCap.nMZCycle].GetLength() < 1) {
@@ -462,25 +463,26 @@ void OCAPProcess::AddMZOut(CString sMZid)
 	Check_DEFECTF(4);
 }
 
-void OCAPProcess::Set_AddDEFECT(CString sMZid, CString sCode)
+void OCAPFaiDlg::Set_AddDEFECT(CString sMZid, CString sCode)
 {
 	if (gCap.nMZCycle < 0 || gCap.nMZCycle > 49) return;
 	if (sMZid.GetLength() < 2 || sCode.GetLength() < 1 ) return;
 
-	for (int i=0; i<50; i++) {
-		if (sMZid == gCap.sMZID[i]) {
-			for(int j=0; j<100; j++) {
-				if (sCode == gCap.sFAIName[j]) {
-					gCap.nCount[i][i]++;
-					return;
-				}
+	for (int i=0; i<50; i++) 
+	{
+		for(int j=0; j<20; j++) 
+		{
+			if (sCode == gCap.sFAICode[j]) 
+			{
+				gCap.nCount[i][j]++;
+				return;
 			}
-			return;
 		}
+		return;
 	}
 }
 
-void OCAPProcess::Check_DEFECT(int nNo)
+void OCAPFaiDlg::Check_DEFECT(int nNo)
 {
 	int nX = nNo - 1;
 	if (gCap.nGiMZCnt[nX] <= 0 || gCap.nGiMZCnt[nX] > 40) return;
@@ -523,7 +525,7 @@ void OCAPProcess::Check_DEFECT(int nNo)
 	}
 }
 
-void OCAPProcess::Check_DEFECTF(int nNo)
+void OCAPFaiDlg::Check_DEFECTF(int nNo)
 {
 	int nX = nNo - 1;
 	if (gCap.nGiMZCnt[nX] <= 0 || gCap.nGiMZCnt[nX] > 40) return;

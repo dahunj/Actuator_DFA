@@ -43,7 +43,7 @@ private:
 
 	void Initial_Controls();
 	void Display_Option();
-	void Display_Grid(int nDp, int nIndex);
+	void Display_Grid(int nDp, int nIndex, int nType);
 
 public:
 	void AddModuleToCarrier(int nSlotNo, CString sType, int nJudge, CString sNGCode, CString sNGCodeVision, int& nCurrentMzIdx);
@@ -52,7 +52,7 @@ public:
 
 	void Check_CosmeticDefect(int nType, CString sMZID);
 	
-	void Display_Status();
+	void Display_Status(int nType);
 	void Set_AddMZData(int nPortNo);
 	void DelMZData(int nMZNo);	
 	

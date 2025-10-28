@@ -6,7 +6,7 @@
 #include "OCAPSelectDlg.h"
 #include "afxdialogex.h"
 #include "OCAPCosmeticDlg.h"
-#include "OCAPProcess.h"
+#include "OCAPFaiDlg.h"
 
 
 // COCAPSelectDlg 대화 상자입니다.
@@ -49,7 +49,7 @@ BOOL COCAPSelectDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	g_dlgOCAPCosmetic.Create(OCAPCosmeticDlg::IDD, this);
-	g_dlgOCAP.Create(OCAPProcess::IDD, this);
+	g_dlgOCAPFai.Create(OCAPFaiDlg::IDD, this);
 
 	m_btnCosmeticOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0x69, 0xFF, 0xB4), 0, 0);
 	m_btnFAIOCAP.Init_Ctrl("Arial", 10, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xC0, 0xCB), 0, 0);
@@ -73,7 +73,7 @@ void COCAPSelectDlg::OnDestroy()
 	CDialogEx::OnDestroy();
 
 	g_dlgOCAPCosmetic.DestroyWindow();
-	g_dlgOCAP.DestroyWindow();
+	g_dlgOCAPFai.DestroyWindow();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
@@ -102,8 +102,8 @@ void COCAPSelectDlg::OnBnClickedBtnCosmetic()
 
 void COCAPSelectDlg::OnBnClickedBtnFai()
 {
-	if (g_dlgOCAP.IsWindowVisible()) g_dlgOCAP.ShowWindow(SW_HIDE);
-	else g_dlgOCAP.ShowWindow(SW_SHOW);	
+	if (g_dlgOCAPFai.IsWindowVisible()) g_dlgOCAPFai.ShowWindow(SW_HIDE);
+	else g_dlgOCAPFai.ShowWindow(SW_SHOW);	
 
 	this->ShowWindow(SW_HIDE);
 }

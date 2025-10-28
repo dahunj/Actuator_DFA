@@ -346,7 +346,7 @@
     <ClInclude Include="OCAPSelectDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="OCAPProcess.h">
+    <ClInclude Include="OCAPFaiDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -543,7 +543,7 @@
     <ClCompile Include="OCAPSelectDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="OCAPProcess.cpp">
+    <ClCompile Include="OCAPFaiDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

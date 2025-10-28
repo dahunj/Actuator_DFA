@@ -77,7 +77,7 @@ void OCAPCosmeticDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	if (bShow) {
 		Display_Option();
 		Initial_NameGrid(&m_grdData, 50, 96);
-		Display_Status();
+		Display_Status(0);
 	} else {
 	}
 }
@@ -117,7 +117,7 @@ void OCAPCosmeticDlg::OnBnClickedOk()
 
 	g_objDataManager.Read_OCAPData();
 	Display_Option();
-	Display_Status();
+	Display_Status(0);
 }
 
 void OCAPCosmeticDlg::Initial_Controls() 
@@ -367,7 +367,7 @@ void OCAPCosmeticDlg::Initial_DataGrid(CGridCS *pGrid, int nRows, int nCols)
 	}
 }
 
-void OCAPCosmeticDlg::Display_Status()
+void OCAPCosmeticDlg::Display_Status(int nType)
 {
 	
 	//gCap.nMZCycle = 1;
@@ -388,7 +388,7 @@ void OCAPCosmeticDlg::Display_Status()
 	for(int i=nS; i>=0; i--) {
 		if (gCap.sDate_Cosmetic[i].GetLength() < 1) break;
 		nD++;
-		Display_Grid(nD, i);
+		Display_Grid(nD, i, nType);
 	}
 	/*for(int i=49; i>=0; i--) {
 	if (gCap.sDate[i].GetLength() < 1) break;
@@ -398,7 +398,7 @@ void OCAPCosmeticDlg::Display_Status()
 	}*/
 }
 
-void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
+void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx, int nType)
 {
 	if (nDp < 1 || nDp > 50 || nIx < 0 || nIx > 49) return;
 	CString str;
@@ -461,6 +461,9 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		m_grdData.Set_CellFont(nDp, i, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, i, str);
 
+		if		(gCap.dDefectPercent[nType] < dPer1 || gCap.dDefectPercent[nType] < dPer2)	m_grdData.Set_CellBackClr(nDp, i, RGB(0xFF, 0x00, 0x00));	// 3 NG
+		else									m_grdData.Set_CellBackClr(nDp, i, RGB(0xFF, 0xFF, 0xFF));	// 0 Empty
+				
 		dPer1 = 0;
 		dPer2 = 0;
 	}
@@ -474,6 +477,10 @@ void OCAPCosmeticDlg::Display_Grid(int nDp, int nIx)
 		gCap.sMZID_Cosmetic[nIx], gCap.nTotCount_Cosmetic[nIx], gCap.nGoodCount_Cosmetic[nIx]+ nTemp, 
 		gCap.nGoodCount_Cosmetic[nIx], gCap.sAlmDefectCode_Cosmetic, gCap.nNGCount_Consmetic[nIx], dPer);
 	strLog += strTemp;
+
+
+
+	
 	//g_objLogFile.Save_OCAPCosmeticLog(strLog);
 	
 }
@@ -709,7 +716,8 @@ void OCAPCosmeticDlg::Check_CosmeticDefect(int nType, CString sMZID)
 		
 		gCap.nCosmeticCodeNum[nType] = i+1;
 
-		Display_Status();		
+		if(nType > 2) Display_Status(nType - 3);
+		else Display_Status(nType);
 
 		if(gCap.nTotalCnt_MZ[gCap.nMZIdx_Cosmetic] > gCap.nMinModuleCnt )
 		{
@@ -812,11 +820,8 @@ void OCAPCosmeticDlg::OnBnClickedBtnTest()
 	//gCap.nCosmeticDefectMZ[0][1] = 16;
 	//gCap.nCosmeticDefectMZ[0][2] = 17;
 	//gCap.nCosmeticDefectMZ[0][3] = 18;
-
-
-	Display_Status();
-
 	
+	Display_Status(0);		
 }
 
 

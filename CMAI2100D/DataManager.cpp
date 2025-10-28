@@ -787,12 +787,7 @@ BOOL CDataManager::Read_OCAPData()
 	}
 	gCap.nMinModuleCnt	= INI.Get_Integer("OPTION", "MODULE_MIN_PER_MZ", 0);
 
-	for (int i = 0; i < 20; i++) 
-	{
-		strKey.Format("%02d", i + 1);
-		gCap.sFAIName[i] = INI.Get_String("FAI-NAME", strKey, "");
-		gCap.sFAICode[i] = INI.Get_String("FAI-CODE", strKey, "");
-	}
+
 	gCap.nCosmeticCount = 0;
 	for (int i = 0; i < 50; i++) 
 	{

@@ -16,7 +16,7 @@
 #include "CarrierRFID_Good.h"
 #include "CarrierRFID_NG.h"
 #include "OCAPCosmeticDlg.h"
-#include "OCAPProcess.h"
+#include "OCAPFaiDlg.h"
 #include <math.h>
 
 CSequenceMain g_objSequenceMain;
@@ -2302,7 +2302,7 @@ void CSequenceMain::Set_LotEnd(CString sLotID, int nPortNo, CString sMZID, CStri
 //	g_objMesAgent.Set_LotEnd(gLot.sLotID[nNo], gLot.sMZID_GD[nNo], gLot.sCarID_GD[nNo], gLot.sRecipeName[nNo], gLot.nCmCount[nNo], gLot.nGoodCount[nNo], gLot.nNgCount[nNo]+gLot.nSkipCount[nNo]);
 //	g_objInspector.Set_LotEnd(INSPECTOR_ALL, gLot.sLotID[nNo], nPortNo);
 	g_objDispatcher.Set_LotEnd(nPortNo);
-	g_dlgOCAP.Set_AddMZData(nPortNo);
+	g_dlgOCAPFai.Set_AddMZData(nPortNo);
 	g_dlgOCAPCosmetic.Set_AddMZData(nPortNo);
 
 	gData.nDay_TotalCnt += gLot.nCmCount[nNo];
@@ -10437,7 +10437,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 			m_sLog.Format("UnloadPicker %d To NGTray, x:%d Y:%d - MZ ID:%s",n1No, n1PosY, n1PosX , gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1]);
 			if(gTracking.sMZID_NGTray[n1PosY-1][n1PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 			
-			g_dlgOCAP.Set_AddDEFECT(gData.sMZID[9], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0]);
+			g_dlgOCAPFai.Set_AddDEFECT(gData.sMZID[7], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0]);
 			g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_NGTray[n1NSNo-5]-1, "NG",gData.InfoNgTray[n1PosY-1][n1PosX-1], gLot.sNGCode_I[n1UP][n1UT][n1UM+n1ModuleNo-1][0], gLot.sNGCode_Vision[n1UP][n1UT][n1UM+n1ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 			
 			gLot.nHistory[n1UP][n1UT][n1UM+n1ModuleNo-1][6] = 1;
@@ -10606,7 +10606,7 @@ BOOL CSequenceMain::Run_UnloadPicker1()
 
 				m_sLog = gLot.sNGCode_Vision[n1UP][n1UT][n1UM+n1ModuleNo-1+i][0];
 
-				g_dlgOCAP.Set_AddDEFECT(gData.sMZID[8], "");
+				g_dlgOCAPFai.Set_AddDEFECT(gData.sMZID[8], "");
 				g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_GoodTray[n1NSNo-7]-1, "GOOD", 0, "", gLot.sNGCode_Vision[n1UP][n1UT][n1UM+n1ModuleNo-1+i][0], gCap.nCarrierMZIndex[0]);
 
 				if (gData.InfoGoodTray[n1PosY-1][n1PosX-1+i] > 0) 
@@ -11055,7 +11055,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 			m_sLog.Format("UnloadPicker %d To NGTray, Y:%d X:%d - MZ ID:%s",n2No, n2PosY, n2PosX , gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1]);
 			if(gTracking.sMZID_NGTray[n2PosY-1][n2PosX-1] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
-			g_dlgOCAP.Set_AddDEFECT(gData.sMZID[9], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0]);
+			g_dlgOCAPFai.Set_AddDEFECT(gData.sMZID[7], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0]);
 			g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_NGTray[n2NSNo-5]-1, "NG",gData.InfoNgTray[n2PosY-1][n2PosX-1], gLot.sNGCode_I[n2UP][n2UT][n2UM+n2ModuleNo-1][0], gLot.sNGCode_Vision[n2UP][n2UT][n2UM+n2ModuleNo-1][0], gCap.nCarrierMZIndex[1]);
 		
 			gLot.nHistory[n2UP][n2UT][n2UM+n2ModuleNo-1][6] = 1;
@@ -11225,7 +11225,7 @@ BOOL CSequenceMain::Run_UnloadPicker2()
 				if(gTracking.sMZID_GoodTray[n2PosY-1][n2PosX-1+i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
 				m_sLog = gLot.sNGCode_Vision[n2UP][n2UT][n2UM+n2ModuleNo-1+i][0];
-				g_dlgOCAP.Set_AddDEFECT(gData.sMZID[8], "");
+				g_dlgOCAPFai.Set_AddDEFECT(gData.sMZID[8], "");
 				g_dlgOCAPCosmetic.AddModuleToCarrier(gData.nPortNo_GoodTray[n2NSNo-7]-1, "GOOD",0, "", gLot.sNGCode_Vision[n2UP][n2UT][n2UM+n2ModuleNo-1+i][0], gCap.nCarrierMZIndex[0]);
 				
 				if (gData.InfoGoodTray[n2PosY-1][n2PosX-1+i] > 0) 
@@ -13306,6 +13306,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		} 
 		else 
 		{
+			g_dlgOCAPFai.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 			m_nULCVElevatorCase = 29; m_tULCVElevatorLoop.Set_LoopTime(15000);
 		}
@@ -13322,7 +13323,7 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		if (m_pEquipData->bUseMZIDUnload) 
 		{
 			g_objMesAgent.Set_MGZIDRemove("G", gData.sMZID[8], gData.sRecipeName);
-			g_dlgOCAP.AddMZOut(gData.sMZID[8]);
+			g_dlgOCAPFai.AddMZOut(gData.sMZID[8]);
 			g_dlgOCAPCosmetic.AddMZOut(gData.sMZID[8], "GOOD");
 		}		
 		m_nULCVElevatorCase++; m_tULCVElevatorLoop.Set_LoopTime(15000);
