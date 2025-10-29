@@ -798,8 +798,7 @@ void CCMAI2100Dlg::Display_DateTime()
 
 
 
-	int nHour = 18; //datetime.GetHour();
-
+	int nHour = datetime.GetHour();
 	if (gIt.nLogMM >=1 && gIt.nLogMM <=12 && gIt.nLogHH != nHour) 
 	{
 		g_objLogFile.Save_Interlock(1);
