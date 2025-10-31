@@ -1269,7 +1269,10 @@ UINT CInspector::Thread_MotionT1(LPVOID lpVoid)
 	g_objAJinAXL.Move_Absolute(AX_TOP1_VISION_Z, dZOffset);
 	dwStart = GetTickCount();
 	while (!g_objAJinAXL.Is_MoveDone(AX_TOP1_VISION_Z, dZOffset)) {
-		if (GetTickCount() - dwStart > 3000) break;
+		if (GetTickCount() - dwStart > 3000)
+		{
+			break;
+		}
 		g_objInspector.DoEvents();
 	}
 	double dCurrentPos = g_objAJinAXL.Get_Position(AX_TOP1_VISION_Z);

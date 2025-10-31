@@ -14176,7 +14176,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			}
 		}
 		return TRUE;
-
+	//Load MZ 에서 Carrier가 모두 배출 된 이후에 GOOD MZ Elev로 비어진 MZ이 이동됨 
 	case 1:
 		if (m_pDX18->iGDMZElevatorExist) {
 			m_pDY18->oGDMZElevatorClamp12In = TRUE; m_pDY18->oGDMZElevatorClamp12Out = FALSE;
@@ -14239,11 +14239,14 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 	case 10:
 		nSlotNo = Check_MZCarrierExit(3);
-		if (nSlotNo > 0) {
+		if (nSlotNo > 0) 
+		{
 			m_nGDMZElevatorCase = 1; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 			g_objCommon.Show_Error(2710);
 			return FALSE;
-		} else {
+		} 
+		else
+		{
 			m_nGDMZElevatorCase = 60; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 		}
 /*
@@ -14392,11 +14395,14 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 	case 60:
 		nSlotNo = Check_MZCarrierEmpty(3);
-		if (nSlotNo > 0) {
+		if (nSlotNo > 0) 
+		{
 			dSlotPosZ = m_pMoveData->dGDMZElevatorZ[2] - (m_pEquipData->dMZPitchZ * (nSlotNo-1));
 			g_objAJinAXL.Move_Absolute(AX_GDMZ_ELEVATOR_Z, dSlotPosZ);
 			m_nGDMZElevatorCase++; m_tGDMZElevatorLoop.Set_LoopTime(5000);
-		} else {
+		}
+		else
+		{
 			m_nGDMZElevatorCase = 40; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
