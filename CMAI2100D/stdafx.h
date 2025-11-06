@@ -75,7 +75,9 @@
 #endif
 
 //****************************************************************************
-#define AJIN_BOARD_USE
+//#define AJIN_BOARD_USE
+
+
 #define CARRIER_TYPE_MEM
 //CARRIER_OFFSETY=0
 
@@ -388,6 +390,10 @@ typedef struct {
 	int		nAlmPNo[5];	//0:°Ë»ç,1;BTM,2:Top1,3:Top2
 } GLOVAL_ALM;
 
+#define LOAD_STAGE 0
+#define GOOD_STAGE 1
+#define NG_STAGE	 2
+
 typedef struct {
 	int		nLotPortNo;
 	int		nLotStatus[30];					// 0:None, 1:Start Send, 2:Lot Start Receive, 3:Lot End
@@ -587,3 +593,13 @@ typedef struct {
 extern GLOVAL_TEST* Gt;
 */
 
+
+
+//Load Stage 1 Y
+#define LoadPos_11 0
+#define WaitPos_11 1
+#define UnloadPos_11 2
+#define Align1Pos_11 3
+#define Align2Pos_11 4
+#define Align3Pos_11 5
+#define RFIDPos_11 6

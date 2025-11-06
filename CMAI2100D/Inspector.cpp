@@ -563,6 +563,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			if (pEquipData->bUseOppAlarm) g_objCommon.Show_Error(9211);
 			return;
 		}
+
+		//HAIM NG : 자공정에서 하임시스템이라고 액티브로 자동 실행해서 검사 진행하는데 거기서 발생한 NG
 		if (gNG->sHaimNGCd[nPortNo-1][nFind-1].GetLength() > 0) {	//Haim_NG
 			gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gNG->sHaimNGCd[nPortNo-1][nFind-1];
 			if		(nNGSize > 10) gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize - 10;	//치수불량: 7,8,9

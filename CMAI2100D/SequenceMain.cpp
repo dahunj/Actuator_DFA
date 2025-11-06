@@ -5387,7 +5387,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		{
 			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) 
 			{
-				gMes.nCarConfirm[0] = 1;
+				gMes.nCarConfirm[LOAD_STAGE] = 1;
 				g_objMesAgent.Set_CarrierIDReport("L", gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1]);
 				m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
 
@@ -5408,8 +5408,8 @@ BOOL CSequenceMain::Run_LoadStage1()
 		}
 		break;
 	case 7:
-		if (gMes.nCarConfirm[0] > 1) {
-			if (gMes.nCarConfirm[0] == 2) 
+		if (gMes.nCarConfirm[LOAD_STAGE] > 1) {
+			if (gMes.nCarConfirm[LOAD_STAGE] == 2) 
 			{
 				gMes.bRcpBodyDone = FALSE;	nSNo1Vision = 0;
 				g_objInspector.Set_RecipeRequest(0, gMes.sHostLotID, gMes.sHostRecipe);
@@ -5437,7 +5437,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		}
 		break;
 	case 9:
-		if (gMes.nCarConfirm[0] >= 4)
+		if (gMes.nCarConfirm[LOAD_STAGE] >= 4)
 		{
 			if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 
@@ -5644,7 +5644,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 	case 20:	//Align Wait
 		if (m_nLoadStage2Case > 20 && m_nLoadStage2Case < 40) 
 		{
-			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 1);	//Wait
+			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, WaitPos_11);	//Wait
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
 
 			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 wait", m_nLoadStage1Case);
@@ -5652,7 +5652,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		} 
 		else if (m_nLoadStage2Case < 20 || (m_nLoadStage2Case >= 25 && m_nLoadStage2Case <= 29)  || m_nLoadStage2Case >= 40) 
 		{
-			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 2);	//Unload
+			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, UnloadPos_11);	//Unload
 			m_nLoadStage1Case = 23; m_tLoadStage1Loop.Set_LoopTime(30000);
 
 			m_sLog.Format("MCC,10,LoadStage1,%d,AX_LOAD_STAGE_Y1 move to Unload Pos", m_nLoadStage1Case);
@@ -6155,7 +6155,7 @@ BOOL CSequenceMain::Run_LoadStage2()
 				m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_CarrierIDReport", m_nLoadStage2Case);
 				g_objLogFile.Save_SeqHistoryLog(m_sLog);
 
-				gMes.nCarConfirm[0] = 1;
+				gMes.nCarConfirm[LOAD_STAGE] = 1;
 				g_objMesAgent.Set_CarrierIDReport("L", gData.sMZID_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2]);
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);				
 			}
@@ -6173,9 +6173,9 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 7:
-		if (gMes.nCarConfirm[0] > 1) 
+		if (gMes.nCarConfirm[LOAD_STAGE] > 1) 
 		{
-			if (gMes.nCarConfirm[0] == 2) 
+			if (gMes.nCarConfirm[LOAD_STAGE] == 2) 
 			{
 				m_sLog.Format("MCC,11,LoadStage2,%d,g_objInspector.Set_RecipeRequest", m_nLoadStage2Case);
 				g_objLogFile.Save_SeqHistoryLog(m_sLog);
@@ -6204,7 +6204,7 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 9:
-		if (gMes.nCarConfirm[0] >= 4) 
+		if (gMes.nCarConfirm[LOAD_STAGE] >= 4) 
 		{
 			if (!m_tLoadStage2Loop.Waiting_Time(500)) break;
 
@@ -6707,6 +6707,7 @@ BOOL CSequenceMain::Run_LoadPicker1()
 	case 0:	// Wait
 		if (Check_EmptyLoadTray()) 
 		{
+			// 30은 Load Picker 작업을 기다리는 스텝, Tray가 없으면 그냥 넘기기
 			if (m_nLoadStage1Case == 30 && !m_pDX04->iLoadStage1TrayExist) m_nLoadStage1Case = 31;
 			if (m_nLoadStage2Case == 30 && !m_pDX04->iLoadStage2TrayExist) m_nLoadStage2Case = 31;
 		}

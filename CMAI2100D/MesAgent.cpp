@@ -241,7 +241,7 @@ void CMesAgent::Get_LotStart(CString sLotId, CString sRecipe, CString sCmCount, 
 	strLog.Format("[Get_LotStart] Lot Data Port(%d) LotID(%s) Count(%d) Recipe(%s)", nPortNo+1, gMes.sHostLotID, gMes.nHostCmCount, gMes.sHostRecipe);
 	g_objLogFile.Save_MesAgentLog(strLog);
 
-	gMes.nCarConfirm[0] = 3;
+	gMes.nCarConfirm[LOAD_STAGE] = 3;
 }
 
 void CMesAgent::Get_LotCancel(CString sLotId, CString sCode, CString sText)
@@ -407,9 +407,9 @@ void CMesAgent::Get_CarrierCancel(CString sCarrierId, CString sCode, CString sTe
 	if (m_sCarrier[1] == sCarrierId) { g_objCommon.Show_Error(9016); return; }
 	if (m_sCarrier[2] == sCarrierId) { g_objCommon.Show_Error(9017); return; }
 
-	if		(gMes.nCarConfirm[0] == 1) g_objCommon.Show_Error(9015);
-	else if (gMes.nCarConfirm[1] == 1) g_objCommon.Show_Error(9016);
-	else if (gMes.nCarConfirm[2] == 1) g_objCommon.Show_Error(9017);
+	if		(gMes.nCarConfirm[LOAD_STAGE] == 1) g_objCommon.Show_Error(9015);
+	else if (gMes.nCarConfirm[GOOD_STAGE] == 1) g_objCommon.Show_Error(9016);
+	else if (gMes.nCarConfirm[NG_STAGE] == 1) g_objCommon.Show_Error(9017);
 }
 
 void CMesAgent::Get_ModuleData(CString sData)
@@ -457,7 +457,7 @@ void CMesAgent::Get_ModuleData(CString sData)
 				if (gNG->sHaimNGCd[i][j].GetLength() > 0) k++;
 				if (gNG->sCosmeticNG[i][j] == "NG") nCosNG++;
 			}
-			gMes.nCarConfirm[0]++;	//4
+			gMes.nCarConfirm[LOAD_STAGE]++;	//4
 
 			//0:LOTID,1:MODULEID,2:SITE,3:EQPID,4:EQPNAME,5:TOOL_CAVITY,6:PARA,7:DATE,8:ROS_JUDGE,9:DFA_LOTID,10:POCKETNO,11:HaimNGCode
 			for(int j=0; j<nCnt; j++) {
@@ -470,7 +470,7 @@ void CMesAgent::Get_ModuleData(CString sData)
 		}
 	}
 
-	strLog.Format("MESAgent Module Data LotID Not Found Error => LotID(%s) MesNo(%d) CycleNo(%d)", sRcvData[0][0], gMes.nCarConfirm[0], gLot.nJobCycle);
+	strLog.Format("MESAgent Module Data LotID Not Found Error => LotID(%s) MesNo(%d) CycleNo(%d)", sRcvData[0][0], gMes.nCarConfirm[LOAD_STAGE], gLot.nJobCycle);
 	g_objLogFile.Save_MesAgentLog(strLog);
 	g_objCommon.Show_Error(9023);
 }
@@ -482,7 +482,7 @@ void CMesAgent::Get_PPSelect(CString sLotId, CString sRecipe)
 	if (gMes.sHostLotID.GetLength() < 5 || gMes.sHostRecipe.GetLength() < 2) {
 		g_objCommon.Show_Error(9004); return;
 	}
-	gMes.nCarConfirm[0] = 2;
+	gMes.nCarConfirm[LOAD_STAGE] = 2;
 }
 
 void CMesAgent::Get_PPSelectFail(CString sLotId, CString sRecipe, CString sCode, CString sText)
