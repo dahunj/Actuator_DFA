@@ -2586,6 +2586,14 @@ void CWorkDlg::DoEvents(int nSleep)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CWorkDlg::OnBnClickedButton2()
 {
+	CString str1, str2;
+	str1 = "DFAI-13A";
+	str2 = "DFAI-13";
+
+	int a = str1.Find(str2);
+
+
+
 //	g_dlgWork.PostMessage(UM_LOT_END_MSG, 1, 9);
 //	gLot.nJobNo = 0;
 //	g_dlgWork.PostMessage(UM_UPDATE_UPH, 0, NULL);

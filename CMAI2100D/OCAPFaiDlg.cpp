@@ -472,7 +472,8 @@ void OCAPFaiDlg::Set_AddDEFECT(CString sMZid, CString sCode)
 	{
 		for(int j=0; j<20; j++) 
 		{
-			if (sCode == gCap.sFAICode[j]) 
+			if (sCode.Find(gCap.sFAICode[j]) > -1 ) 
+			//if (sCode == gCap.sFAICode[j]) 
 			{
 				gCap.nCount[i][j]++;
 				return;
