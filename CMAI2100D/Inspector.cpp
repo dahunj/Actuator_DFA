@@ -359,7 +359,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	{
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = "";
 		strLog.Format("INSPECT,COMPLETE,GOOD,Empty");
-		g_objLogFile.Save_SeqHistoryLog(strLog);
+		g_objLogFile.Save_SeqLog(strLog);
 	}
 	else
 	{
@@ -371,7 +371,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 				if(sNGCode == gCap.sFAICode[i])
 				{
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sFAICode[i]);
-					g_objLogFile.Save_SeqHistoryLog(strLog);
+					g_objLogFile.Save_SeqLog(strLog);
 				}
 			}		
 		}
@@ -382,7 +382,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 				if(sNGCode == gCap.sCosmeticCode[i])
 				{
 					strLog.Format("INSPECT,COMPLETE,NG,%s",gCap.sCosmeticCode[i]);
-					g_objLogFile.Save_SeqHistoryLog(strLog);
+					g_objLogFile.Save_SeqLog(strLog);
 				}
 			}			
 		}*/

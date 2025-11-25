@@ -611,9 +611,9 @@ void CLogFile::Save_OutTray(CString strLotID, CString strOut, int nPosX, int nPo
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CLogFile::Save_SeqHistoryLog(CString sLog)
+void CLogFile::Save_SeqLog(CString sLog)
 {
-	CString strPath = gsCurrentDir + "\\LOG\\SeqHistory";
+	CString strPath = gsCurrentDir + "\\LOG\\Seq";
 
 	Create_Folder(strPath);
 
@@ -621,7 +621,7 @@ void CLogFile::Save_SeqHistoryLog(CString sLog)
 	GetLocalTime(&time);
 
 	CString strFile, strSave;
-	strFile.Format("%s\\%04d%02d%02d_SeqHistory.csv", strPath, time.wYear, time.wMonth, time.wDay);
+	strFile.Format("%s\\%04d%02d%02d_Seq.csv", strPath, time.wYear, time.wMonth, time.wDay);
 
 	CFile file;
 	if (file.Open(strFile, CFile::modeCreate | CFile::modeNoTruncate | CFile::modeWrite | CFile::shareDenyNone)) {

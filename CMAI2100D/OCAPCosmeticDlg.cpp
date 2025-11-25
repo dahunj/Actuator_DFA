@@ -518,7 +518,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 				{
 					gCap.nTotalCntCarrier[nSlotNo]++;
 					strTemp.Format("NG, nCarrierFAIDefect:%d, nSlotNo:%d,sNGCode:%s,%s", gCap.nCarrierFAIDefect[i][nSlotNo],nSlotNo, sNGCode, gCap.sFAICode[i]);
-					g_objLogFile.Save_SeqHistoryLog(strTemp);
+					g_objLogFile.Save_SeqLog(strTemp);
 				}*/
 			}		
 		}		
