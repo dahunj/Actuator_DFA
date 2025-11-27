@@ -393,10 +393,14 @@ void CDispatcher::Set_JudgeRequest(int nPortNo, int nTrayNo, int nCmNo)
 	ROS_DATA *pRosData = g_objDataManager.Get_pRosData();
 	if (pRosData->lstMdjIp.GetCount() < 1) {
 		m_bJudgeDone[nPortNo-1][nTrayNo-1][nCmNo-1] = TRUE;
-		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 7 || gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 8 || gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 9) {
+
+		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 7 || gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 8 || gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0] == 9) 
+		{
 			gLot.nJudge_R[nPortNo-1][nTrayNo-1][nCmNo-1] = gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0];
 			gLot.nRosJugCount[nPortNo-1][6]++;
-		} else {
+		} 
+		else
+		{
 			gLot.nRosJugCount[nPortNo-1][0]++;
 			gLot.nJudge_R[nPortNo-1][nTrayNo-1][nCmNo-1] = 4; gLot.nRosJugCount[nPortNo-1][2]++;	//ROS¹Ì¿¬°á-> ROS-Repair
 		}

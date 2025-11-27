@@ -826,6 +826,7 @@ void CDataManager::Read_NGTraySort()
 			else if (strTemp == "C") m_EquipData.nTrayBase[i][x] = 13;	//SKIP_ROS-R(Special NG)
 			else if (strTemp == "D") m_EquipData.nTrayBase[i][x] = 14;	//SKIP_ROS-N(Special NG)
 			else if (strTemp == "E") m_EquipData.nTrayBase[i][x] = 15;	//Black_Module(Cosmetic NG)
+			else if (strTemp == "J") m_EquipData.nTrayBase[i][x] = 20;  //FAI-124
 			else					 m_EquipData.nTrayBase[i][x] = atoi(strTemp);
 			x--;
 			if (strTemp.GetLength() != 1) {

@@ -75,7 +75,7 @@
 #endif
 
 //****************************************************************************
-//#define AJIN_BOARD_USE
+#define AJIN_BOARD_USE
 
 
 #define CARRIER_TYPE_MEM //CARRIER_OFFSETY=0
@@ -299,7 +299,7 @@ typedef struct {
 	int		nGoodCount[30];
 	int		nNgCount[30];
 	int		nSkipCount[30];
-	int		nJudge_I[30][10][40][6];	//2:G, 3:NG,     5:BAR_NOREAD, 6:MES_NG, 7:FAI치수불량
+	int		nJudge_I[30][10][40][6];	//2:G, 3:NG,     5:BAR_NOREAD, 6:MES_NG, 7:FAI치수불량, 맨마지막 6중에 "0"은 최종 판정 1부터는 각 구간의 판정코드 
 	int		nJudge_R[30][10][40];		//2:G, 3:ROS_NG, 4:ROS_Repair
 	CString sNGCode_I[30][10][40][6];
 	CString sNGCode_Vision[30][10][40][6];
