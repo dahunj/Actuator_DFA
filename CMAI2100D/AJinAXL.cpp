@@ -380,6 +380,21 @@ void CAJinAXL::Move_Absolute(int nAxis, double dPos, double dSpeed)
 #endif
 }
 
+void CAJinAXL::Move_Absolute_Slow(int nAxis, double dPos, double dSpeed, double dAccel)
+{
+#ifdef AJIN_BOARD_USE
+	AxmMotSetAbsRelMode(nAxis, POS_ABS_MODE);
+	
+	double	dVel = dSpeed;
+	double	dAcc = dAccel;
+	AxmMoveStartPos(nAxis, dPos, dVel, dAcc, dAcc);
+	m_Status[nAxis].bInP = FALSE; m_Status[nAxis].bRun = TRUE;
+#else
+	Sim_SetMotion(1, nAxis, dPos);
+#endif
+}
+
+
 void CAJinAXL::Move_Relative(int nAxis, double dPos, double dSpeed)
 {
 #ifdef AJIN_BOARD_USE
