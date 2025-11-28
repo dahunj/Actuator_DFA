@@ -1542,8 +1542,9 @@ LRESULT CWorkDlg::OnUpdateTrayInfo(WPARAM nTray, LPARAM lParam)
 			if		(gData.InfoLoadTray[i][j] > 0)	m_grdCarrier.Set_CellBackClr(i, nj, RGB(0xFF, 0x80, 0xFF));
 			else									m_grdCarrier.Set_CellBackClr(i, nj, RGB(0xFF, 0xFF, 0xFF));	// 0 Empty
 
-			if		(gData.InfoNgTray[i][j] > 0)	m_grdNGTray.Set_CellBackClr(i, nj, RGB(0xFF, 0x00, 0x00));
-			else									m_grdNGTray.Set_CellBackClr(i, nj, RGB(0xFF, 0xFF, 0xFF));	// 0 Empty
+			if			(gData.InfoNgTray[i][j] == 20)		m_grdNGTray.Set_CellBackClr(i, nj, RGB(0xFF, 0xFF, 0x00));
+			else if		(gData.InfoNgTray[i][j] > 0)		m_grdNGTray.Set_CellBackClr(i, nj, RGB(0xFF, 0x00, 0x00));
+			else											m_grdNGTray.Set_CellBackClr(i, nj, RGB(0xFF, 0xFF, 0xFF));	// 0 Empty
 
 			if		(gData.InfoGoodTray[i][j] == 9)	m_grdGoodTray.Set_CellBackClr(i, nj, RGB(0x00, 0x00, 0xFF));	//Marginal
 			else if	(gData.InfoGoodTray[i][j] > 0)	m_grdGoodTray.Set_CellBackClr(i, nj, RGB(0x00, 0xFF, 0x00));	//Good

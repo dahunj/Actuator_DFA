@@ -836,10 +836,10 @@ void CDataManager::Read_NGTraySort()
 		}
 	}
 	// Value Validation Check
-	int nValue[20] = { 0, };
+	int nValue[30] = { 0, };
 	for(int i=0; i<10; i++) {
 		for(int j=0; j<4; j++) {
-			if (m_EquipData.nTrayBase[i][j] < 0 || m_EquipData.nTrayBase[i][j] > 15) {
+			if (m_EquipData.nTrayBase[i][j] < 0 || m_EquipData.nTrayBase[i][j] > 20) {
 				AfxMessageBox("NGTraySort.ini File Data Error..!!!");
 				return;
 			}
