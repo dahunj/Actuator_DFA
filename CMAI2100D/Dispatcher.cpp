@@ -398,7 +398,9 @@ void CDispatcher::Set_JudgeRequest(int nPortNo, int nTrayNo, int nCmNo)
 		{
 			gLot.nJudge_R[nPortNo-1][nTrayNo-1][nCmNo-1] = gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCmNo-1][0];
 			gLot.nRosJugCount[nPortNo-1][6]++;
-		} else {
+		} 
+		else
+		{
 			gLot.nRosJugCount[nPortNo-1][0]++;
 			gLot.nJudge_R[nPortNo-1][nTrayNo-1][nCmNo-1] = 4; gLot.nRosJugCount[nPortNo-1][2]++;	//ROS¹Ì¿¬°á-> ROS-Repair
 		}

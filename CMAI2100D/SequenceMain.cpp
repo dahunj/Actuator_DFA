@@ -1644,7 +1644,13 @@ void CSequenceMain::Set_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 		if (gData.InfoUnloadPick[nPNo-1][i] > 0) {
 			if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][0] > 0) 
 			{
-				gData.InfoUnloadPick[nPNo-1][i] = gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][0];				
+				gData.InfoUnloadPick[nPNo-1][i] = gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][0];	
+
+				// FAI-124 인 경우 
+				if(gData.InfoUnloadPick[nPNo-1][i] == 19 && gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][0].Find("DFAI-124") > -1)
+				{
+					gData.InfoUnloadPick[nPNo-1][i] = 20; //FAI-124 인 경우, NG Tray Sort "J" = 20
+				}
 			}
 		}
 	}
@@ -1992,8 +1998,12 @@ int CSequenceMain::Check_NGExist(int nPNo, int &nJNo)
 BOOL CSequenceMain::Select_NGTrayPoketNo(int nType, int &nPosX, int &nPosY)
 {	//Type => 3:NG, 4:ROS재검, 5:Barcode,MES, 6:치수불량123, 7:치수불량1, 8:치수불량2, 9:치수불량3, A:허수불량
 	nPosX = nPosY = 0;
-	for(int i=0; i<10; i++) {
-		for(int j=0; j<4; j++) {
+	int nTrayBaseTemp = 0;
+
+	for(int i=0; i<10; i++) 
+	{
+		for(int j=0; j<4; j++) 
+		{
 			if (gData.InfoNgTray[i][j] == 0) 
 			{
 				if (!m_pEquipData->bUseNGSort || m_pEquipData->nTrayBase[i][j] == nType) 

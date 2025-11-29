@@ -356,6 +356,9 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else if (sJudge == "X")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 5;	//외관불량(Ros Skip to NG)
 	else					 gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 3;	//외관불량(ROS 판정)
 	
+
+
+
 	//OCAP Count 
 	if (sJudge == "G")
 	{
