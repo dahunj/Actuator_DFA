@@ -1647,9 +1647,14 @@ void CSequenceMain::Set_InspectDone(int nPNo, int nPortNo, int nTrayNo)
 				gData.InfoUnloadPick[nPNo-1][i] = gLot.nJudge_I[nPortNo-1][nTrayNo-1][i+nCno][0];	
 
 				// FAI-124 인 경우 
-				if(gData.InfoUnloadPick[nPNo-1][i] == 19 && gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][0].Find("DFAI-124") > -1)
+				if(gData.InfoUnloadPick[nPNo-1][i] == 10 && gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][0].Find("DFAI-124") > -1)
 				{
-					gData.InfoUnloadPick[nPNo-1][i] = 20; //FAI-124 인 경우, NG Tray Sort "J" = 20
+					//gData.InfoUnloadPick[nPNo-1][i] = 20; //FAI-124 인 경우, NG Tray Sort "J" = 20
+				}
+
+				if(gData.InfoUnloadPick[nPNo-1][i] == 20 && gLot.sNGCode_I[nPortNo-1][nTrayNo-1][i+nCno][0].Find("DFAI-124") > -1)
+				{
+					gData.InfoUnloadPick[nPNo-1][i] = 10; //FAI-124 인 경우, NG Tray Sort "J" = 20
 				}
 			}
 		}

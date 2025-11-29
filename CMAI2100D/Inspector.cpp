@@ -332,7 +332,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	int	nMarginal = atoi(sMarginal);
 	if (nPortNo < 1 || nPortNo > 30 || nTrayNo < 1 || nTrayNo > 10  || nCMNo < 1 || nCMNo > 40) { g_objCommon.Show_Error(9103); return; }
 	if (sType != "B1" && sType != "AG" && sType != "T1" && sType != "TG" && sType != "T2") { g_objCommon.Show_Error(9104); return; }
-	if (sJudge != "G" && sJudge != "N"  && sJudge != "S"  && sJudge != "T" && sJudge != "W" && sJudge != "X" && sJudge != "R" && sJudge != "SS"  && sJudge != "TS" && sJudge != "WS" ) { g_objCommon.Show_Error(9105); return; }
+	if (sJudge != "G" && sJudge != "N"  && sJudge != "S"  && sJudge != "T" && sJudge != "W" && sJudge != "X" && sJudge != "R" && sJudge != "SS"  && sJudge != "TS" && sJudge != "WS" && sJudge != "Z" && sJudge != "ZS"  ) { g_objCommon.Show_Error(9105); return; }
 
 	int nVNo = (sType == "B1" ? 1 : (sType == "AG" ? 2 : (sType == "T1" ? 3 : (sType == "TG" ? 4 : (sType == "T2" ? 5 : 0)))));
 

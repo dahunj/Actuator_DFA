@@ -826,7 +826,7 @@ void CDataManager::Read_NGTraySort()
 			else if (strTemp == "C") m_EquipData.nTrayBase[i][x] = 13;	//SKIP_ROS-R(Special NG)
 			else if (strTemp == "D") m_EquipData.nTrayBase[i][x] = 14;	//SKIP_ROS-N(Special NG)
 			else if (strTemp == "E") m_EquipData.nTrayBase[i][x] = 15;	//Black_Module(Cosmetic NG)
-			else if (strTemp == "J") m_EquipData.nTrayBase[i][x] = 20;  //FAI-124
+			else if (strTemp == "J") m_EquipData.nTrayBase[i][x] = 10;  //FAI-124
 			else					 m_EquipData.nTrayBase[i][x] = atoi(strTemp);
 			x--;
 			if (strTemp.GetLength() != 1) {
@@ -852,8 +852,8 @@ void CDataManager::Read_NGTraySort()
 	// 7:치수불량1, 8:치수불량2, 9:치수불량3, 6:치수불량123,
 	// A:허수배출, B: BARCODE_NOREAD, E:Black_Module
 	// C:SKIP-ROS-R(Special NG), D:SKIP-ROS-N(Special NG)
-	if (nValue[1] == 1 || nValue[2] == 1 || nValue[3] == 0 || nValue[4] == 1 || nValue[5] == 0 ||
-		nValue[10] == 1 || nValue[11] == 0 || nValue[12] == 0 || nValue[15] == 0) {
+	if (nValue[1] == 1 || nValue[2] == 1 || nValue[3] == 0 || nValue[4] == 1 || nValue[5] == 0 || nValue[11] == 0 || nValue[12] == 0 || nValue[15] == 0) //|| nValue[10] == 1 
+	{
 		AfxMessageBox("NGTraySort.ini File Data Error1..!!!!!!!!!");
 		return;
 	}
