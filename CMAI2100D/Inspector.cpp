@@ -347,9 +347,11 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	else if (sJudge == "S")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 7;	//치수불량1(7-FAI)
 	else if (sJudge == "T")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 8;	//치수불량2(Gap)
 	else if (sJudge == "W")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 9;	//치수불량3(Tilt)
+	else if (sJudge == "Z")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 10;	//치수불량(FAI-124)
 	else if (sJudge == "SS") gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 17;	//치수불량1 ROS_Skip
 	else if (sJudge == "TS") gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 18;	//치수불량2 ROS_Skip
 	else if (sJudge == "WS") gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 19;	//치수불량3 ROS_Skip
+	else if (sJudge == "ZS") gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 20;   //치수불량(FAI-124)
 	else if (sJudge == "R")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 4;	//외관불량(Ros Skip to Repair)
 	else if (sJudge == "X")  gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 5;	//외관불량(Ros Skip to NG)
 	else					 gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][nVNo] = 3;	//외관불량(ROS 판정)
@@ -493,15 +495,17 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		return;
 	}
 
-	int nNGCnt = 0, nNGSize = 0, nNGSize1 = 0, nNGSize2 = 0, nNGSize3 = 0, nNGMC = 0, nNGGF = 0, nNGSkip = 0, nReSkip = 0, nMCBTM = 0, nNGSize1Sp = 0, nNGSize2Sp = 0, nNGSize3Sp = 0, nFaiFail = 0;
+	int nNGCnt = 0, nNGSize = 0, nNGSize1 = 0, nNGSize2 = 0, nNGSize3 = 0,nNGSize4 = 0, nNGMC = 0, nNGGF = 0, nNGSkip = 0, nReSkip = 0, nMCBTM = 0, nNGSize1Sp = 0, nNGSize2Sp = 0, nNGSize3Sp = 0, nNGSize4Sp = 0,nFaiFail = 0;
 	for (int i = 1; i < 6; i++) {
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]  > 2) nNGCnt++;
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 7) { nNGSize1++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 8) { nNGSize2++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 9) { nNGSize3++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
+		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 10) { nNGSize4++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 17) { nNGSize1Sp++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 18) { nNGSize2Sp++; gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 19) { nNGSize3Sp++;  gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
+		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 20) { nNGSize4Sp++;  gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 4) {  nReSkip++;  gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == 5) {  nNGSkip++;  gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i]; }
 		if (gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == "MC" || gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][i] == "ROI_FAIL") nNGMC++;
@@ -515,13 +519,15 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	if		(nNGSize1Sp > 0) nNGSize = 17;
 	else if (nNGSize2Sp > 0) nNGSize = 18;
 	else if (nNGSize3Sp > 0) nNGSize = 19;
+	else if (nNGSize4Sp > 0) nNGSize = 20;
 	else if	(nNGSize1 > 0)	 nNGSize = 7;
 	else if (nNGSize2 > 0)	 nNGSize = 8;
 	else if (nNGSize3 > 0)	 nNGSize = 9;
+	else if (nNGSize4 > 0)	 nNGSize = 10;
 
 	DWORD dwTerm = GetTickCount() - m_dwT2ScanDone[nPortNo-1][nTrayNo-1][nCMNo-1];
-	strLog.Format("[Get_InspectComplete] Inspection Complete LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Time(%d) NG(%d) Bar(%s) SNG(%d) MC(%d) GF(%d) SNG(%d) SRe(%d) MCBTM(%d) FDFAI(%d) NC(%s) SS(%d-%d-%d) FAIFail(%d) Marginal(%d)",
-		sLotID, sPortNo, sTrayNo, nCMNo, dwTerm, nNGCnt, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], nNGSize, nNGMC, nNGGF, nNGSkip, nReSkip, nMCBTM, gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nNGSize1Sp, nNGSize2Sp, nNGSize3Sp, nFaiFail, gLot.nMarginal[nPortNo-1][nCMNo-1]);	g_objLogFile.Save_HandlerLog(strLog);
+	strLog.Format("[Get_InspectComplete] Inspection Complete LotID(%s) PortNo(%s) TrayNo(%s) CmNo(%d) Time(%d) NG(%d) Bar(%s) SNG(%d) MC(%d) GF(%d) SNG(%d) SRe(%d) MCBTM(%d) FDFAI(%d) NC(%s) SS(%d-%d-%d-%d) FAIFail(%d) Marginal(%d)",
+		sLotID, sPortNo, sTrayNo, nCMNo, dwTerm, nNGCnt, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], nNGSize, nNGMC, nNGGF, nNGSkip, nReSkip, nMCBTM, gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nNGSize1Sp, nNGSize2Sp, nNGSize3Sp, nNGSize4Sp, nFaiFail, gLot.nMarginal[nPortNo-1][nCMNo-1]);	g_objLogFile.Save_HandlerLog(strLog);
 
 
 #ifndef AJIN_BOARD_USE
@@ -610,13 +616,13 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	}
 	//치수불량(10) - ROS Skip
 	if (nNGSize > 10) {
-		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize - 10;	//치수불량: 7,8,9
+		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize - 10;	//치수불량: 7,8,9, 10
 		gLot.nRosJugCount[nPortNo-1][6]++;
 		return;
 	}
 	if (nNGSize > 0 && (nNGMC > 0 || nMCBTM > 0 || nNGSkip > 0 || nReSkip > 0))
 	{
-		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	//치수불량: 7,8,9
+		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	//치수불량: 7,8,9, 10
 		gLot.nRosJugCount[nPortNo-1][6]++;
 		return;
 	}
