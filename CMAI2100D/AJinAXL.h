@@ -128,6 +128,7 @@ public:
 	void Home_Search(int nAxis);
 	void Set_Home(int nAxis);
 	void Move_Absolute(int nAxis, double dPos, double dSpeed=1.0);
+	void Move_Absolute_Slow(int nAxis, double dPos, double dSpeed, double dAccel);
 	void Move_Relative(int nAxis, double dPos, double dSpeed=1.0);
 	void Jog_Positive(int nAxis, double dSpeed=0.0);
 	void Jog_Negative(int nAxis, double dSpeed=0.0);

@@ -333,7 +333,9 @@ void CCommon::Move_Position(int nAxis, int nMoveIdx, double dSpeed)
 	if (dMovePos == -999) return;
 	if (nMoveIdx > 0 && (nAxis == AX_TRANSFER_Z1 || nAxis == AX_TRANSFER_Z2)) {
 		g_objAJinAXL.Move_Abs_Override(nAxis, dMovePos, (dMovePos-pEquipData->dTranZOverride), pEquipData->dSpeedZOverride);
-	} else {
+	} 
+	else
+	{
 		g_objAJinAXL.Move_Absolute(nAxis, dMovePos, dSpeed);
 	}
 }
