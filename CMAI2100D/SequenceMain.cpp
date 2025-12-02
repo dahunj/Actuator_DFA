@@ -6859,8 +6859,8 @@ BOOL CSequenceMain::Run_LoadPicker1()
 			m_tLoadPicker1Loop.Takt_Save(12, 2); m_tLoadPicker1Loop.Takt_Start();
 
 			double dPosTemp = g_objAJinAXL.Get_Position(AX_LOAD_PICKER_Z1);
-			dPosTemp += 0.15;
-			g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z1, dPosTemp, 300, 200);
+			dPosTemp += m_pEquipData->dOffset_LoadPickZ;
+			g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z1, dPosTemp, m_pEquipData->nSpeed_LoadPickZ, m_pEquipData->nAccel_LoadPickZ);
 			//g_objCommon.Move_Position(AX_LOAD_PICKER_Z1, nLPStage1No);
 
 			m_nLoadPicker1Case++; m_tLoadPicker1Loop.Set_LoopTime(30000);
@@ -7669,8 +7669,8 @@ BOOL CSequenceMain::Run_LoadPicker2()
 			m_tLoadPicker2Loop.Takt_Save(13, 2); m_tLoadPicker2Loop.Takt_Start();
 			
 			double dPosTemp = g_objAJinAXL.Get_Position(AX_LOAD_PICKER_Z2);
-			dPosTemp += 0.15;
-			g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z2, dPosTemp, 300, 200);
+			dPosTemp += m_pEquipData->dOffset_LoadPickZ;
+			g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z2, dPosTemp, m_pEquipData->nSpeed_LoadPickZ, m_pEquipData->nAccel_LoadPickZ);
 
 			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
 		}

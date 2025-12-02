@@ -78,4 +78,6 @@ private:
 
 public:
 	void Display_Status();
+	afx_msg void OnBnClickedBtnLoadPicker2Z5();
+	afx_msg void OnBnClickedBtnLoadPicker1Z5();
 };

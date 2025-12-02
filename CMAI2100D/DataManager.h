@@ -52,6 +52,11 @@ typedef struct tag_EQUIP_DATA {
 	double	dTrayPitchX;		
 	double	dTrayPitchY;
 
+	double  dOffset_LoadPickZ;
+	int		nSpeed_LoadPickZ;
+	int		nAccel_LoadPickZ;
+
+
 	double	dPitchBtm;
 	double	dPitchTop;
 	double	dMZPitchZ;		//Add

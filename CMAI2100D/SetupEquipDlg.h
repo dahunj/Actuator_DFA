@@ -14,8 +14,8 @@ public:
 
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_SETUP_EQUIP_DLG };
-	CGroupCS	m_Group[9];
-	CLabelCS	m_Label[38];
+	CGroupCS	m_Group[10];
+	CLabelCS	m_Label[41];
 	CStaticCS	m_stcEquipName;
 	CStaticCS	m_stcEquipModel;
 	CComboCS	m_cboModelChange;
@@ -46,7 +46,10 @@ public:
 	CCheckCS	m_chkUseOppAlarm;
 	CCheckCS	m_chkUseBarcode[4];
 	CCheckCS	m_chkUseRFID[3];
+	
 	CStaticCS	m_stcCmTrayData[4];
+	CStaticCS	m_stcLoadPickZPushData[3];
+
 	CStaticCS	m_stcTimeOver[3];
 	CStaticCS	m_stcNGCodeMC[5];
 	CStaticCS	m_stcDropTableData[4];
@@ -86,6 +89,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnStnClickedStcEquipName();
+	afx_msg void OnStcLoadPickZPushClick(UINT nID);
 	afx_msg void OnStcCmTrayDataClick(UINT nID);
 	afx_msg void OnStcCapTrayDataClick(UINT nID);
 	afx_msg void OnStcShipTrayDataClick(UINT nID);

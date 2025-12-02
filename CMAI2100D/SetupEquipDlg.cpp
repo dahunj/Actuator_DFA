@@ -31,8 +31,8 @@ CSetupEquipDlg::~CSetupEquipDlg()
 void CSetupEquipDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	for (int i = 0; i < 9; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
-	for (int i = 0; i < 38; i++) DDX_Control(pDX, IDC_LABEL_0 + i,  m_Label[i]);
+	for (int i = 0; i < 10; i++) DDX_Control(pDX, IDC_GROUP_0 + i, m_Group[i]);
+	for (int i = 0; i < 41; i++) DDX_Control(pDX, IDC_LABEL_0 + i,  m_Label[i]);
 	DDX_Control(pDX, IDC_STC_EQUIP_NAME, m_stcEquipName);
 	DDX_Control(pDX, IDC_STC_EQUIP_MODEL, m_stcEquipModel);
 	DDX_Control(pDX, IDC_CBO_MODEL_CHANGE, m_cboModelChange);
@@ -75,6 +75,8 @@ void CSetupEquipDlg::DoDataExchange(CDataExchange* pDX)
 	for (int i = 0; i < 6; i++) DDX_Control(pDX, IDC_STC_PITCH_DATA_0 + i, m_stcPitchData[i]);
 	for (int i = 0; i <11; i++) DDX_Control(pDX, IDC_STC_DELAY_TIME_0 + i, m_stcDelayTime[i]);
 
+	for (int i = 0; i < 3; i++) DDX_Control(pDX, IDC_STC_LOAD_PICK_PUSH_0 + i, m_stcLoadPickZPushData[i]);
+
 	DDX_Control(pDX, IDC_GRP_TOWER, m_grpTower);
 	for (int i = 0; i < 13; i++) DDX_Control(pDX, IDC_LBL_TOWER_0 + i,  m_lblTower[i]);
 	for (int i = 0; i < 6; i++) for (int j = 0; j < 7; j++) DDX_Control(pDX, IDC_CHK_TOWER_0_0 + i * 7 + j,  m_chkTower[i][j]);
@@ -111,6 +113,8 @@ BEGIN_MESSAGE_MAP(CSetupEquipDlg, CDialogEx)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_SHIP_TRAY_DATA_0, IDC_STC_SHIP_TRAY_DATA_4, OnStcShipTrayDataClick)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_PITCH_DATA_0, IDC_STC_PITCH_DATA_5, OnStcPitchDataClick)
 	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_DELAY_TIME_0, IDC_STC_DELAY_TIME_10, OnStcDelayTimeClick)
+
+	ON_CONTROL_RANGE(STN_CLICKED, IDC_STC_LOAD_PICK_PUSH_0, IDC_STC_LOAD_PICK_PUSH_2, OnStcLoadPickZPushClick)
 
 	ON_STN_CLICKED(IDC_STC_SHOW_HIDDEN, &CSetupEquipDlg::OnStnClickedStcShowHidden)
 	ON_STN_CLICKED(IDC_STC_PASSWORD_MT, &CSetupEquipDlg::OnStnClickedStcPasswordMt)
@@ -198,6 +202,20 @@ void CSetupEquipDlg::OnStnClickedStcEquipName()
 	m_stcEquipName.SetWindowText(strKey);
 
 	m_strLog.Format("[Setup Equip] OnStnClickedStcEquipName - Data(%s)", strKey);
+	g_objLogFile.Save_HandlerLog(m_strLog);
+}
+
+void CSetupEquipDlg::OnStcLoadPickZPushClick(UINT nID)
+{
+	int ID = nID - IDC_STC_LOAD_PICK_PUSH_0;
+
+	CString strOld, strNew;
+	m_stcLoadPickZPushData[ID].GetWindowText(strOld);
+	if (g_objCommon.Show_NumPad(strOld, strNew) != IDOK) return;
+
+	m_stcLoadPickZPushData[ID].SetWindowText(strNew);
+
+	m_strLog.Format("[Setup Equip] OnStcLoadPickZPushClick - Data(%d-%s)", ID, strNew);
 	g_objLogFile.Save_HandlerLog(m_strLog);
 }
 
@@ -336,7 +354,7 @@ void CSetupEquipDlg::Initial_Controls()
 {
 	CString strText;
 
-	for (int i = 0; i < 9; i++) m_Group[i].Init_Ctrl("¹ÙÅÁ", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
+	for (int i = 0; i < 10; i++) m_Group[i].Init_Ctrl("¹ÙÅÁ", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
 	m_Label[0].Init_Ctrl("¹ÙÅÁ", 13, TRUE, RGB(0xFF, 0xFF, 0xFF), RGB(0x00, 0x10, 0xC0));								// Equip Name
 	m_Label[28].Init_Ctrl("¹ÙÅÁ", 11, TRUE, RGB(0xFF, 0xFF, 0xFF), RGB(0x00, 0x10, 0xC0));								// Model Name
 	m_Label[29].Init_Ctrl("¹ÙÅÁ", 11, TRUE, RGB(0xFF, 0xFF, 0xFF), RGB(0x00, 0x10, 0xC0));								// Model Change
@@ -356,6 +374,10 @@ void CSetupEquipDlg::Initial_Controls()
 	for (int i = 30; i < 36; i++) m_Label[i].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80)); // Delay
 	m_Label[36].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80)); // Pitch
 	m_Label[37].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x40, 0x20, 0x20));	// MDJ List
+
+	m_Label[38].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x80, 0x00, 0x80)); // 
+	m_Label[39].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x40, 0x20, 0x20));	// 
+	m_Label[40].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x40, 0x20, 0x20));	// 
 
 	m_stcEquipName.Init_Ctrl("¹ÙÅÁ", 15, TRUE, RGB(0x00, 0x00, 0x80), RGB(0xE0, 0xFF, 0xE0));
 	m_stcEquipModel.Init_Ctrl("¹ÙÅÁ", 11, TRUE, RGB(0x00, 0x00, 0x80), RGB(0xE0, 0xFF, 0xE0));
@@ -399,7 +421,12 @@ void CSetupEquipDlg::Initial_Controls()
 	for (int i = 0; i < 5; i++) m_stcNGCodeMC[i].Init_Ctrl("¹ÙÅÁ", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
 	for (int i = 0; i < 6; i++) m_stcPitchData[i].Init_Ctrl("¹ÙÅÁ", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
 	for (int i = 0; i <11; i++) m_stcDelayTime[i].Init_Ctrl("¹ÙÅÁ", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
+	
+	for (int i = 0; i < 3; i++) m_stcLoadPickZPushData[i].Init_Ctrl("¹ÙÅÁ", 11, TRUE, COLOR_DEFAULT, RGB(0xFF, 0xFF, 0xE0));
+	
 	m_stcNoWorkTime.Init_Ctrl("¹ÙÅÁ", 11, TRUE, RGB(0x00, 0x00, 0x80), RGB(0xFF, 0xFF, 0xE0));
+
+
 
 	m_grpTower.Init_Ctrl("¹ÙÅÁ", 12, TRUE, COLOR_DEFAULT, COLOR_DEFAULT);
 	for (int i = 0; i < 13; i++) m_lblTower[i].Init_Ctrl("¹ÙÅÁ", 11, FALSE, RGB(0xFF, 0xFF, 0xFF), RGB(0x40, 0x40, 0x40));
@@ -483,6 +510,10 @@ void CSetupEquipDlg::Display_EquipData()
 	strData.Format("%0.2lf", pEquipData->dTrayPitchX); m_stcCmTrayData[2].SetWindowText(strData);
 	strData.Format("%0.2lf", pEquipData->dTrayPitchY); m_stcCmTrayData[3].SetWindowText(strData);
 
+	strData.Format("%0.2lf",     pEquipData->dOffset_LoadPickZ); m_stcLoadPickZPushData[0].SetWindowText(strData);
+	strData.Format("%d",     pEquipData->nSpeed_LoadPickZ); m_stcLoadPickZPushData[1].SetWindowText(strData);
+	strData.Format("%d",     pEquipData->nAccel_LoadPickZ); m_stcLoadPickZPushData[2].SetWindowText(strData);
+
 	strData.Format("%0.2lf", pEquipData->dPitchBtm); m_stcPitchData[0].SetWindowText(strData);
 	strData.Format("%0.2lf", pEquipData->dPitchTop); m_stcPitchData[1].SetWindowText(strData);
 //	strData.Format("%d",	 gData.nRejectMaxCount); m_stcPitchData[2].SetWindowText(strData);
@@ -490,6 +521,10 @@ void CSetupEquipDlg::Display_EquipData()
 	strData.Format("%0.3lf", gAlm.dMotionChkPos);	 m_stcPitchData[3].SetWindowText(strData);
 	strData.Format("%d",	 gData.nDoorLockTime);	 m_stcPitchData[4].SetWindowText(strData);
 	strData.Format("%0.2lf", pEquipData->dMZPitchZ); m_stcPitchData[5].SetWindowText(strData);
+
+	
+	
+
 
 	for (int i = 0; i < 6; i++) for (int j = 0; j < 7; j++) m_chkTower[i][j].SetCheck(pEquipData->bTower[i][j]);
 	for (int i = 0; i < 2; i++) for (int j = 0; j < 5; j++) m_chkBuzzer[i][j].SetCheck(pEquipData->bBuzzer[i][j]);
@@ -635,6 +670,11 @@ void CSetupEquipDlg::Save_EquipData()
 	m_stcCmTrayData[2].GetWindowText(strData); dData = atof(strData); INI.Set_Double ("TRAY", "PITCH_X", dData, "%0.2lf");
 	m_stcCmTrayData[3].GetWindowText(strData); dData = atof(strData); INI.Set_Double ("TRAY", "PITCH_Y", dData, "%0.2lf");
 
+	m_stcLoadPickZPushData[0].GetWindowText(strData); dData = atof(strData); INI.Set_Double("OPTION", "OFFSET_LOADZ", dData, "%0.2lf");
+	m_stcLoadPickZPushData[1].GetWindowText(strData); nData = atoi(strData); INI.Set_Integer("OPTION", "SPEED_LOADZ", nData);
+	m_stcLoadPickZPushData[2].GetWindowText(strData); nData = atoi(strData); INI.Set_Integer ("OPTION", "ACCEL_LOADZ", nData);
+	
+
 	m_stcPitchData[0].GetWindowText(strData); dData = atof(strData); INI.Set_Double("PITCH", "BTM_SCAN", dData, "%0.2lf");
 	m_stcPitchData[1].GetWindowText(strData); dData = atof(strData); INI.Set_Double("PITCH", "TOP_SCAN", dData, "%0.2lf");
 	m_stcPitchData[5].GetWindowText(strData); dData = atof(strData); INI.Set_Double("PITCH", "MZ_CARRIER", dData, "%0.2lf");
@@ -738,6 +778,10 @@ void CSetupEquipDlg::Save_ModelEquipData(CString sPath)
 	m_stcCmTrayData[1].GetWindowText(strData); nData = atoi(strData); INI.Set_Integer("TRAY", "COUNT_Y", nData);
 	m_stcCmTrayData[2].GetWindowText(strData); dData = atof(strData); INI.Set_Double ("TRAY", "PITCH_X", dData, "%0.2lf");
 	m_stcCmTrayData[3].GetWindowText(strData); dData = atof(strData); INI.Set_Double ("TRAY", "PITCH_Y", dData, "%0.2lf");
+
+	m_stcLoadPickZPushData[0].GetWindowText(strData); dData = atof(strData); INI.Set_Double("OPTION", "OFFSET_LOADZ", dData, "%0.2lf");
+	m_stcLoadPickZPushData[1].GetWindowText(strData); nData = atoi(strData); INI.Set_Integer("OPTION", "SPEED_LOADZ", nData);
+	m_stcLoadPickZPushData[2].GetWindowText(strData); nData = atoi(strData); INI.Set_Integer ("OPTION", "ACCEL_LOADZ", nData);
 
 	m_stcPitchData[0].GetWindowText(strData); dData = atof(strData); INI.Set_Double("PITCH", "BTM_SCAN", dData, "%0.2lf");
 	m_stcPitchData[1].GetWindowText(strData); dData = atof(strData); INI.Set_Double("PITCH", "TOP_SCAN", dData, "%0.2lf");

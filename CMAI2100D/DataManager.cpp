@@ -40,6 +40,10 @@ void CDataManager::Reset_EquipData()
 	m_EquipData.bUseNGSort = FALSE;
 	m_EquipData.bUseNGSize = FALSE;
 
+	m_EquipData.dOffset_LoadPickZ = 0;
+	m_EquipData.nSpeed_LoadPickZ = 0;
+	m_EquipData.nAccel_LoadPickZ = 0;
+
 	m_EquipData.nTrayCountX = 0;
 	m_EquipData.nTrayCountY = 0;
 	m_EquipData.dTrayPitchX = 0.0;
@@ -292,6 +296,15 @@ BOOL CDataManager::Read_EquipData()
 	m_EquipData.dTrayPitchX = INI.Get_Double("TRAY", "PITCH_X", 0.0);
 	m_EquipData.dTrayPitchY = INI.Get_Double("TRAY", "PITCH_Y", 0.0);
 
+	m_EquipData.dOffset_LoadPickZ = INI.Get_Double("OPTION", "OFFSET_LOADZ", 0.0);
+	if (m_EquipData.dOffset_LoadPickZ < 0.0 || m_EquipData.dOffset_LoadPickZ > 3.0) m_EquipData.dOffset_LoadPickZ = 0;
+
+	m_EquipData.nSpeed_LoadPickZ = INI.Get_Integer("OPTION", "SPEED_LOADZ", 0);
+	if (m_EquipData.nSpeed_LoadPickZ < 0.0 || m_EquipData.nSpeed_LoadPickZ > 500.0) m_EquipData.nSpeed_LoadPickZ = 0;
+
+	m_EquipData.nAccel_LoadPickZ = INI.Get_Integer("OPTION", "ACCEL_LOADZ", 0);
+	if (m_EquipData.nAccel_LoadPickZ < 0.0 || m_EquipData.nAccel_LoadPickZ > 500.0) m_EquipData.nAccel_LoadPickZ = 0;
+
 	m_EquipData.dPitchBtm = INI.Get_Double("PITCH", "BTM_SCAN", 0.0);
 	m_EquipData.dPitchTop = INI.Get_Double("PITCH", "TOP_SCAN", 0.0);
 	m_EquipData.dMZPitchZ = INI.Get_Double("PITCH", "MZ_CARRIER", 0.0);
@@ -381,6 +394,10 @@ BOOL CDataManager::Read_ModelEquipData(CString strPath)
 	m_EquipData.nTrayCountY = INI.Get_Integer("TRAY", "COUNT_Y", 0);
 	m_EquipData.dTrayPitchX = INI.Get_Double("TRAY", "PITCH_X", 0.0);
 	m_EquipData.dTrayPitchY = INI.Get_Double("TRAY", "PITCH_Y", 0.0);
+
+	m_EquipData.dOffset_LoadPickZ = INI.Get_Double("OPTION", "OFFSET_LOADZ", 0.0);
+	m_EquipData.nSpeed_LoadPickZ = INI.Get_Integer("OPTION", "SPEED_LOADZ", 0);
+	m_EquipData.nAccel_LoadPickZ = INI.Get_Integer("OPTION", "ACCEL_LOADZ", 0);
 
 	m_EquipData.dPitchBtm = INI.Get_Double("PITCH", "BTM_SCAN", 0.0);
 	m_EquipData.dPitchTop = INI.Get_Double("PITCH", "TOP_SCAN", 0.0);

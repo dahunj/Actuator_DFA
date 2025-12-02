@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CManualLoadDlg, CDialogEx)
 	ON_CONTROL_RANGE(BN_CLICKED, IDC_BTN_MODULE_ALIGN_IO_0, IDC_BTN_MODULE_ALIGN_IO_5,  OnBtnCMAlignIOClick)
 
 	ON_BN_CLICKED(IDC_BTN_MODULE_ALIGN_IO_6, &CManualLoadDlg::OnBnClickedBtnModuleAlignIo6)
+	ON_BN_CLICKED(IDC_BTN_LOAD_PICKER2_Z_5, &CManualLoadDlg::OnBnClickedBtnLoadPicker2Z5)
+	ON_BN_CLICKED(IDC_BTN_LOAD_PICKER1_Z_5, &CManualLoadDlg::OnBnClickedBtnLoadPicker1Z5)
 END_MESSAGE_MAP()
 
 // CManualLoadDlg 메시지 처리기입니다.
@@ -1043,4 +1045,24 @@ void CManualLoadDlg::Set_Align()
 void CManualLoadDlg::OnBnClickedBtnModuleAlignIo6()
 {
 	Set_Align();
+}
+
+
+void CManualLoadDlg::OnBnClickedBtnLoadPicker2Z5()
+{
+	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
+
+	double dPosTemp = g_objAJinAXL.Get_Position(AX_LOAD_PICKER_Z2);
+	dPosTemp += pEquipData->dOffset_LoadPickZ;
+	g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z2, dPosTemp, pEquipData->nSpeed_LoadPickZ, pEquipData->nAccel_LoadPickZ);
+
+}
+
+
+void CManualLoadDlg::OnBnClickedBtnLoadPicker1Z5()
+{
+	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
+	double dPosTemp = g_objAJinAXL.Get_Position(AX_LOAD_PICKER_Z1);
+	dPosTemp += pEquipData->dOffset_LoadPickZ;
+	g_objAJinAXL.Move_Absolute_Slow(AX_LOAD_PICKER_Z1, dPosTemp, pEquipData->nSpeed_LoadPickZ, pEquipData->nAccel_LoadPickZ);
 }
