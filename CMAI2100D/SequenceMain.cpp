@@ -5318,7 +5318,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		m_tLoadStage1Loop.Set_LoopTime(5000);
 		return TRUE;
 
-	//Load Stage 2 case 48에서 "m_nLoadStage1Case = 1"
+	// Transfer 1 case 48에서 "m_nLoadStage1Case = 1"
 	case 1:
 		if (m_pDX04->iLoadStage1TrayExist) 
 		{

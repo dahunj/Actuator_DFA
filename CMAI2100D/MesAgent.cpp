@@ -442,9 +442,12 @@ void CMesAgent::Get_ModuleData(CString sData)
 	}
 
 //	gLot.sLotID[2] = sRcvData[0][0];	//GJC_Test
-	for(int i=0; i<30; i++) {
-		if (gLot.sLotID[i] == sRcvData[0][0]) {
-			for(int j=0; j<nCnt; j++) {
+	for(int i=0; i<30; i++)
+	{
+		if (gLot.sLotID[i] == sRcvData[0][0]) 
+		{
+			for(int j=0; j<nCnt; j++)
+			{
 				gNG->sModuleID[i][j]   = sRcvData[j][1];
 				gNG->sHaimNGCd[i][j]   = sRcvData[j][11];
 				gNG->sCosmeticNG[i][j] = sRcvData[j][12];
@@ -768,9 +771,11 @@ void CMesAgent::Set_PPSelectReport(CString sLotId, CString sVersion)
 {
 	CString strSend, sBodyData;
 
-	for(int i=0; i<4; i++) {
+	for(int i=0; i<4; i++) 
+	{
 		sBodyData = "";
-		for(int j=0; j<50; j++) {
+		for(int j=0; j<50; j++) 
+		{
 			sBodyData = sBodyData + gMes.sBodyData[i][j] + ",";
 		}
 		strSend.Format("RECIPE,REPORT,%d,%s,%s", i, sVersion, sBodyData);

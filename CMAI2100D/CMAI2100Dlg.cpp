@@ -944,7 +944,7 @@ void CCMAI2100Dlg::Check_SlideOpen()
 // 	if (!pDX02->iElevator6SlideClose && !pDX02->iElevator6SlideOpen && gData.dwSlideTime[5]==0) gData.dwSlideTime[5] = GetTickCount();
 // 	if (!pDX02->iElevator7SlideClose && !pDX02->iElevator7SlideOpen && gData.dwSlideTime[6]==0) gData.dwSlideTime[6] = GetTickCount();
 	
-	for(int i=1; i<2; i++) {
+	for(int i=1; i<2; i++) CM_CHECK
 		if (gData.dwSlideTime[i] > 0) {
 			if (int(GetTickCount() - gData.dwSlideTime[i]) >= gData.nSlideTime) { g_objCommon.Show_Error(i+81); return; }
 		}
