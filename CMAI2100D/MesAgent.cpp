@@ -783,6 +783,17 @@ void CMesAgent::Set_PPSelectReport(CString sLotId, CString sVersion)
 	}
 }
 
+void CMesAgent::Set_RMSCheck()
+{
+	CString strSend;
+
+	gData.bRMSDone = FALSE;
+
+	strSend.Format("RMS,CHECK");
+	Send_Command(strSend);
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void CMesAgent::Send_Command(CString sSend)

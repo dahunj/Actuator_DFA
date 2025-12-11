@@ -272,6 +272,8 @@ typedef struct
 	int		nPosXFull[10];
 	int		nPosYFull[10];
 
+	bool	bRMSDone;
+
 } GLOVAL_DATA;
 
 typedef struct {

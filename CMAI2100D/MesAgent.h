@@ -86,6 +86,8 @@ public:
 	CString Set_NGSort(int nPno, int nTNo, int CNo);
 	void Set_OcapFaiNG(int nPno, int nType, CString sFaiNGCode);
 	void Set_PPSelectReport(CString sLotId, CString sVersion);
+
+	void Set_RMSCheck();
 };
 
 extern CMesAgent g_objMesAgent;

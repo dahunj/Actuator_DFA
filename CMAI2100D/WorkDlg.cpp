@@ -660,6 +660,23 @@ BOOL CWorkDlg::Work_Start()
 {
 	CString strTemp, strTemp2, sText, strMsg;
 
+	//RMS Check 
+	g_objMesAgent.Set_RMSCheck();
+
+	DWORD dwStart = GetTickCount();
+	while(!gData.bRMSDone)
+	{		
+		g_objCommon.DoEvents();
+		Sleep(2);
+
+		if(GetTickCount() - dwStart > 2000)
+		{
+			g_objCommon.Show_MsgBox(1, "RMS Data 준비 되지 않았습니다.확인 후 진행가능합니다");
+			m_rdoWorkStop.SetCheck(TRUE);
+			return FALSE;
+		}
+	}
+
 	g_objCommon.Locking_Slide(TRUE, 0);
 	if (gData.bAlarmShow) {
 		g_objCommon.Show_MsgBox(1, "Alaram 화면을 Close하고 Run 진행하세요.....");
