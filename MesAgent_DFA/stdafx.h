@@ -32,6 +32,10 @@
 
 #include <afxcontrolbars.h>     // MFC의 리본 및 컨트롤 막대 지원
 
+#include <afx.h>
+#include <vector>
+#include <iostream>
+
 #ifdef _UNICODE
 #if defined _M_IX86
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -62,6 +66,25 @@
 #define MAIN_VERSION	"1.1.9d"		//DFA
 
 extern CString gsCurrentDir;		// 현재 프로젝트 폴더
+
+
+//RMS
+
+struct CIniItem
+{
+	CString section; // 섹션 이름 (없으면 빈 문자열)
+	CString key;
+	CString value;
+};
+
+
+extern std::vector<CIniItem> glistFAIInfo;
+extern std::vector<CIniItem> glistLightInfo;
+extern std::vector<CIniItem> glistParamInfo;
+
+
+
+
 
 typedef struct {
 	int			nHostPort;

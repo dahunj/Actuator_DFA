@@ -403,7 +403,8 @@ void CMesAgentDlg::Set_HostMsg(CString sMsg)
 
 void CMesAgentDlg::OnBnClickedBtnTest()
 {
-	g_objHost.Test_Set();
+	Load_RMSData();
+	//g_objHost.Test_Set();
 }
 
 void CMesAgentDlg::Test_Data()
@@ -421,3 +422,14 @@ void CMesAgentDlg::Test_Data()
 	g_objHost.Test_Send();
 }
 
+void CMesAgentDlg::Load_RMSData()
+{
+	CString strTest;
+
+	g_objCommon.LoadIniToVector("D:\\RMS\\FaiMeasureSpec_DFA_PC2.ini", glistFAIInfo);
+	strTest = glistFAIInfo[0].key;
+	strTest = glistFAIInfo[1].key;
+	strTest = glistFAIInfo[2].key;
+
+
+}

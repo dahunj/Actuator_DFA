@@ -56,4 +56,7 @@ public:
 	void Set_HandlerMsg(CString sMsg);
 	void Set_HostMsg(CString sMsg);
 	void Set_VisionConnect(BOOL bConnected);
+
+	void Load_RMSData();
+
 };

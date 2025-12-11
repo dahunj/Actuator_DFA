@@ -4,6 +4,14 @@
 
 // CCommon
 
+static CString Trim(const CString& s)
+{
+	CString temp = s;
+	temp.TrimLeft();
+	temp.TrimRight();
+	return temp;
+}
+
 class CCommon : public CWnd
 {
 	DECLARE_DYNAMIC(CCommon)
@@ -22,6 +30,11 @@ public:
 	void DoEvents(int nSleep = 0);
 	int	 Find_Data(CString sBarCode);
 	void Clean_Data();
+
+
+	BOOL LoadIniToVector(const CString& filePath, std::vector<CIniItem>& outVec);
+	BOOL SaveVectorToIni(const CString& filePath, const std::vector<CIniItem>& vec);
+
 };
 
 extern CCommon g_objCommon;
