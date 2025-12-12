@@ -3022,3 +3022,95 @@ void CCommon::Save_Motion(int nAxis, int nMoveIdx, double dTraget)
 
 	g_objLogFile.Save_SpcMotionLog(strLog, strLotId);
 }
+
+
+BOOL CCommon::LoadIniToVector(const CString& filePath, std::vector<CIniItem>& outVec)
+{
+	CStdioFile file;
+	if (!file.Open(filePath, CFile::modeRead | CFile::typeText))
+	{
+		AfxMessageBox(_T("Failed to open ini file: ") + filePath);
+		return FALSE;
+	}
+
+	outVec.clear();
+
+	CString line;
+	CString currentSection;
+
+	while (file.ReadString(line))
+	{
+		line = Trim(line);
+
+		if (line.IsEmpty())
+			continue;
+
+		// 주석 (; 또는 #)
+		if (line[0] == ';' || line[0] == '#')
+			continue;
+
+		// 섹션 [SECTION]
+		if (line.Left(1) == _T("[") && line.Right(1) == _T("]"))
+		{
+			currentSection = line.Mid(1, line.GetLength() - 2);
+			currentSection = Trim(currentSection);
+			continue;
+		}
+
+		// key=value 파싱
+		int eqPos = line.Find(_T("="));
+		if (eqPos < 0)
+			continue;
+
+		CString key   = Trim(line.Left(eqPos));
+		CString value = Trim(line.Mid(eqPos + 1));
+
+		CIniItem item;
+		item.section = currentSection;
+		item.key     = key;
+		item.value   = value;
+
+		outVec.push_back(item);
+
+		DoEvents();
+	}
+
+	file.Close();
+	return TRUE;
+}
+
+BOOL CCommon::SaveVectorToIni(const CString& filePath, const std::vector<CIniItem>& vec)
+{
+	CStdioFile file;
+	if (!file.Open(filePath, CFile::modeWrite | CFile::modeCreate | CFile::typeText))
+	{
+		AfxMessageBox(_T("Failed to open ini file for write: ") + filePath);
+		return FALSE;
+	}
+
+	CString lastSection;
+
+	for (size_t i = 0; i < vec.size(); ++i)
+	{
+		const CIniItem& item = vec[i];
+
+		// 섹션이 바뀌면 출력
+		if (item.section != lastSection)
+		{
+			if (!item.section.IsEmpty())
+			{
+				CString secLine;
+				secLine.Format(_T("[%s]\n"), item.section);
+				file.WriteString(secLine);
+			}
+			lastSection = item.section;
+		}
+
+		CString line;
+		line.Format(_T("%s=%s\n"), item.key, item.value);
+		file.WriteString(line);
+	}
+
+	file.Close();
+	return TRUE;
+}

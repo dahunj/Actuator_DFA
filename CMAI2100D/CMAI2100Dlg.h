@@ -13,6 +13,7 @@
 #define TIMER_TOWER_FLKR	1
 #define TIMER_SLIDE_CHECK	2
 #define TIMER_DOOR_LOCK		3
+#define RMS_DATA_LOAD		4
 
 #define STATE_NONE			0
 #define STATE_INITEND		1
@@ -134,6 +135,8 @@ public:
 	void StdLogDelete(CString strDir, int nDelData, BOOL bType);
 	BOOL RemoveDir(CString strDir, BOOL bOnlyFile);
 	int GetDirFilesNum(CString strDir);
+
+	void Load_RMSData();
 };
 
 

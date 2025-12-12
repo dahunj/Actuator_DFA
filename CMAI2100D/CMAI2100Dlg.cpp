@@ -133,6 +133,8 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	strLog.Format("[Main Dialog] Program Start.  Version: %s", MAIN_VERSION);
 	g_objLogFile.Save_HandlerLog(strLog);
 
+	Load_RMSData();
+	
 	SetTimer(TIMER_DATE_TIME, 500, NULL);
 	SetTimer(TIMER_SLIDE_CHECK, 900, NULL);
 	SetTimer(TIMER_DOOR_LOCK, 1000, NULL);
@@ -327,6 +329,9 @@ void CCMAI2100Dlg::OnTimer(UINT_PTR nIDEvent)
 		break;
 	case TIMER_DOOR_LOCK:
 		Set_DoorLock();
+		break;
+	case RMS_DATA_LOAD:
+		Load_RMSData();
 		break;
 	}
 
@@ -1215,4 +1220,11 @@ int CCMAI2100Dlg::GetDirFilesNum(CString strDir)
     finder.Close();
  
     return count;
+}
+
+void CCMAI2100Dlg::Load_RMSData()
+{
+	if(!gData.bRMSDataDone[RMS_FAI_PC2]) g_objCommon.LoadIniToVector("D:\\RMS\\FaiMeasureSpec_DFA_PC2.ini", glFAI_Info);
+	gData.bRMSDataDone[RMS_FAI_PC2] = TRUE;
+	
 }

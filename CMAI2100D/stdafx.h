@@ -44,6 +44,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+
 // Library Add
 #include "LedStatic.h"
 #include "CSControls.h"
@@ -114,10 +115,32 @@
 //#define RESULT_TEST		// 비전 FOB 모드에서 전체 양품 처리가 안되어 추가함.
 //#define ALIGN_TEST		// Align 반복 Test.
 //****************************************************************************
+//RMS 
+#include <afx.h>
+#include <vector>
+
+
+
+struct CIniItem
+{
+	CString section; // 섹션 이름 (없으면 빈 문자열)
+	CString key;
+	CString value;
+};
+
+extern std::vector<CIniItem> glFAI_Info;
+extern std::vector<CIniItem> glLight_Info;
+extern std::vector<CIniItem> glParam_Info;
+
+
+
+
 
 extern CString gsCurrentDir;	// 현재 프로젝트 폴더
 typedef struct 
 {
+	BOOL	bRMSDataDone[15];  //0~4 :FAI, 5~9 Light, 10~14:Param 
+
 	// 검사결과 (0:Empty, 1:미검사, 2:Good, 3:NG, 4:ROS_NG, 5:Barcode, 6:MES_NG, 7:FAI치수불량)
 	int		InfoAlignTray[10][4];		// (y,x) 0:Empty, 1:NG      2:Good
 	int		InfoLoadTray[10][4];		// (y,x) 0:Empty, 1:Module, 2:Good, NG:3~
@@ -271,6 +294,7 @@ typedef struct
 
 	int		nPosXFull[10];
 	int		nPosYFull[10];
+
 
 } GLOVAL_DATA;
 
@@ -592,7 +616,24 @@ typedef struct {
 extern GLOVAL_TEST* Gt;
 */
 
+//RMS Data 
+#define RMS_FAI_PC1 0
+#define RMS_FAI_PC2 1
+#define RMS_FAI_PC3 2
+#define RMS_FAI_PC4 3
+#define RMS_FAI_PC5 4
 
+#define RMS_LIGHT_PC1 5
+#define RMS_LIGHT_PC2 6
+#define RMS_LIGHT_PC3 7
+#define RMS_LIGHT_PC4 8
+#define RMS_LIGHT_PC5 9
+
+#define RMS_PARAM_PC1 10
+#define RMS_PARAM_PC2 11
+#define RMS_PARAM_PC3 12
+#define RMS_PARAM_PC4 13
+#define RMS_PARAM_PC5 14
 
 //Load Stage 1 Y
 #define LoadPos_11 0

@@ -8,6 +8,8 @@
 
 #include "resource.h"		// 주 기호입니다.
 
+#include <vector>
+
 #define UM_DEVICE_SCAN	WM_USER+10
 
 // CCMAI2100App:
@@ -24,6 +26,9 @@ public:
 
 // 구현입니다.
 	DECLARE_MESSAGE_MAP()
+public:
+	
+
 
 public:
 	void DoEvents();

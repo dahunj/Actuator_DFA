@@ -2,6 +2,10 @@
 //
 #pragma once
 
+#include <afx.h>
+#include <iostream>
+#include <vector>
+
 #define AUTO_ELEVATOR_1			0
 #define AUTO_ELEVATOR_2			1
 #define AUTO_ELEVATOR_3			2
@@ -53,6 +57,18 @@ enum E_USER
 	E_USER_EN,
 	E_USER_SY
 };
+
+
+
+
+
+static CString Trim(const CString& s)
+{
+	CString temp = s;
+	temp.TrimLeft();
+	temp.TrimRight();
+	return temp;
+}
 
 class CCommon : public CWnd
 {
@@ -165,6 +181,11 @@ public:
 	///////////////////////////////////////////////////////////////////////////
 	void Save_Motion(int nAxis, int nIdx, double dTraget = 0.0);		// SPC 로그 중 위치정밀도 기록용도
 	void Wait(DWORD dwMillisecond);
+
+
+	//RMS
+	BOOL LoadIniToVector(const CString& filePath, std::vector<CIniItem>& outVec);
+	BOOL SaveVectorToIni(const CString& filePath, const std::vector<CIniItem>& vec);
 };
 
 extern CCommon g_objCommon;

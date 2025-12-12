@@ -4,6 +4,10 @@
 
 #include "stdafx.h"
 
+std::vector<CIniItem> glFAI_Info;
+std::vector<CIniItem> glLight_Info;
+std::vector<CIniItem> glParam_Info;
+
 CString gsCurrentDir;		// 현재 프로젝트 폴더
 
 GLOVAL_DATA			gData;
