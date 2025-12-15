@@ -5390,7 +5390,13 @@ BOOL CSequenceMain::Run_LoadStage1()
 	case 5:
 		if (g_objCarrierRFID_Load.Is_RecvComplete())
 		{
+#ifdef AJIN_BOARD_USE
 			gData.sCarID_LoadStage[nStageNo1] = g_objCarrierRFID_Load.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_LoadStage[nStageNo1].Format("CARRIERID-%04d", nTemp);
+#endif
+			
 			if (gData.sCarID_LoadStage[nStageNo1].GetLength() > 2) 
 			{
 				g_objMesAgent.Set_CarrierOutMGZ(gData.sMZID_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1], gData.nSlotNo_LoadStage[nStageNo1]);
@@ -5447,7 +5453,9 @@ BOOL CSequenceMain::Run_LoadStage1()
 		}
 		break;
 	case 8:	
-		if (gMes.bRcpBodyDone) {
+		//if (gMes.bRcpBodyDone)
+		if(gData.bRMSDone)
+		{
 			g_objMesAgent.Set_PPSelectReport(gMes.sHostLotID, gMes.sRcpVersion);
 			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(60000);
 
@@ -5457,6 +5465,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		break;
 	case 9:
 		if (gMes.nCarConfirm[LOAD_STAGE] >= 4)
+		//if(gData.bRMSDone)
 		{
 			if (!m_tLoadStage1Loop.Waiting_Time(500)) break;
 
@@ -6155,13 +6164,20 @@ BOOL CSequenceMain::Run_LoadStage2()
 	case 5:
 		if (g_objCarrierRFID_Load.Is_RecvComplete()) 
 		{
-			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_CarrierOutMGZ", m_nLoadStage2Case);
-			g_objLogFile.Save_SeqLog(m_sLog);
+#ifdef AJIN_BOARD_USE
+			gData.sCarID_LoadStage[nStageNo2] = g_objCarrierRFID_Load.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_LoadStage[nStageNo2].Format("CARRIERID-%04d", nTemp);
+#endif
 
 			gData.sCarID_LoadStage[nStageNo2] = g_objCarrierRFID_Load.Get_CarrierID();
 			if (gData.sCarID_LoadStage[nStageNo2].GetLength() > 2) 
 			{
 				g_objMesAgent.Set_CarrierOutMGZ(gData.sMZID_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2], gData.nSlotNo_LoadStage[nStageNo2]);
+
+				m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_CarrierOutMGZ", m_nLoadStage2Case);
+				g_objLogFile.Save_SeqLog(m_sLog);
 				m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(5000);			
 			}
 		}
@@ -6213,7 +6229,8 @@ BOOL CSequenceMain::Run_LoadStage2()
 		}
 		break;
 	case 8:	
-		if (gMes.bRcpBodyDone) 
+		if(gData.bRMSDone)
+		//if (gMes.bRcpBodyDone) 
 		{
 			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_PPSelectReport", m_nLoadStage2Case);
 			g_objLogFile.Save_SeqLog(m_sLog);
@@ -11668,8 +11685,17 @@ BOOL CSequenceMain::Run_NGStage1()
 		}
 		break;
 	case 8:
-		if (g_objCarrierRFID_NG.Is_RecvComplete()) {
+		if (g_objCarrierRFID_NG.Is_RecvComplete()) 
+		{
+#ifdef AJIN_BOARD_USE
 			gData.sCarID_NGTray[nNStage1No] = g_objCarrierRFID_NG.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_NGTray[nNStage1No].Format("CarrierNG-%04d", nTemp);
+#endif
+
+
+			
 			if (gData.sCarID_NGTray[nNStage1No].GetLength() > 2) 
 			{
 				gMes.nCarConfirm[2] = 1;
@@ -11921,8 +11947,15 @@ BOOL CSequenceMain::Run_NGStage2()
 		}
 		break;
 	case 8:
-		if (g_objCarrierRFID_NG.Is_RecvComplete()) {
+		if (g_objCarrierRFID_NG.Is_RecvComplete()) 
+		{
+#ifdef AJIN_BOARD_USE
 			gData.sCarID_NGTray[nNStage2No] = g_objCarrierRFID_NG.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_NGTray[nNStage2No].Format("CarrierNG-%04d", nTemp);
+#endif
+
 			if (gData.sCarID_NGTray[nNStage2No].GetLength() > 2) {
 				gMes.nCarConfirm[2] = 1;
 #ifndef AJIN_BOARD_USE
@@ -12171,8 +12204,16 @@ BOOL CSequenceMain::Run_GoodStage1()
 		}
 		break;
 	case 8:
-		if (g_objCarrierRFID_Good.Is_RecvComplete()) {
+		if (g_objCarrierRFID_Good.Is_RecvComplete()) 
+		{
+#ifdef AJIN_BOARD_USE
 			gData.sCarID_GoodTray[nGStage1No] = g_objCarrierRFID_Good.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_GoodTray[nGStage1No].Format("GoodCarrier-%04d", nTemp);
+#endif
+
+			
 			if (gData.sCarID_GoodTray[nGStage1No].GetLength() > 2) {
 				gMes.nCarConfirm[1] = 1;
 #ifndef AJIN_BOARD_USE
@@ -12428,8 +12469,15 @@ BOOL CSequenceMain::Run_GoodStage2()
 		}
 		break;
 	case 8:
-		if (g_objCarrierRFID_Good.Is_RecvComplete()) {
+		if (g_objCarrierRFID_Good.Is_RecvComplete()) 
+		{
+#ifdef AJIN_BOARD_USE
 			gData.sCarID_GoodTray[nGStage2No] = g_objCarrierRFID_Good.Get_CarrierID();
+#else
+			int nTemp = g_objCommon.Get_Random(0,9999);
+			gData.sCarID_GoodTray[nGStage2No].Format("GoodCarrier-%04d", nTemp);
+#endif
+			
 			if (gData.sCarID_GoodTray[nGStage2No].GetLength() > 2) {
 				gMes.nCarConfirm[1] = 1;
 #ifndef AJIN_BOARD_USE
@@ -12816,6 +12864,9 @@ BOOL CSequenceMain::Run_MZTransfer()
 		}
 		break;
 	case 3:	//MES 완료
+#ifndef AJIN_BOARD_USE
+		gMes.nMZConfirm[1] = 2;
+#endif
 		if (!m_pEquipData->bUseMES || gMes.nMZConfirm[1] == 2) 
 		{
 			m_nMZTransferCase = 11; m_tMZTransferLoop.Set_LoopTime(5000);
@@ -13430,6 +13481,7 @@ BOOL CSequenceMain::Run_LDCVElevator()
 // 27. (Error : 2400)
 BOOL CSequenceMain::Run_ULCVElevator()
 {
+	int nTemp = 0;
 	static CString sULMZID;
 
 	switch (m_nULCVElevatorCase) {
@@ -13483,7 +13535,14 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		}
 		break;
 	case 17:
-			sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(3);	//U-2F
+
+#ifdef AJIN_BOARD_USE
+		sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(3);	//U-2F
+#else
+		nTemp = g_objCommon.Get_Random(0, 9999);
+		sULMZID.Format("U MZ-%04d", nTemp);
+#endif
+			
 			if (sULMZID.GetLength() > 0) {
 				g_objLogFile.Save_RFBarData(3, sULMZID);
 				gData.sMZID[9] = sULMZID;
@@ -13563,7 +13622,13 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		}
 		break;
 	case 27:
-			sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(4);	//U-1F
+#ifdef AJIN_BOARD_USE
+		sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(4);	//U-1F
+#else
+		nTemp = g_objCommon.Get_Random(0, 9999);
+		sULMZID.Format("UL MZ-%04d", nTemp);
+#endif
+					
 			if (sULMZID.GetLength() > 0) {
 				g_objLogFile.Save_RFBarData(2, sULMZID);
 				gData.sMZID[8] = sULMZID;
@@ -15176,15 +15241,23 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			}
 		break;
 	case 6:	//Barcode Read End
+		{
+#ifdef AJIN_BOARD_USE
 			sMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(2);	//1F
-			if (sMZID.GetLength() > 2) 
-			{
-				g_objLogFile.Save_SeqLog("MCC,31,LD1FConveyor,6,Barcode Read End");
-				g_objLogFile.Save_RFBarData(0, sMZID);
-				m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
+#else
+			int nTemp = g_objCommon.Get_Random(0, 9999);
+			sMZID.Format("TLOT-%04d", nTemp);
+#endif
 
-			}
+				if (sMZID.GetLength() > 2) 
+				{
+					g_objLogFile.Save_SeqLog("MCC,31,LD1FConveyor,6,Barcode Read End");
+					g_objLogFile.Save_RFBarData(0, sMZID);
+					m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 
+				}
+
+		}
 		break;
 	case 7:
 //		if (gData.bCycleStop == FALSE && gData.nCVJobSeq[0] == gData.nCVJobSeq[1] m_nMZTransferCase == 0) {
@@ -15244,6 +15317,9 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 		}
 		break;
 	case 10:	//MES 완료
+#ifndef AJIN_BOARD_USE
+		gMes.nMZConfirm[0] = 2;
+#endif
 		if (!m_pEquipData->bUseMES || gMes.nMZConfirm[0] == 2) {
 			m_nLD1FConveyorCase++; m_tLD1FConveyorLoop.Set_LoopTime(5000);
 		}
@@ -15453,6 +15529,7 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 {
 	static int nETMZExit = 0;
 	static CString sETMZID;
+	int	nTemp = 0;
 
 	switch (m_nLD2FConveyorCase) {
 	case 0:	// Wait
@@ -15527,7 +15604,13 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 		}
 		break;
 	case 7:	//Barcode Read End
-			sETMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(1);	//2F
+#ifdef AJIN_BOARD_USE
+		sETMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(1);	//2F
+#else
+		nTemp = g_objCommon.Get_Random(0, 9999);
+		sETMZID.Format("NGMZ-%04d", nTemp);
+#endif
+					
 			if (sETMZID.GetLength() > 0) {
 				g_objLogFile.Save_RFBarData(1, sETMZID);
 				m_nLD2FConveyorCase++; m_tLD2FConveyorLoop.Set_LoopTime(5000);

@@ -53,7 +53,11 @@ private:
 	void Get_PPSelect(CString sLotId, CString sRecipe);
 	void Get_PPSelectFail(CString sLotId, CString sRecipe, CString sCode, CString sText);
 
+	void Get_RMSAlreadyDone();
+	void Get_RMSDone();
+
 	void Send_Command(CString sSend);
+
 
 public:
 	void Initialize();

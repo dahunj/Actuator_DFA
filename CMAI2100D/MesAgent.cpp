@@ -166,8 +166,16 @@ LRESULT CMesAgent::OnClientReceive(WPARAM wParam, LPARAM lParam)
 			if (strOp == "CONFIRM") Get_CarrierConfirm(strArg[0]);
 			if (strOp == "CANCEL")  Get_CarrierCancel(strArg[0], strArg[1],  strArg[2]);
 
-		} else if (strCmd == "MODULE") {
+		} 
+		else if (strCmd == "MODULE")
+		{
 			if (strOp == "DATA") Get_ModuleData(strRecv);
+
+		}
+		else if (strCmd == "RMS")
+		{
+			if (strOp == "ALREADYDONE") Get_RMSAlreadyDone();
+			if (strOp == "LOADDONE") Get_RMSAlreadyDone();
 
 		}
 	}
@@ -201,6 +209,12 @@ void CMesAgent::Get_ControlState(CString sFlag)
 void CMesAgent::Get_LotStart(CString sLotId, CString sRecipe, CString sCmCount, CString sVendor, CString sConfig)
 {
 	int nCmCount = atoi(sCmCount);
+
+#ifndef AJIN_BOARD_USE
+	CString strTemp;
+	strTemp.Format("%d", g_objCommon.Get_Random(0,9999));
+	sLotId = sLotId + strTemp;
+#endif
 
 	gMes.sHostLotID = m_sLotStartID = sLotId;
 	gMes.sHostRecipe = sRecipe;
@@ -242,6 +256,9 @@ void CMesAgent::Get_LotStart(CString sLotId, CString sRecipe, CString sCmCount, 
 	g_objLogFile.Save_MesAgentLog(strLog);
 
 	gMes.nCarConfirm[LOAD_STAGE] = 3;
+#ifndef AJIN_BOARD_USE
+	gMes.nCarConfirm[LOAD_STAGE]++;
+#endif
 }
 
 void CMesAgent::Get_LotCancel(CString sLotId, CString sCode, CString sText)
@@ -495,6 +512,16 @@ void CMesAgent::Get_PPSelectFail(CString sLotId, CString sRecipe, CString sCode,
 	gMes.sHostCancelCode = sCode;
 	gMes.sHostCancelText = sText;
 	g_objCommon.Show_Error(9030);
+}
+
+void CMesAgent::Get_RMSAlreadyDone()
+{
+	gData.bRMSDone = TRUE;
+}
+
+void CMesAgent::Get_RMSDone()
+{
+	gData.bRMSDone = TRUE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
