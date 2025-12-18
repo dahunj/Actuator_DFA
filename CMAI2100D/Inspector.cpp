@@ -221,7 +221,7 @@ LRESULT CInspector::OnUdpReceive(WPARAM wLocalPort, LPARAM lParam)
 
 		} else if (strCmd == "RECIPE") {
 			if (strOp == "BODY") Get_RecipeBody(nInspector, strArg[0], strRecv);
-
+			if (strOp == "UPDATA") Get_RecipeUpdata();
 		}
 	}
 
@@ -892,8 +892,10 @@ BOOL CInspector::Check_LotReady()
 
 void CInspector::Get_RecipeBody(int nInspector, CString sType, CString sRcvData)
 {
+	//RMS Àç±¸¼º µÊ : ¾È¾¸~
+
 	//sData1 = "RECIPE,BODY,±¸ºÐ,Lot_ID,Recipe ID,Recipe Version,";
-	CString sLog, strArg;
+	/*CString sLog, strArg;
 
 	int nNo = 9, nMax;
 	if (sType=="T1M") { nNo = 0; nMax = 32; }
@@ -909,8 +911,14 @@ void CInspector::Get_RecipeBody(int nInspector, CString sType, CString sRcvData)
 	
 	if (m_bBodyDone[0] == TRUE && m_bBodyDone[1] == TRUE && m_bBodyDone[2] == TRUE && m_bBodyDone[3] == TRUE) {
 		gMes.bRcpBodyDone = TRUE;
-	}
+	}*/
 }
+
+void CInspector::Get_RecipeUpdata()
+{
+	g_objMesAgent.Set_RMSCheck();
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Set Command

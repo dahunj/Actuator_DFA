@@ -5457,7 +5457,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 		if(gData.bRMSDone)
 		{
 			g_objMesAgent.Set_PPSelectReport(gMes.sHostLotID, gMes.sRcpVersion);
-			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(60000);
+			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(20000);
 
 			m_sLog.Format("MCC,10,LoadStage1,%d,empty", m_nTransfer1Case);
 			g_objLogFile.Save_SeqLog(m_sLog);
@@ -5472,7 +5472,7 @@ BOOL CSequenceMain::Run_LoadStage1()
 			nPortNo1 = gMes.nLotPortNo - 1;
 			g_objMesAgent.Set_LotStart(gLot.sLotID[nPortNo1], gData.sMZID_LoadStage[nStageNo1], gData.nSlotNo_LoadStage[nStageNo1], gData.sCarID_LoadStage[nStageNo1], gLot.sRecipeName[nPortNo1]);
 			g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo1], gLot.nCmCount[gLot.nJobCycle-1]);
-			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(30000);
+			m_nLoadStage1Case++; m_tLoadStage1Loop.Set_LoopTime(20000);
 
 			m_sLog.Format("MCC,10,LoadStage1,%d,g_objMesAgent.Set_LotStart and Save_RFBarData", m_nLoadStage1Case);
 			g_objLogFile.Save_SeqLog(m_sLog);
@@ -6236,7 +6236,7 @@ BOOL CSequenceMain::Run_LoadStage2()
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objMesAgent.Set_PPSelectReport(gMes.sHostLotID, gMes.sRcpVersion);
-			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(60000);				
+			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(20000);				
 		}
 		break;
 	case 9:
@@ -6251,7 +6251,7 @@ BOOL CSequenceMain::Run_LoadStage2()
 			nPortNo2 = gMes.nLotPortNo - 1;
 			g_objMesAgent.Set_LotStart(gLot.sLotID[nPortNo2], gData.sMZID_LoadStage[nStageNo2], gData.nSlotNo_LoadStage[nStageNo2], gData.sCarID_LoadStage[nStageNo2], gLot.sRecipeName[nPortNo2]);
 			g_objLogFile.Save_RFBarData(4, gData.sCarID_LoadStage[nStageNo2], gLot.nCmCount[gLot.nJobCycle-1]);
-			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(30000);
+			m_nLoadStage2Case++; m_tLoadStage2Loop.Set_LoopTime(15000);
 
 		}
 		break;
