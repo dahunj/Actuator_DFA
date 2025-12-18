@@ -75,7 +75,7 @@
 #endif
 
 //****************************************************************************
-//#define AJIN_BOARD_USE
+#define AJIN_BOARD_USE
 
 
 #define CARRIER_TYPE_MEM //CARRIER_OFFSETY=0
@@ -96,11 +96,11 @@
 #define PICK_CNT		8
 
 #ifdef CARRIER_TYPE_MEM
-	#define MAIN_VERSION	"Vd 3.1.15m"
+	#define MAIN_VERSION	"Vd 3.1.16m"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	0.0
 #else
-	#define MAIN_VERSION	"Vd 3.1.15v"
+	#define MAIN_VERSION	"Vd 3.1.16v"
 	#define CARRIER_OFFSETX	8.0
 	#define CARRIER_OFFSETY	8.0
 #endif
