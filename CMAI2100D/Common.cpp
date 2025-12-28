@@ -1141,6 +1141,18 @@ void CCommon::Backup_File(CString strPath, CString strName)
 	if (!CopyFile(strOriginFile, strTargetFile, FALSE)) return;
 }
 
+
+void CCommon::Copy_File(CString strPath, CString strName)
+{	
+	CString strOriginFile, strTargetFile, strDateTime;
+		
+	strOriginFile.Format("%s\\%s.ini", strPath, strName);
+	strTargetFile.Format("D:\\RMS\\%s.ini", strName);
+
+	if (!CopyFile(strOriginFile, strTargetFile, FALSE)) return;
+}
+
+
 void CCommon::Add_NGCodeCount(int nNo, CString sJudge, CString sNGCode)
 {
 	/*

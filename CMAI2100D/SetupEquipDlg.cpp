@@ -605,6 +605,7 @@ void CSetupEquipDlg::Save_EquipData()
 	}
 
 	g_objCommon.Backup_File(gsCurrentDir + "\\System", "EquipData");
+	g_objCommon.Copy_File(gsCurrentDir + "\\System", "EquipData");
 
 	m_stcEquipName.GetWindowText(strData); INI.Set_String("EQUIPMENT", "NAME", strData);
 	m_stcEquipModel.GetWindowText(strModel); INI.Set_String("EQUIPMENT", "MODEL", strModel);

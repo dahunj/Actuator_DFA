@@ -221,7 +221,7 @@ void CSetupMoveTab1Dlg::Save_MoveData()
 	}
 
 	g_objCommon.Backup_File(gsCurrentDir + "\\System", "MoveData");
-
+	g_objCommon.Copy_File(gsCurrentDir + "\\System", "MoveData");
 	CString strKey, strData;
 	double dData;
 
