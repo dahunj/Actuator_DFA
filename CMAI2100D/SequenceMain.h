@@ -271,6 +271,11 @@ public:
 	void Set_JobTack(int nType);					//1:Start, 2:End
 	void Beep_Post(int nTime);
 	BOOL Get_TrayPosition(int nPNo, int nJobNo, int nPosX, int nPosY, double &dToPosX, double &dToPosY); //nJobNo(1~4)
+
+
+
+	BOOL Select_LoadPickPos(int nNo, int &nPos, int &nCnt);
+	BOOL Select_InspectPocketPos(int nNo, int &nPos, int &nCnt);
 };
 
 extern CSequenceMain g_objSequenceMain;

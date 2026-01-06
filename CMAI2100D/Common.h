@@ -138,10 +138,14 @@ public:
 	void Set_LoadPickerClose(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	void Set_LoadPickerOpen(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	void Set_LoadPickerDown(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
+	void Set_LoadPickerDownMulti(int nPickNo,int nSub, int nCnt);
+	
 	BOOL Get_LoadPickerOpen(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	BOOL Get_LoadPickerClose(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	BOOL Get_LoadPickerUp(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	BOOL Get_LoadPickerDown(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
+	BOOL Get_LoadPickerDownMulti(int nPickNo,int nSub, int nCnt);
+	
 	BOOL Get_LoadPickerCheck(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 
 	//nVisionNo(1,2,3,4) nNo(0,1~8,9)

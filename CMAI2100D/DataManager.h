@@ -61,6 +61,10 @@ typedef struct tag_EQUIP_DATA {
 	double	dPitchTop;
 	double	dMZPitchZ;		//Add
 
+	double dStagePitch[4];  //1~4 Stage X pitch 
+	
+
+
 	BOOL	bTower[6][7];	// [0:None,1:Init,2:Ready,3:Run,4:Alarm,5:Emer][0:Green,1:Yellow,2:Red,3:Flicker,4:Buzz1,5:Buzz2,6:Flicker]
 	BOOL	bBuzzer[2][5];	// [0::Alarm,1:Error][0:Bit0,1:Bit1,2:Bit2,3:Bit3,4:Bit4]
 	CString	sPasswordMt;
