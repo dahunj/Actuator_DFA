@@ -272,6 +272,8 @@ typedef struct
 	int		nPosXFull[10];
 	int		nPosYFull[10];
 
+	BOOL	bLastLoadPick[2][2]; // ¾Õ Stage No, µÚ Picker No
+
 } GLOVAL_DATA;
 
 typedef struct {

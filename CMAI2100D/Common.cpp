@@ -1801,6 +1801,137 @@ BOOL CCommon::Get_LoadPickerOpen(int nPickNo, int nType, int nNo, int *nCMInfo)
 	return TRUE;
 }
 
+BOOL CCommon::Get_LoadPickerOpenMulti(int nPickNo, int nSub, int nCnt)
+{
+	DX_DATA_05 *pDX05 = g_objAJinAXL.Get_pDX05();
+	DX_DATA_06 *pDX06 = g_objAJinAXL.Get_pDX06();
+
+	if(nPickNo == 1)
+	{
+		if (nSub == 1) {
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open1) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open2) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open3) return FALSE;
+			if (nCnt > 3 && !pDX05->iLoadPicker1Open4) return FALSE;
+			if (nCnt > 4 && !pDX05->iLoadPicker1Open5) return FALSE;
+			if (nCnt > 5 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 6 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 7 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 2) {
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open2) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open3) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open4) return FALSE;
+			if (nCnt > 3 && !pDX05->iLoadPicker1Open5) return FALSE;
+			if (nCnt > 4 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 5 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 6 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 3) {
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open3) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open4) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open5) return FALSE;
+			if (nCnt > 3 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 4 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 5 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 4) 
+		{
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open4) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open5) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 3 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 4 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 5) 
+		{
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open5) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 3 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 6) 
+		{
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open6) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 2 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 7) 
+		{
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open7) return FALSE;
+			if (nCnt > 1 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+		else if (nSub == 8) 
+		{
+			if (nCnt > 0 && !pDX05->iLoadPicker1Open8) return FALSE;
+		}
+	}
+	
+
+	if(nPickNo == 2)
+	{
+		if (nSub == 1) {
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open1) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open2) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open3) return FALSE;
+			if (nCnt > 3 && !pDX06->iLoadPicker2Open4) return FALSE;
+			if (nCnt > 4 && !pDX06->iLoadPicker2Open5) return FALSE;
+			if (nCnt > 5 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 6 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 7 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}
+		else if (nSub == 2) {
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open2) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open3) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open4) return FALSE;
+			if (nCnt > 3 && !pDX06->iLoadPicker2Open5) return FALSE;
+			if (nCnt > 4 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 5 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 6 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}									   
+		else if (nSub == 3) {				   
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open3) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open4) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open5) return FALSE;
+			if (nCnt > 3 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 4 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 5 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}									  
+		else if (nSub == 4) 				   
+		{									   
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open4) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open5) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 3 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 4 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}									   
+		else if (nSub == 5) 				   
+		{									   
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open5) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 3 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}									   
+		else if (nSub == 6) 				   
+		{									   
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open6) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 2 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}									   
+		else if (nSub == 7) 				   
+		{									   
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open7) return FALSE;
+			if (nCnt > 1 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}
+		else if (nSub == 8) 
+		{
+			if (nCnt > 0 && !pDX06->iLoadPicker2Open8) return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
 BOOL CCommon::Get_LoadPickerClose(int nPickNo, int nType, int nNo, int *nCMInfo)
 {	
 	int nInfo[8] = {0,};

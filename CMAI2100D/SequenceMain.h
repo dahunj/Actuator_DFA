@@ -237,6 +237,10 @@ private:
 
 	void Search_NGFullPoint(int nType, int &nPosX, int &nPosY);
 
+	BOOL Check_InsStgFull(int nStgNo);
+	BOOL Check_LoadPickEmpty(int nPickNo);
+
+
 public:
 	double	m_dBtmZ, m_dTop1Z, m_dTop2Z;
 
