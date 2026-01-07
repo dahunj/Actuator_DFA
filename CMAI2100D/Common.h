@@ -138,6 +138,8 @@ public:
 	void Set_LoadPickerClose(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	void Set_LoadPickerOpen(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
 	void Set_LoadPickerDown(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);
+	
+	void Set_LoadPickerOpenMulti(int nPickNo, int nSub, int nCnt);
 	void Set_LoadPickerDownMulti(int nPickNo,int nSub, int nCnt);
 	
 	BOOL Get_LoadPickerOpen(int nPickNo=0, int nType=0, int nNo=0, int *nCMInfo=NULL);

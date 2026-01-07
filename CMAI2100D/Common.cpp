@@ -1314,6 +1314,143 @@ void CCommon::Set_LoadPickerOpen(int nPickNo, int nType, int nNo, int *nCMInfo)
 	}
 }
 
+
+
+void CCommon::Set_LoadPickerOpenMulti(int nPickNo, int nSub, int nCnt)
+{
+	DY_DATA_05 *pDY05 = g_objAJinAXL.Get_pDY05();
+	DY_DATA_06 *pDY06 = g_objAJinAXL.Get_pDY06();
+	if(nPickNo == 1)
+	{
+		if (nSub == 1) {
+			if (nCnt > 0) {pDY05->oLoadPicker1Open1 = TRUE; pDY05->oLoadPicker1Close1 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open2 = TRUE; pDY05->oLoadPicker1Close2 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open3 = TRUE; pDY05->oLoadPicker1Close3 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Open4 = TRUE; pDY05->oLoadPicker1Close4 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Open5 = TRUE; pDY05->oLoadPicker1Close5 = FALSE;}
+			if (nCnt > 5) {pDY05->oLoadPicker1Open6 = TRUE; pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 6) {pDY05->oLoadPicker1Open7 = TRUE; pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 7) {pDY05->oLoadPicker1Open8 = TRUE; pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 2) {
+			if (nCnt > 0) {pDY05->oLoadPicker1Open2 = TRUE;pDY05->oLoadPicker1Close2 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open3 = TRUE;pDY05->oLoadPicker1Close3 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open4 = TRUE;pDY05->oLoadPicker1Close4 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Open5 = TRUE;pDY05->oLoadPicker1Close5 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Open6 = TRUE;pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 5) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 6) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 3) 
+		{
+			if (nCnt > 0) {pDY05->oLoadPicker1Open3 = TRUE;pDY05->oLoadPicker1Close3 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open4 = TRUE;pDY05->oLoadPicker1Close4 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open5 = TRUE;pDY05->oLoadPicker1Close5 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Open6 = TRUE;pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 5) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 4) 
+		{
+			if (nCnt > 0) {pDY05->oLoadPicker1Open4 = TRUE;pDY05->oLoadPicker1Close4 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open5 = TRUE;pDY05->oLoadPicker1Close5 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open6 = TRUE;pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 5) 
+		{		
+			if (nCnt > 0) {pDY05->oLoadPicker1Open5 = TRUE;pDY05->oLoadPicker1Close5 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open6 = TRUE;pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 6) 
+		{				
+			if (nCnt > 0) {pDY05->oLoadPicker1Open6 = TRUE;pDY05->oLoadPicker1Close6 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 7) 
+		{			
+			if (nCnt > 0) {pDY05->oLoadPicker1Open7 = TRUE;pDY05->oLoadPicker1Close7 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+		else if (nSub == 8) 
+		{			
+			if (nCnt > 0) {pDY05->oLoadPicker1Open8 = TRUE;pDY05->oLoadPicker1Close8 = FALSE;}
+		}
+	}
+
+
+	if(nPickNo == 2)
+	{
+		if (nSub == 1) {
+			if (nCnt > 0) {pDY06->oLoadPicker2Open1 = TRUE; pDY06->oLoadPicker2Close1 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open2 = TRUE; pDY06->oLoadPicker2Close2 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open3 = TRUE; pDY06->oLoadPicker2Close3 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Open4 = TRUE; pDY06->oLoadPicker2Close4 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Open5 = TRUE; pDY06->oLoadPicker2Close5 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 6) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 7) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 2) 
+		{
+			if (nCnt > 0) {pDY06->oLoadPicker2Open2 = TRUE; pDY06->oLoadPicker2Close2 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open3 = TRUE; pDY06->oLoadPicker2Close3 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open4 = TRUE; pDY06->oLoadPicker2Close4 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Open5 = TRUE; pDY06->oLoadPicker2Close5 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 6) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 3) 
+		{
+			if (nCnt > 0) {pDY06->oLoadPicker2Open3 = TRUE; pDY06->oLoadPicker2Close3 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open4 = TRUE; pDY06->oLoadPicker2Close4 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open5 = TRUE; pDY06->oLoadPicker2Close5 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 4) 
+		{
+			if (nCnt > 0) {pDY06->oLoadPicker2Open4 = TRUE; pDY06->oLoadPicker2Close4 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open5 = TRUE; pDY06->oLoadPicker2Close5 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 5) 
+		{		
+			if (nCnt > 0) {pDY06->oLoadPicker2Open5 = TRUE; pDY06->oLoadPicker2Close5 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 6) 
+		{				
+			if (nCnt > 0) {pDY06->oLoadPicker2Open6 = TRUE; pDY06->oLoadPicker2Close6 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 7) 
+		{			
+			if (nCnt > 0) {pDY06->oLoadPicker2Open7 = TRUE; pDY06->oLoadPicker2Close7 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+		else if (nSub == 8) 
+		{			
+			if (nCnt > 0) {pDY06->oLoadPicker2Open8 = TRUE; pDY06->oLoadPicker2Close8 = FALSE;}
+		}
+	}
+
+	g_objAJinAXL.Write_Output(5);
+	g_objAJinAXL.Write_Output(6);
+}
+
+
 void CCommon::Set_LoadPickerClose(int nPickNo, int nType, int nNo, int *nCMInfo)
 {	
 	int nInfo[8] = {0,};
@@ -1492,52 +1629,52 @@ void CCommon::Set_LoadPickerDownMulti(int nPickNo, int nSub, int nCnt)
 			if (nCnt > 7) {pDY05->oLoadPicker1Down8 = TRUE; pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 2) {
-			if (nCnt > 0) pDY05->oLoadPicker1Down2 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down3 = TRUE;
-			if (nCnt > 2) pDY05->oLoadPicker1Down4 = TRUE;
-			if (nCnt > 3) pDY05->oLoadPicker1Down5 = TRUE;
-			if (nCnt > 4) pDY05->oLoadPicker1Down6 = TRUE;
-			if (nCnt > 5) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 6) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down2 = TRUE;pDY05->oLoadPicker1Up2 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down3 = TRUE;pDY05->oLoadPicker1Up3 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 5) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 6) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 3) 
 		{
-			if (nCnt > 0) pDY05->oLoadPicker1Down3 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down4 = TRUE;
-			if (nCnt > 2) pDY05->oLoadPicker1Down5 = TRUE;
-			if (nCnt > 3) pDY05->oLoadPicker1Down6 = TRUE;
-			if (nCnt > 4) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 5) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down3 = TRUE;pDY05->oLoadPicker1Up3 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 5) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 4) 
 		{
-			if (nCnt > 0) pDY05->oLoadPicker1Down4 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down5 = TRUE;
-			if (nCnt > 2) pDY05->oLoadPicker1Down6 = TRUE;
-			if (nCnt > 3) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 4) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 4) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 5) 
 		{		
-			if (nCnt > 0) pDY05->oLoadPicker1Down5 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down6 = TRUE;
-			if (nCnt > 2) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 3) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 3) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 6) 
 		{				
-			if (nCnt > 0) pDY05->oLoadPicker1Down6 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 2) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 2) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 7) 
 		{			
-			if (nCnt > 0) pDY05->oLoadPicker1Down7 = TRUE;
-			if (nCnt > 1) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 1) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 8) 
 		{			
-			if (nCnt > 0) pDY05->oLoadPicker1Down8 = TRUE;
+			if (nCnt > 0) {pDY05->oLoadPicker1Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 	}
 	
@@ -1545,62 +1682,63 @@ void CCommon::Set_LoadPickerDownMulti(int nPickNo, int nSub, int nCnt)
 	if(nPickNo == 2)
 	{
 		if (nSub == 1) {
-			if (nCnt > 0) pDY06->oLoadPicker2Down1 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down2 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down3 = TRUE;
-			if (nCnt > 3) pDY06->oLoadPicker2Down4 = TRUE;
-			if (nCnt > 4) pDY06->oLoadPicker2Down5 = TRUE;
-			if (nCnt > 5) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 6) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 7) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down1 = TRUE;pDY05->oLoadPicker1Up1 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down2 = TRUE;pDY05->oLoadPicker1Up2 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down3 = TRUE;pDY05->oLoadPicker1Up3 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 6) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 7) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
-		else if (nSub == 2) {
-			if (nCnt > 0) pDY06->oLoadPicker2Down2 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down3 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down4 = TRUE;
-			if (nCnt > 3) pDY06->oLoadPicker2Down5 = TRUE;
-			if (nCnt > 4) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 5) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 6) pDY06->oLoadPicker2Down8 = TRUE;
+		else if (nSub == 2) 
+		{
+			if (nCnt > 0) {pDY06->oLoadPicker2Down2 = TRUE;pDY05->oLoadPicker1Up2 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down3 = TRUE;pDY05->oLoadPicker1Up3 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 6) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 3) 
 		{
-			if (nCnt > 0) pDY06->oLoadPicker2Down3 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down4 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down5 = TRUE;
-			if (nCnt > 3) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 4) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 5) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down3 = TRUE;pDY05->oLoadPicker1Up3 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 5) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 4) 
 		{
-			if (nCnt > 0) pDY06->oLoadPicker2Down4 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down5 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 3) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 4) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down4 = TRUE;pDY05->oLoadPicker1Up4 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 4) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 5) 
 		{		
-			if (nCnt > 0) pDY06->oLoadPicker2Down5 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 3) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down5 = TRUE;pDY05->oLoadPicker1Up5 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 3) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 6) 
 		{				
-			if (nCnt > 0) pDY06->oLoadPicker2Down6 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 2) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down6 = TRUE;pDY05->oLoadPicker1Up6 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 2) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 7) 
 		{			
-			if (nCnt > 0) pDY06->oLoadPicker2Down7 = TRUE;
-			if (nCnt > 1) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down7 = TRUE;pDY05->oLoadPicker1Up7 = FALSE;}
+			if (nCnt > 1) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 		else if (nSub == 8) 
 		{			
-			if (nCnt > 0) pDY06->oLoadPicker2Down8 = TRUE;
+			if (nCnt > 0) {pDY06->oLoadPicker2Down8 = TRUE;pDY05->oLoadPicker1Up8 = FALSE;}
 		}
 	}
 
@@ -1830,28 +1968,67 @@ BOOL CCommon::Get_LoadPickerDown(int nPickNo, int nType, int nNo, int *nCMInfo)
 }
 
 
-BOOL Get_LoadPickerDownMulti(int nPickNo,int nSub, int nCnt)
+BOOL CCommon::Get_LoadPickerDownMulti(int nPickNo,int nSub, int nCnt)
 {
 	DX_DATA_05 *pDX05 = g_objAJinAXL.Get_pDX05();
 	DX_DATA_06 *pDX06 = g_objAJinAXL.Get_pDX06();
 
 	if (nSub == 1) {
-		if (nCnt > 0 && (pDX05->iSortPicker1Up1 || !pDX05->iSortPicker1Down1)) return FALSE;
-		if (nCnt > 1 && (pDX05->iSortPicker1Up2 || !pDX05->iSortPicker1Down2)) return FALSE;
-		if (nCnt > 2 && (pDX05->iSortPicker1Up3 || !pDX05->iSortPicker1Down3)) return FALSE;
-		if (nCnt > 3 && (pDX05->iSortPicker1Up4 || !pDX05->iSortPicker1Down4)) return FALSE;
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down1 || !pDX05->iLoadPicker1Up1)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down2 || !pDX05->iLoadPicker1Up2)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down3 || !pDX05->iLoadPicker1Up3)) return FALSE;
+		if (nCnt > 3 && (pDX05->iLoadPicker1Down4 || !pDX05->iLoadPicker1Up4)) return FALSE;
+		if (nCnt > 4 && (pDX05->iLoadPicker1Down5 || !pDX05->iLoadPicker1Up5)) return FALSE;
+		if (nCnt > 5 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 6 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 7 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
 	}
 	else if (nSub == 2) {
-		if (nCnt > 0 && (pDX10->iSortPicker1Up2 || !pDX10->iSortPicker1Down2)) return FALSE;
-		if (nCnt > 1 && (pDX10->iSortPicker1Up3 || !pDX10->iSortPicker1Down3)) return FALSE;
-		if (nCnt > 2 && (pDX10->iSortPicker1Up4 || !pDX10->iSortPicker1Down4)) return FALSE;
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down2 || !pDX05->iLoadPicker1Up2)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down3 || !pDX05->iLoadPicker1Up3)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down4 || !pDX05->iLoadPicker1Up4)) return FALSE;
+		if (nCnt > 3 && (pDX05->iLoadPicker1Down5 || !pDX05->iLoadPicker1Up5)) return FALSE;
+		if (nCnt > 4 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 5 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 6 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
 	}
 	else if (nSub == 3) {
-		if (nCnt > 0 && (pDX10->iSortPicker1Up3 || !pDX10->iSortPicker1Down3)) return FALSE;
-		if (nCnt > 1 && (pDX10->iSortPicker1Up4 || !pDX10->iSortPicker1Down4)) return FALSE;
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down3 || !pDX05->iLoadPicker1Up3)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down4 || !pDX05->iLoadPicker1Up4)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down5 || !pDX05->iLoadPicker1Up5)) return FALSE;
+		if (nCnt > 3 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 4 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 5 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
 	}
 	else if (nSub == 4) {
-		if (nCnt > 0 && (pDX10->iSortPicker1Up4 || !pDX10->iSortPicker1Down4)) return FALSE;
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down4 || !pDX05->iLoadPicker1Up4)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down5 || !pDX05->iLoadPicker1Up5)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 3 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 4 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
+	}
+	else if (nSub == 5) 
+	{
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down5 || !pDX05->iLoadPicker1Up5)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 3 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
+	}
+	else if (nSub == 6)
+	{		
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down6 || !pDX05->iLoadPicker1Up6)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 2 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
+	}
+	else if (nSub == 7) 
+	{
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down7 || !pDX05->iLoadPicker1Up7)) return FALSE;
+		if (nCnt > 1 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
+
+	}
+	else if (nSub == 8) 
+	{
+		if (nCnt > 0 && (pDX05->iLoadPicker1Down8 || !pDX05->iLoadPicker1Up8)) return FALSE;
 	}
 
 	return TRUE;

@@ -7363,7 +7363,10 @@ BOOL CSequenceMain::Run_LoadPicker1()
 		}
 		break;
 	case 44:
-		if()
+		if(g_objCommon.Get_LoadPickerDownMulti(1, nLp1StartPos, nLp1DownCnt))
+		{
+			g_objCommon.Set_LoadPickerOpen(n1No);
+		}
 		break;
 
 	//	
