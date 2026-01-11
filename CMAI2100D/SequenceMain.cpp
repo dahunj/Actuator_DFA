@@ -7387,8 +7387,10 @@ BOOL CSequenceMain::Run_LoadPicker1()
 			//m_tLoadPicker1Loop.Takt_Save(12, 26); m_tLoadPicker1Loop.Takt_Start();
 			//해당 Carrier의 마지막 잔량인지 확인이 필요하다 --> 잔량 타이밍이면 Full 아니어도 정보 전달 필요 
 
-			if(Check_InsStgFull(n1LPVisionNo) || (Check_LoadPickEmpty(1) && gData.bLastLoadPick[nLPStage1No-1][0] == TRUE))
+			if(Check_InsStgFull(n1LPVisionNo) || Check_LoadPickEmpty(1) )
 			{
+				gData.bLastLoadPick[nLPStage1No-1][0] = FALSE;
+
 				gData.sLotID_VisionStage[n1LPVisionNo-1]  = gData.sLotID_LoadPicker[n1No-1];
 				gData.nTrayNo_VisionStage[n1LPVisionNo-1] = gData.nTrayNo_LoadPicker[n1No-1];
 				gData.nPortNo_VisionStage[n1LPVisionNo-1] = gData.nPortNo_LoadPicker[n1No-1];
@@ -7635,6 +7637,13 @@ BOOL CSequenceMain::Run_LoadPicker2()
 	static int nLoad2PosX = 0, nLoad2PosY = 0, nStartY2 = 0;
 	static int n2BTMNo, n2CMno1, n2CMno5, n2LPVisionNo, n2LP, n2LT, n2LM, n2Type, n2S, n2E, nL2Retry;
 	static double dLPStage2PosY = 0, dLPStage2PosX = 0, dLP2PosY = 0;
+
+	static int nLp2StartPos = 0, nLoadMultiPickCnt = 0;
+	static int nInsStgStartPos = 0, nInspectMultiPickCnt = 0;
+
+	static int nLp2Cnt = 0, nLp2StageCnt = 0, nLp2DownCnt = 0;;
+	static double dLp2PosX = 0;
+
 
 	switch (m_nLoadPicker2Case) {
 	case 0:	// Wait
@@ -7933,7 +7942,10 @@ BOOL CSequenceMain::Run_LoadPicker2()
 		if (g_objCommon.Check_Position(AX_LOAD_PICKER_Z2, 0)) {
 			g_objCommon.Save_Motion(AX_LOAD_PICKER_Z2, 0);
 			m_tLoadPicker2Loop.Takt_Save(13, 10); m_tLoadPicker2Loop.Takt_Start();
-			if (Check_EmptyLoadTray()) {
+			if (Check_EmptyLoadTray()) 
+			{
+				gData.bLastLoadPick[nLPStage2No-1][1] = TRUE;
+
 				gData.sLotID_LoadStage[nLPStage2No-1]  = "";
 				gData.nTrayNo_LoadStage[nLPStage2No-1] = gData.nPortNo_LoadStage[nLPStage2No-1] = 0;
 
@@ -8139,85 +8151,139 @@ BOOL CSequenceMain::Run_LoadPicker2()
 		break;
 
 	case 40:
-		if (m_nLoadPicker1Case < 40 || (m_nLoadPicker1Case > 61 && m_nLoadPicker1Case < 80)) {
-//			if (g_objCommon.Get_LoadPickerUp(n2No)) {
-				m_tLoadPicker2Loop.Takt_Save(13, 20); m_tLoadPicker2Loop.Takt_Start(); 
+		n2LPVisionNo = 0;
+		if (m_nVisionStage1Case == 0) n2LPVisionNo = 1;
+		if (m_nVisionStage2Case == 0) n2LPVisionNo = 2;
+		if (m_nVisionStage3Case == 0) n2LPVisionNo = 3;
+		if (m_nVisionStage4Case == 0) n2LPVisionNo = 4;
+		if (m_nLoadPicker1Case < 40 || (m_nLoadPicker1Case > 61 && m_nLoadPicker1Case < 80)) 
+		{
+			//m_tLoadPicker2Loop.Takt_Save(13, 20); m_tLoadPicker2Loop.Takt_Start(); 
+			if(n2LPVisionNo > 0)
+			{
+				if(Select_LoadPickPos(2,nLp2StartPos, nLoadMultiPickCnt))
+				{
+					if(Select_InspectPocketPos(n2LPVisionNo, nInsStgStartPos, nInspectMultiPickCnt))
+					{
+						if(!Select_InspectPocketPos(n2LPVisionNo, nInsStgStartPos, nInspectMultiPickCnt)) nInsStgStartPos = 0;
+						nLp2StageCnt = PICK_CNT - nInsStgStartPos;
+						nLp2DownCnt = (nLoadMultiPickCnt < nLp2StageCnt) ? nLoadMultiPickCnt : nLp2StageCnt; 
+
+						dLp2PosX = m_pMoveData->dLoadPickerX1[3] + ( nLp2StartPos - nInsStgStartPos) * m_pEquipData->dStagePitch[n2LPVisionNo-1];
+						g_objCommon.Move_Position(AX_LOAD_PICKER_Y2, 4);
+						g_objCommon.Move_Position(AX_LOAD_PICKER_P2, 2);
+						m_nLoadPicker2Case = 42; m_tLoadPicker2Loop.Set_LoopTime(30000);
+					}
+				}
+			}
+			else 
+			{
 				g_objCommon.Move_Position(AX_LOAD_PICKER_X2, 4);	//Align
 				g_objCommon.Move_Position(AX_LOAD_PICKER_Y2, 4);
 				g_objCommon.Move_Position(AX_LOAD_PICKER_P2, 2);
 				m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
-//			}
+			}
 		}
 		return TRUE;
 
 	case 41:
-		if (g_objCommon.Check_Position(AX_LOAD_PICKER_X2, 4) && g_objCommon.Check_Position(AX_LOAD_PICKER_Y2, 4) && g_objCommon.Check_Position(AX_LOAD_PICKER_P2, 2) ) {
-			g_objCommon.Save_Motion(AX_LOAD_PICKER_X2, 4);	g_objCommon.Save_Motion(AX_LOAD_PICKER_Y2, 4);	g_objCommon.Save_Motion(AX_LOAD_PICKER_P2, 2);
-			m_tLoadPicker2Loop.Takt_Save(13, 21); m_tLoadPicker2Loop.Takt_Start(); 
-			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
-		}
-		break;
-	case 42:
 		n2LPVisionNo = 0;
 		if (m_nVisionStage1Case == 0) n2LPVisionNo = 1;
 		if (m_nVisionStage2Case == 0) n2LPVisionNo = 2;
 		if (m_nVisionStage3Case == 0) n2LPVisionNo = 3;
 		if (m_nVisionStage4Case == 0) n2LPVisionNo = 4;
 
-		if (n2LPVisionNo > 0) {
-			m_tLoadPicker2Loop.Takt_Save(13, 22); m_tLoadPicker2Loop.Takt_Start(); 
+		if (n2LPVisionNo > 0) 
+		{
+			//m_tLoadPicker1Loop.Takt_Save(12, 22); m_tLoadPicker1Loop.Takt_Start();
 			g_objCommon.Set_VisionVacuumOn(n2LPVisionNo);
-			g_objCommon.Set_LoadPickerDown(n2No);
-			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
+			g_objCommon.Save_Motion(AX_LOAD_PICKER_Y1, 4);	
+			g_objCommon.Save_Motion(AX_LOAD_PICKER_P1, 2);
+
+			if(Select_LoadPickPos(1,nLp2StartPos, nLoadMultiPickCnt))
+			{
+				if(Select_InspectPocketPos(n2LPVisionNo, nInsStgStartPos, nInspectMultiPickCnt))
+				{
+					if(!Select_InspectPocketPos(n2LPVisionNo, nInsStgStartPos, nInspectMultiPickCnt)) nInsStgStartPos = 0;
+					nLp2StageCnt = PICK_CNT - nInsStgStartPos;
+					nLp2DownCnt = (nLoadMultiPickCnt < nLp2StageCnt) ? nLoadMultiPickCnt : nLp2StageCnt; 
+
+					dLp2PosX = m_pMoveData->dLoadPickerX2[3] + ( nLp2StartPos - nInsStgStartPos) * m_pEquipData->dStagePitch[n2LPVisionNo-1];
+					g_objAJinAXL.Move_Absolute(AX_LOAD_PICKER_X2, dLp2PosX);					
+				}
+			}
+
+			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(10000);
 		}
 		return TRUE;
-	case 43:
-		if (g_objCommon.Get_LoadPickerDown(n2No)) {
-			m_tLoadPicker2Loop.Takt_Save(13, 23); m_tLoadPicker2Loop.Takt_Start(); 
+
+
+	case 42:
+		if (g_objAJinAXL.Is_Done(AX_LOAD_PICKER_X2) && g_objCommon.Check_Position(AX_LOAD_PICKER_Y2, 4) 
+			&& g_objCommon.Check_Position(AX_LOAD_PICKER_P2, 2) )
+		{
 			g_objCommon.Move_Position(AX_LOAD_PICKER_Z2, 4);
+			g_objCommon.Save_Motion(AX_LOAD_PICKER_Y2, 4);	g_objCommon.Save_Motion(AX_LOAD_PICKER_P2, 2);
+			m_tLoadPicker2Loop.Takt_Save(13, 21); m_tLoadPicker2Loop.Takt_Start(); 
 			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
+		}
+		break;		
+	case 43:
+		if(g_objCommon.Check_Position(AX_LOAD_PICKER_Z2, 4))
+		{
+			g_objCommon.Save_Motion(AX_LOAD_PICKER_Z2, 4);
+			g_objCommon.Set_LoadPickerDownMulti(2,nLp2StartPos,nLp2DownCnt);
+			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(10000);
 		}
 		break;
 	case 44:
-		if (g_objCommon.Check_Position(AX_LOAD_PICKER_Z2, 4) ) {
-			g_objCommon.Save_Motion(AX_LOAD_PICKER_Z2, 4);
-			m_tLoadPicker2Loop.Takt_Save(13, 24); m_tLoadPicker2Loop.Takt_Start(); 
-			g_objCommon.Set_LoadPickerOpen(n2No);
-			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
+		if(g_objCommon.Get_LoadPickerDownMulti(2, nLp2StartPos, nLp2DownCnt))
+		{
+			g_objCommon.Set_LoadPickerOpenMulti(1, nLp2StartPos, nLp2DownCnt);
+			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(10000);
 		}
 		break;
 	case 45:
-		if (g_objCommon.Get_LoadPickerOpen(n2No)) {
+		if(g_objCommon.Get_LoadPickerOpenMulti(1, nLp2StartPos, nLp2DownCnt))
+		{
 			if (!m_tLoadPicker2Loop.Waiting_Time(m_pEquipData->nDelayTime[0])) break;
-			m_tLoadPicker2Loop.Takt_Save(13, 25); m_tLoadPicker2Loop.Takt_Start(); 
 			g_objCommon.Set_LoadPickerUp(n2No);
-			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(30000);
+			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(10000);
 		}
 		break;
 	case 46:
-		if (g_objCommon.Get_LoadPickerUp(n2No)) {
-			m_tLoadPicker2Loop.Takt_Save(13, 26); m_tLoadPicker2Loop.Takt_Start(); 
+		if (g_objCommon.Get_LoadPickerUp(n2No)) 
+		{			
+			if(Check_InsStgFull(n2LPVisionNo) || (Check_LoadPickEmpty(1) && gData.bLastLoadPick[nLPStage2No-1][1] == TRUE))
+			{
+				gData.bLastLoadPick[nLPStage2No-1][1] = FALSE;
 
-			gData.sLotID_VisionStage[n2LPVisionNo-1]  = gData.sLotID_LoadPicker[n2No-1];
-			gData.nTrayNo_VisionStage[n2LPVisionNo-1] = gData.nTrayNo_LoadPicker[n2No-1];
-			gData.nPortNo_VisionStage[n2LPVisionNo-1] = gData.nPortNo_LoadPicker[n2No-1];
-			gData.sLotID_VisionStage[4]  = gData.sLotID_VisionStage[n2LPVisionNo-1];
+				gData.sLotID_VisionStage[n2LPVisionNo-1]  = gData.sLotID_LoadPicker[n2No-1];
+				gData.nTrayNo_VisionStage[n2LPVisionNo-1] = gData.nTrayNo_LoadPicker[n2No-1];
+				gData.nPortNo_VisionStage[n2LPVisionNo-1] = gData.nPortNo_LoadPicker[n2No-1];
+				gData.sLotID_VisionStage[4]  = gData.sLotID_VisionStage[n2LPVisionNo-1];
 
-			gData.sLotID_LoadPicker[n2No-1]  = "";
-			gData.nTrayNo_LoadPicker[n2No-1] = gData.nPortNo_LoadPicker[n2No-1] = 0;
+				gData.sLotID_LoadPicker[n2No-1]  = "";
+				gData.nTrayNo_LoadPicker[n2No-1] = gData.nPortNo_LoadPicker[n2No-1] = 0;
 
-			for(int i=0; i<10; i++) {
-				 gData.InfoVision[n2LPVisionNo-1][i] = gData.InfoLoadPick[n2No-1][i]; gData.InfoLoadPick[n2No-1][i] = 0;
-				
-			}
-			for(int i=0; i < PICK_CNT; i++) 
-			{ 
-				gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n2No-1][i]; gTracking.sMZID_LoadPicker[n2No-1][i] = "";
-				m_sLog.Format("LoadPicker %d To InspectStage %d, pocket:%d - MZ ID:%s",n2No, n2LPVisionNo, i , gTracking.sMZID_InspectStage[n2LPVisionNo-1][i]);
-				if(gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
-				gLot.nHistory[n2LP][n2LT][n2LM+i][3] = gData.nVisionNo = n2LPVisionNo;
-			}
-			m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(3000+m_pEquipData->nDelayTime[4]);
+				for(int i=0; i<10; i++) 
+				{
+					gData.InfoVision[n2LPVisionNo-1][i] = gData.InfoLoadPick[n2No-1][i]; gData.InfoLoadPick[n2No-1][i] = 0;				
+				}
+				for(int i=0; i< PICK_CNT; i++) 
+				{ 
+					gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] = gTracking.sMZID_LoadPicker[n2No-1][i]; gTracking.sMZID_LoadPicker[n2No-1][i] = "";
+					m_sLog.Format("LoadPicker %d To InspectStage %d, pocket:%d - MZ ID:%s",n2No, n2LPVisionNo, i , gTracking.sMZID_InspectStage[n2LPVisionNo-1][i]);
+					if(gTracking.sMZID_InspectStage[n2LPVisionNo-1][i] != "") g_objLogFile.Save_HomeTrackingLog(m_sLog);
+
+					gLot.nHistory[n2LP][n2LT][n2LM+i][3] = gData.nVisionNo = n2LPVisionNo; 
+				}
+				m_nLoadPicker2Case++; m_tLoadPicker2Loop.Set_LoopTime(10000);
+			}			
+			else
+			{
+				m_nLoadPicker2Case = 41; m_tLoadPicker2Loop.Set_LoopTime(10000);
+			}			
 		}
 		break;
 	case 47:
@@ -15969,6 +16035,8 @@ BOOL CSequenceMain::Run_Simulation()
 
 BOOL CSequenceMain::Select_LoadPickPos(int nNo, int &nPos, int &nCnt)
 {
+	nPos = -1;
+	nCnt = 0;
 	for(int i = 0; i < 8; i++)
 	{
 		if(gData.InfoLoadPick[nNo-1][i] == 1)
@@ -15999,7 +16067,7 @@ BOOL CSequenceMain::Select_InspectPocketPos(int nNo, int &nPos, int &nCnt)
 	nCnt = 0;
 	for(int i = 0; i < 8; i++)
 	{
-		if(gData.InfoVision[nNo-1][i] == 1)
+		if(gData.InfoVision[nNo-1][i] == 0)
 		{
 			nPos = i;
 			break;
@@ -16008,7 +16076,7 @@ BOOL CSequenceMain::Select_InspectPocketPos(int nNo, int &nPos, int &nCnt)
 
 	for(int j = 0; j < 8; j++)
 	{
-		if(gData.InfoVision[nNo-1][j] == 1)
+		if(gData.InfoVision[nNo-1][j] == 0)
 		{
 			nCnt++;			
 		}
