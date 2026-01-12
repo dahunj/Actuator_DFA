@@ -1146,6 +1146,7 @@ void CCommon::Copy_File(CString strPath, CString strName)
 {	
 	CString strOriginFile, strTargetFile, strDateTime;
 		
+	g_objLogFile.Create_Folder("D:\\RMS");
 	strOriginFile.Format("%s\\%s.ini", strPath, strName);
 	strTargetFile.Format("D:\\RMS\\%s.ini", strName);
 
