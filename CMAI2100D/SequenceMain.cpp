@@ -6243,8 +6243,7 @@ BOOL CSequenceMain::Run_LoadStage2()
 		if (gMes.nCarConfirm[LOAD_STAGE] >= 4) 
 		{
 			if (!m_tLoadStage2Loop.Waiting_Time(500)) break;
-
-
+			
 			m_sLog.Format("MCC,11,LoadStage2,%d,g_objMesAgent.Set_LotStart", m_nLoadStage2Case);
 			g_objLogFile.Save_SeqLog(m_sLog);
 

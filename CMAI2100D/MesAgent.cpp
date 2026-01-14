@@ -255,7 +255,7 @@ void CMesAgent::Get_LotStart(CString sLotId, CString sRecipe, CString sCmCount, 
 	strLog.Format("[Get_LotStart] Lot Data Port(%d) LotID(%s) Count(%d) Recipe(%s)", nPortNo+1, gMes.sHostLotID, gMes.nHostCmCount, gMes.sHostRecipe);
 	g_objLogFile.Save_MesAgentLog(strLog);
 
-	gMes.nCarConfirm[LOAD_STAGE] = 3;
+	gMes.nCarConfirm[LOAD_STAGE] = 4; //3
 #ifndef AJIN_BOARD_USE
 	gMes.nCarConfirm[LOAD_STAGE]++;
 #endif
@@ -480,7 +480,8 @@ void CMesAgent::Get_ModuleData(CString sData)
 			gMes.nCarConfirm[LOAD_STAGE]++;	//4
 
 			//0:LOTID,1:MODULEID,2:SITE,3:EQPID,4:EQPNAME,5:TOOL_CAVITY,6:PARA,7:DATE,8:ROS_JUDGE,9:DFA_LOTID,10:POCKETNO,11:HaimNGCode
-			for(int j=0; j<nCnt; j++) {
+			for(int j=0; j<nCnt; j++)
+			{
 				g_objInspector.Set_ModuleData(INSPECTOR_ALL, sRcvData[0][0], j+1, sRcvData[j][1], sRcvData[j][2], sRcvData[j][3], sRcvData[j][4], sRcvData[j][6], sRcvData[j][5], nCnt);
 			}
 

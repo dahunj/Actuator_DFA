@@ -659,11 +659,9 @@ void CWorkDlg::OnBnClickedBtnIdleReport()
 BOOL CWorkDlg::Work_Start()
 {
 	CString strTemp, strTemp2, sText, strMsg;
-
+	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 	//RMS Check 
 	g_objMesAgent.Set_RMSCheck();
-
-	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
 
 	DWORD dwStart = GetTickCount();
 	while(!gData.bRMSDone && pEquipData->bUseMES)

@@ -1163,12 +1163,14 @@ void CLogFile::Save_OCAPFAILog(int nIdx)
 			int n7FAI = gCap.nCount[nIdx][0]+gCap.nCount[nIdx][1]+gCap.nCount[nIdx][2]+gCap.nCount[nIdx][3]+gCap.nCount[nIdx][4]+gCap.nCount[nIdx][5]+gCap.nCount[nIdx][6];
 			int nTilt = gCap.nCount[nIdx][7]+gCap.nCount[nIdx][8]+gCap.nCount[nIdx][9]+gCap.nCount[nIdx][10]+gCap.nCount[nIdx][11]+gCap.nCount[nIdx][12]+gCap.nCount[nIdx][13]+gCap.nCount[nIdx][14];
 			int nGap  = gCap.nCount[nIdx][15]+gCap.nCount[nIdx][16]+gCap.nCount[nIdx][17]+gCap.nCount[nIdx][18]+gCap.nCount[nIdx][19];
-			for (int i=0; i<20; i++) {
+			for (int i=0; i<20; i++) 
+			{
 				double dDef = (gCap.nCount[nIdx][i] * 100.0) / gCap.nTotCount[nIdx];
 				sData.Format("%d,%01f%%,", gCap.nCount[nIdx][i], dDef);
 				sFAIData1 = sFAIData1 + sData;
 			}
-			for (int i=0; i<20; i++) {
+			for (int i=0; i<20; i++)
+			{
 				double dDef = (gCap.nFCount[nIdx][i] * 100.0) / gCap.nTotCount[nIdx];
 				sData.Format("%d,%01f%%,", gCap.nFCount[nIdx][i], dDef);
 				sFAIData2 = sFAIData2 + sData;
