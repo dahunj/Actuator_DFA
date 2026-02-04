@@ -711,6 +711,7 @@ void CSetupEquipDlg::Save_EquipData()
 	sPathSource += _T("\\");
 	Save_ModelEquipData(sPathSource);
 
+	g_objMesAgent.Set_RMSCheck();
 //	g_objDataManager.Save_MoveData();	//모델을 바꿨다면 바뀐 무브데이터 변수를 파일에다가 저장해줘야한다.
 	g_objLogFile.Save_HandlerLog("[Setup Equip] Save Click");
 

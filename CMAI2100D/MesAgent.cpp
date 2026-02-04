@@ -255,7 +255,7 @@ void CMesAgent::Get_LotStart(CString sLotId, CString sRecipe, CString sCmCount, 
 	strLog.Format("[Get_LotStart] Lot Data Port(%d) LotID(%s) Count(%d) Recipe(%s)", nPortNo+1, gMes.sHostLotID, gMes.nHostCmCount, gMes.sHostRecipe);
 	g_objLogFile.Save_MesAgentLog(strLog);
 
-	gMes.nCarConfirm[LOAD_STAGE] = 4; //원래 3인데 "4"로 횡전개 해버림... 나중에 다시 원복해야 할 수도 있다...
+	gMes.nCarConfirm[LOAD_STAGE] = 3;
 #ifndef AJIN_BOARD_USE
 	gMes.nCarConfirm[LOAD_STAGE]++;
 #endif
