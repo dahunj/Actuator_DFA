@@ -329,7 +329,13 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	int	nCMNo     = atoi(sCMNo);
 	int	nImage1   = atoi(sImageCnt1);
 	int	nImage2   = atoi(sImageCnt2);
+
+#ifdef CARRIER_TYPE_MEM
 	int	nMarginal = atoi(sMarginal);
+#else // Varo
+	int	nMarginal = 0;
+#endif
+	
 	if (nPortNo < 1 || nPortNo > 30 || nTrayNo < 1 || nTrayNo > 10  || nCMNo < 1 || nCMNo > 40) { g_objCommon.Show_Error(9103); return; }
 	if (sType != "B1" && sType != "AG" && sType != "T1" && sType != "TG" && sType != "T2") { g_objCommon.Show_Error(9104); return; }
 	if (sJudge != "G" && sJudge != "N"  && sJudge != "S"  && sJudge != "T" && sJudge != "W" && sJudge != "X" && sJudge != "R" && sJudge != "SS"  && sJudge != "TS" && sJudge != "WS" && sJudge != "Z" && sJudge != "ZS"  ) { g_objCommon.Show_Error(9105); return; }
