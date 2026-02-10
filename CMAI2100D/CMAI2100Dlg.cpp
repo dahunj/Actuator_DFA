@@ -130,7 +130,7 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	g_dlgNoWork.Create(CNoWorkDlg::IDD, this);
 
 	CString strLog;
-	strLog.Format("[Main Dialog] Program Start.  Version: %s", MAIN_VERSION);
+	strLog.Format("[Main Dialog] Program Start. Version: %s", MAIN_VERSION);
 	g_objLogFile.Save_HandlerLog(strLog);
 
 	SetTimer(TIMER_DATE_TIME, 500, NULL);
@@ -138,6 +138,12 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	SetTimer(TIMER_DOOR_LOCK, 1000, NULL);
 
 	gData.nSimMzCntLoaded = 0;
+
+#ifdef CARRIER_TYPE_MEM
+	//pass
+#elif CARRIER_TYPE_VARO
+	m_btnMainOCAP.ShowWindow(SW_HIDE);
+#endif
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }

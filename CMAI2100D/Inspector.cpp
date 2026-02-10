@@ -482,6 +482,9 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			}
 		}		
 	}
+
+
+
 	
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][1] + nImage1;	//치수불량수
 	gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] = gLot.nImageCnt[nPortNo-1][nTrayNo-1][nCMNo-1][0] + nImage2;	//외관불량수
