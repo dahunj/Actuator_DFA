@@ -2317,8 +2317,7 @@ void CSequenceMain::Set_LotEnd(CString sLotID, int nPortNo, CString sMZID, CStri
 //	g_objMesAgent.Set_LotEnd(gLot.sLotID[nNo], gLot.sMZID_GD[nNo], gLot.sCarID_GD[nNo], gLot.sRecipeName[nNo], gLot.nCmCount[nNo], gLot.nGoodCount[nNo], gLot.nNgCount[nNo]+gLot.nSkipCount[nNo]);
 //	g_objInspector.Set_LotEnd(INSPECTOR_ALL, gLot.sLotID[nNo], nPortNo);
 	g_objDispatcher.Set_LotEnd(nPortNo);
-	g_dlgOCAPFai.Set_AddMZData(nPortNo);
-	g_dlgOCAPCosmetic.Set_AddMZData(nPortNo);
+	
 
 	gData.nDay_TotalCnt += gLot.nCmCount[nNo];
 	gData.nDay_NGCnt += gLot.nNgCount[nNo];
@@ -13525,6 +13524,10 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		}
 		break;
 	case 16:
+
+#ifndef AJIN_BOARD_USE
+		m_pEquipData->bUseMZIDUnload = TRUE;
+#endif
 		if (m_pEquipData->bUseMZIDUnload) {
 			if (!m_tULCVElevatorLoop.Waiting_Time(500)) break;
 			g_objBarcodeLot_Cognex.Set_Trigger(3, TRUE);	//2F
@@ -13538,8 +13541,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 #ifdef AJIN_BOARD_USE
 		sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(3);	//U-2F
 #else
-		nTemp = g_objCommon.Get_Random(0, 9999);
-		sULMZID.Format("U MZ-%04d", nTemp);
+		//nTemp = g_objCommon.Get_Random(0, 9999);
+		sULMZID.Format("%s", gData.sMZID[8]);
 #endif
 			
 			if (sULMZID.GetLength() > 0) {
@@ -13608,6 +13611,9 @@ BOOL CSequenceMain::Run_ULCVElevator()
 		}
 		break;
 	case 26:
+#ifndef AJIN_BOARD_USE
+		m_pEquipData->bUseMZIDUnload = TRUE;
+#endif
 		if (m_pEquipData->bUseMZIDUnload) {
 			if (!m_tULCVElevatorLoop.Waiting_Time(500)) break;
 			g_objBarcodeLot_Cognex.Set_Trigger(4, TRUE);	//1F
@@ -13624,8 +13630,8 @@ BOOL CSequenceMain::Run_ULCVElevator()
 #ifdef AJIN_BOARD_USE
 		sULMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(4);	//U-1F
 #else
-		nTemp = g_objCommon.Get_Random(0, 9999);
-		sULMZID.Format("UL MZ-%04d", nTemp);
+		//nTemp = g_objCommon.Get_Random(0, 9999);
+		sULMZID.Format("%s", gData.sMZID[8]);
 #endif
 					
 			if (sULMZID.GetLength() > 0) {
@@ -14726,7 +14732,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 	case 10:
 		nSlotNo = Check_MZCarrierExit(3);
-		m_sLog.Format("MCC,30,GDMZElevator,%d, comments, nSlotNo:%d", m_nGDMZElevatorCase, nSlotNo);
+		m_sLog.Format("MCC,30,GDMZElevator,%d, is MZ Slot Empty?, nSlotNo:%d", m_nGDMZElevatorCase, nSlotNo);
 		g_objLogFile.Save_SeqLog(m_sLog);
 		if (nSlotNo > 0) 
 		{
@@ -15036,6 +15042,10 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			gLot.sCarID_GD[nPNo] = gData.sCarID_Elevator[1];
 			gLot.nSlotNo_GD[nPNo] = gData.nMZSlotNo[2] = nSlotNo;
 
+			//OCAP 
+			g_dlgOCAPFai.Set_AddMZData(nPNo);
+			g_dlgOCAPCosmetic.Set_AddMZData(nPNo);
+
 			
 			for(int y = 0; y < 10; y++)
 			{
@@ -15092,6 +15102,8 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 			gData.bInpectLotEnd = FALSE;
 			g_objInspector.Set_LotEnd(INSPECTOR_ALL, gLot.sLotID[nPNo], gData.nLastPorNo);
+
+		
 
 			if (!m_pEquipData->bUseBottom && !m_pEquipData->bUseBotAng && !m_pEquipData->bUseTop1 && !m_pEquipData->bUseTopAng && !m_pEquipData->bUseTop2) {
 				gData.bInpectLotEnd = TRUE;

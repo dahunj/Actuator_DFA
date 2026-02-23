@@ -610,6 +610,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 	
 
 
+#endif
 	if (nNGGF > 0) {
 		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]  = 5;	//GRAB_FAIL
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = "GRAB_FAIL";
@@ -661,7 +662,6 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		return;
 	}
 	
-#endif
 	if		(nNGSize > 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = nNGSize;	}
 	else if (nNGCnt == 0)	{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = 2;			}
 	else					{ gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = 3;			}

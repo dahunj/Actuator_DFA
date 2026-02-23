@@ -869,21 +869,21 @@ void CDataManager::Read_NGTraySort()
 	// 7:치수불량1, 8:치수불량2, 9:치수불량3, 6:치수불량123,
 	// A:허수배출, B: BARCODE_NOREAD, E:Black_Module
 	// C:SKIP-ROS-R(Special NG), D:SKIP-ROS-N(Special NG)
-	if (nValue[1] == 1 || nValue[2] == 1 || nValue[3] == 0 || nValue[4] == 1 || nValue[5] == 0 || nValue[11] == 0 || nValue[12] == 0 || nValue[15] == 0) //|| nValue[10] == 1 
-	{
-		AfxMessageBox("NGTraySort.ini File Data Error1..!!!!!!!!!");
-		return;
-	}
-	if (nValue[6] == 1) {
-		if (nValue[7] == 1 || nValue[8] == 1 || nValue[9] == 1) {
-			AfxMessageBox("NGTraySort.ini File Data Error2..!!!!!!!!!");
-			return;
-		}
-	} else {
-		if (nValue[7] == 0 || nValue[8] == 0 || nValue[9] == 0) {
-			AfxMessageBox("NGTraySort.ini File Data Error3..!!!!!!!!!");
-			return;
-		}
-	}
+	//if (nValue[1] == 1 || nValue[2] == 1 || nValue[3] == 0 || nValue[4] == 1 || nValue[5] == 0 || nValue[11] == 0 || nValue[12] == 0 || nValue[15] == 0) //|| nValue[10] == 1 
+	//{
+	//	AfxMessageBox("NGTraySort.ini File Data Error1..!!!!!!!!!");
+	//	return;
+	//}
+	//if (nValue[6] == 1) {
+	//	if (nValue[7] == 1 || nValue[8] == 1 || nValue[9] == 1) {
+	//		AfxMessageBox("NGTraySort.ini File Data Error2..!!!!!!!!!");
+	//		return;
+	//	}
+	//} else {
+	//	if (nValue[7] == 0 || nValue[8] == 0 || nValue[9] == 0) {
+	//		AfxMessageBox("NGTraySort.ini File Data Error3..!!!!!!!!!");
+	//		return;
+	//	}
+	//}
 }
 ///////////////////////////////////////////////////////////////////////////////
