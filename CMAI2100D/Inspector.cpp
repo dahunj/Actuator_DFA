@@ -539,9 +539,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		sLotID, sPortNo, sTrayNo, nCMNo, dwTerm, nNGCnt, gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1], nNGSize, nNGMC, nNGGF, nNGSkip, nReSkip, nMCBTM, gLot.nFOcapExist[nPortNo-1][nTrayNo-1][nCMNo-1], gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nNGSize1Sp, nNGSize2Sp, nNGSize3Sp, nNGSize4Sp, nFaiFail, gLot.nMarginal[nPortNo-1][nCMNo-1]);	g_objLogFile.Save_HandlerLog(strLog);
 
 
-#ifndef AJIN_BOARD_USE
-	//pass
-#else
+#if defined AJIN_BOARD_USE
 	//Barcdoe read fail(5) - ROS Skip
 	gAlm.sAlmLotID[0] = sLotID; gAlm.sAlmLotID[1] = sType;
 	if (gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1] == "NOREAD" || gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1] == "BARCODE_NOREAD" || gLot.sBarCode[nPortNo-1][nTrayNo-1][nCMNo-1].GetLength() < 15) {
@@ -608,9 +606,8 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 		return;
 	} */
 	
-
-
 #endif
+
 	if (nNGGF > 0) {
 		gLot.nJudge_I[nPortNo-1][nTrayNo-1][nCMNo-1][0]  = 5;	//GRAB_FAIL
 		gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = "GRAB_FAIL";

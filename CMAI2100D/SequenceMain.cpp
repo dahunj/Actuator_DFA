@@ -14234,7 +14234,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 
 			m_sLog.Format("NG-MZ Carrier Check MZ[%s] [%d-%d-%d-%d - %d-%d-%d-%d]",
 							gData.sMZID[6], gLot.nCarrierExist[1][0], gLot.nCarrierExist[1][1], gLot.nCarrierExist[1][2], gLot.nCarrierExist[1][3], gLot.nCarrierExist[1][4], gLot.nCarrierExist[1][5], gLot.nCarrierExist[1][6], gLot.nCarrierExist[1][7]);
-			g_objLogFile.Save_HandlerLog(m_sLog);
+			g_objLogFile.Save_HandlerLog(m_sLog);g_objLogFile.Save_SeqLog(m_sLog);
 
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 		}		
@@ -14242,8 +14242,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 
 	case 10:
 		nMZNo1 = Check_MZCarrierExit(2, 1);	//Search Out Carrier No
-		m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo1:%d", m_nNGMZElevatorCase,nMZNo1);
-		g_objLogFile.Save_SeqLog(m_sLog);
+		m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo1:%d", m_nNGMZElevatorCase,nMZNo1); g_objLogFile.Save_SeqLog(m_sLog);
+		
 		if (nMZNo1 <= 0) 
 		{
 			m_nNGMZElevatorCase = 60; m_tNGMZElevatorLoop.Set_LoopTime(5000);
@@ -14257,8 +14257,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		else
 		{
 			nMZNo2 = Check_MZCarrierEmpty(2);
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo2:%d", m_nNGMZElevatorCase, nMZNo2);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo2:%d", m_nNGMZElevatorCase, nMZNo2); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			if (nMZNo1 > nMZNo2 && nMZNo2 > 0 && Check_NGCarrierIn(nMZNo2)) 
 			{
 //			if (nMZNo1 < nMZNo2 && nMZNo2 > 0 && Check_NGCarrierIn(nMZNo2)) {
@@ -14291,8 +14291,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 13:
 		if (!m_pDX15->iNGRailCarrierChk1 && !m_pDX15->iNGRailCarrierChk2) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			g_objCommon.Move_Override(AX_NG_FEEDER_Y, 1, 20.0);	//Grip
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(30000);	//10000
 		}
@@ -14300,8 +14300,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 14:
 		if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 1)) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			m_pDY15->oNGGripOpen = FALSE; m_pDY15->oNGGripClose = TRUE;
 			g_objAJinAXL.Write_Output(15);
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(5000);
@@ -14319,7 +14319,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		//Pull Carrier from Magazine to Rail 
 		if (m_pDX15->iNGGripCarrierChk) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, pull carrier from MZ to Rail", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 			g_objCommon.Move_Position(AX_NG_FEEDER_Y, 2);	//Pull
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(30000);	//5000
@@ -14330,7 +14330,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		{
 			if (!m_tNGMZElevatorLoop.Waiting_Time(300)) break;
 
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder grip open", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			m_pDY15->oNGGripOpen = TRUE; m_pDY15->oNGGripClose = FALSE;
@@ -14341,7 +14341,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 18:
 		if (m_pDX15->iNGGripOpen && !m_pDX15->iNGGripClose) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, open check", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 		}
@@ -14349,7 +14349,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 19:
 		if (!m_pDX15->iNGRailCarrierChk1 && m_pDX15->iNGRailCarrierChk2) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, On Rail check and feeder back", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_NG_FEEDER_Y, 0);	//Pull-Next
@@ -14366,10 +14366,9 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		}
 		break;
 
-	case 21:	//Carrier in-MZ
+	case 21:	//push carrier from rail to MZ
 		nMZNo2 = Check_MZCarrierEmpty(2);
-		m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo2:%d", m_nNGMZElevatorCase, nMZNo2);
-		g_objLogFile.Save_SeqLog(m_sLog);
+		m_sLog.Format("SEQ,29,NGMZElevator,%d, nMZNo2:%d", m_nNGMZElevatorCase, nMZNo2); g_objLogFile.Save_SeqLog(m_sLog);
 		if (nMZNo2 > 0 && Check_NGCarrierIn(nMZNo2)) 
 		{
 			dSlotPosZ = m_pMoveData->dNGMZElevatorZ[2] - (m_pEquipData->dMZPitchZ * (nMZNo2-1));
@@ -14384,8 +14383,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 22:
 		if (g_objAJinAXL.Is_MoveDone(AX_NGMZ_ELEVATOR_Z, dSlotPosZ)) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
@@ -14397,10 +14396,9 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		if (m_pDX18->iNGMZElevatorExist) 
 		{
 			if (!m_pDX15->iNGRailCarrierChk1 && m_pDX15->iNGRailCarrierChk2) 
-			{
-				m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-				g_objLogFile.Save_SeqLog(m_sLog);
-
+			{ 
+				m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder Push Carrier from rail to MZ", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+				
 				g_objCommon.Move_Position(AX_NG_FEEDER_Y, 1, 0.5);	//Push
 				m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 			}
@@ -14410,7 +14408,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 1)) 
 		{
 			if (!m_tNGMZElevatorLoop.Waiting_Time(500)) break;
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder Open", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			m_pDY15->oNGGripOpen = TRUE; m_pDY15->oNGGripClose = FALSE;
@@ -14421,7 +14419,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 26:
 		if (m_pDX15->iNGGripOpen && !m_pDX15->iNGGripClose) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder back to Ready", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_NG_FEEDER_Y, 0);	//Ready
@@ -14440,9 +14438,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 28:
 		if (!m_pDX15->iNGRailCarrierChk1 && !m_pDX15->iNGRailCarrierChk2) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Rail Check(No Carrier On Rail)", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			gLot.nCarrierExist[1][nMZNo2-1] = 2;
 			int nPNo = nLDPNoNG = gData.nPortNo_UnMZ[0] - 1;
 
@@ -14492,9 +14489,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		{
 			if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 0)) 
 			{
-				m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-				g_objLogFile.Save_SeqLog(m_sLog);
-
+				m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+				
 				m_sLog.Format("NG-MZ Carrier Out MZ[%s] ==> [%d]", gData.sMZID[6], nSlotNo);	g_objLogFile.Save_HandlerLog(m_sLog);
 				m_nNGMZElevatorCase = 10; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 			}
@@ -14504,9 +14500,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 40:	//MZ Out
 		if (!m_pDX15->iNGRailCarrierChk1)
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			g_objCommon.Move_Position(AX_NGMZ_ELEVATOR_Z, 0);	//Ready
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 		}
@@ -14568,9 +14563,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 		nMZNo3 = Check_MZCarrierEmpty(2);
 		if (nMZNo3 > 0)
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Is MZ empty? %d", m_nNGMZElevatorCase, nMZNo3); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			dSlotPosZ = m_pMoveData->dNGMZElevatorZ[2] - (m_pEquipData->dMZPitchZ * (nMZNo3-1));
 			g_objAJinAXL.Move_Absolute(AX_NGMZ_ELEVATOR_Z, dSlotPosZ);
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(5000);
@@ -14583,8 +14577,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 61:
 		if (g_objAJinAXL.Is_MoveDone(AX_NGMZ_ELEVATOR_Z, dSlotPosZ)) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			
 			m_nNGMZElevatorCase = 70; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 		}
@@ -14593,8 +14587,8 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 70:	// Carrier-In Wait
 		if (Check_ModuleEmpty()) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, Check_ModuleEmpty", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Check_ModuleEmpty", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			m_nNGMZElevatorCase = 40; gData.nNGMgzOut = 1; 
 		}
 		m_tNGMZElevatorLoop.Set_LoopTime(5000);
@@ -14603,13 +14597,13 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 71:
 		if (m_pDX18->iNGMZElevatorExist) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
 			if (!m_pDX15->iNGRailCarrierChk1 && m_pDX15->iNGRailCarrierChk2) 
 			{
 	//			g_objCommon.Move_Override(AX_NG_FEEDER_Y, 1, 10.0);	//Push
 				g_objCommon.Move_Position(AX_NG_FEEDER_Y, 1, 0.5);	//Push
+
+				m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder Push MZ", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+				
 				m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(10000);
 			}
 		}
@@ -14617,21 +14611,21 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 72:
 		if (g_objCommon.Check_Position(AX_NG_FEEDER_Y, 1)) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
+			
+			
 			if (!m_tNGMZElevatorLoop.Waiting_Time(500)) break;
 			m_pDY15->oNGGripOpen = TRUE; m_pDY15->oNGGripClose = FALSE;
 			g_objAJinAXL.Write_Output(15);
+
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Feeder Grip Open", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 73:
 		if (m_pDX15->iNGGripOpen && !m_pDX15->iNGGripClose) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
-
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			 
 			g_objCommon.Move_Position(AX_NG_FEEDER_Y, 0);	//Ready
 			m_nNGMZElevatorCase++; m_tNGMZElevatorLoop.Set_LoopTime(30000);
 		}
@@ -14648,7 +14642,7 @@ BOOL CSequenceMain::Run_NGMZElevator()
 	case 75:
 		if (!m_pDX15->iNGRailCarrierChk1 && !m_pDX15->iNGRailCarrierChk2) 
 		{
-			m_sLog.Format("SEQ,29,NGMZElevator,%d, comments", m_nNGMZElevatorCase);
+			m_sLog.Format("SEQ,29,NGMZElevator,%d, Information Process", m_nNGMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 
@@ -14739,8 +14733,8 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 3:
 		if (m_pDX18->iGDMZElevatorClamp34In && !m_pDX18->iGDMZElevatorClamp34Out) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 
 			m_nGDMZElevatorCase++; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 		}
@@ -14748,15 +14742,15 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 4:
 		if (m_pDX18->iGDMZElevatorExist) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			m_nGDMZElevatorCase++; m_tGDMZElevatorLoop.Set_LoopTime(10000);
 		}
 		break;
 	case 5:
 		if (!m_pDX15->iGDRailCarrierChk1 && !m_pDX15->iGDRailCarrierChk2)
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, Rail Check", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Rail Check (No Carrier)", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_GDMZ_ELEVATOR_Z, 1);	//Mapping
@@ -14793,7 +14787,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 8:
 		if (g_objAJinAXL.Is_Done(AX_GDMZ_ELEVATOR_Z))
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments, nSlotNo:%d", m_nGDMZElevatorCase, nSlotNo);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, comments, Elev Z pitch Move :%d", m_nGDMZElevatorCase, nSlotNo);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			nSlotNo++;
@@ -14842,7 +14836,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 13:
 		if (!m_pDX15->iGDRailCarrierChk1 && !m_pDX15->iGDRailCarrierChk2) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Move to Pull Carrier From MZ", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Override(AX_GOOD_FEEDER_Y, 1, 20.0);	//Grip
@@ -14852,7 +14846,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 14:
 		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 1))
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Grip Close", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			m_pDY15->oGDGripOpen = FALSE; m_pDY15->oGDGripClose = TRUE;
@@ -14872,7 +14866,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 16:
 		if (m_pDX15->iGDGripCarrierChk)
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Pull Carrier From MZ", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_GOOD_FEEDER_Y, 2);	//Pull
@@ -14883,7 +14877,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 2)) 
 		{
 			if (!m_tGDMZElevatorLoop.Waiting_Time(300)) break;
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Grip Open", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 	
 			m_pDY15->oGDGripOpen = TRUE; m_pDY15->oGDGripClose = FALSE;
@@ -14902,7 +14896,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 19:
 		if (!m_pDX15->iGDRailCarrierChk1 && m_pDX15->iGDRailCarrierChk2) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Back to Ready", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_GOOD_FEEDER_Y, 0);	//Pull-Next
@@ -14976,8 +14970,8 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 44:
 		if (m_pDX18->iGDMZElevatorExist) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			m_nGDMZElevatorCase++; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
@@ -14988,8 +14982,8 @@ BOOL CSequenceMain::Run_GDMZElevator()
 		}
 		if (Check_LotEndTray(gData.sLastLotID, nInPNo+1)) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, Check_LotEndTray", m_nGDMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Check_LotEndTray", m_nGDMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);
+			
 			if (m_nNGMZElevatorCase == 0)  m_nGDMZElevatorCase = 50;
 		}
 		if (m_nGDMZElevatorCase == 45 && m_nNGMZElevatorCase == 70 && m_nTransfer2Case == 0) 
@@ -15031,7 +15025,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 	case 60:
 		nSlotNo = Check_MZCarrierEmpty(3);
-		m_sLog.Format("MCC,30,GDMZElevator,%d, nSlotNo:%d", m_nGDMZElevatorCase,nSlotNo);
+		m_sLog.Format("MCC,30,GDMZElevator,%d, is MZ Slot empty?, nSlotNo:%d", m_nGDMZElevatorCase,nSlotNo);
 		g_objLogFile.Save_SeqLog(m_sLog);
 		if (nSlotNo > 0) 
 		{
@@ -15064,7 +15058,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 		{
 			if (!m_pDX15->iGDRailCarrierChk1 && m_pDX15->iGDRailCarrierChk2) 
 			{
-				m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+				m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Push from Rail To MZ", m_nGDMZElevatorCase);
 				g_objLogFile.Save_SeqLog(m_sLog);
 	//			g_objCommon.Move_Override(AX_GOOD_FEEDER_Y, 1, 10.0);	//Push
 				g_objCommon.Move_Position(AX_GOOD_FEEDER_Y, 1, 0.5);	//Push
@@ -15075,7 +15069,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 72:
 		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 1)) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Grip Open", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			m_pDY15->oGDGripOpen = TRUE; m_pDY15->oGDGripClose = FALSE;
@@ -15086,7 +15080,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 73:
 		if (m_pDX15->iGDGripOpen && !m_pDX15->iGDGripClose) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Feeder Back to Ready", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			g_objCommon.Move_Position(AX_GOOD_FEEDER_Y, 0);	//Ready
@@ -15096,15 +15090,14 @@ BOOL CSequenceMain::Run_GDMZElevator()
 	case 74:
 		if (g_objCommon.Check_Position(AX_GOOD_FEEDER_Y, 0)) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
-			g_objLogFile.Save_SeqLog(m_sLog);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase); g_objLogFile.Save_SeqLog(m_sLog);			 
 			m_nGDMZElevatorCase++; m_tGDMZElevatorLoop.Set_LoopTime(5000);
 		}
 		break;
 	case 75:
 		if (!m_pDX15->iGDRailCarrierChk1 && !m_pDX15->iGDRailCarrierChk2) 
 		{
-			m_sLog.Format("MCC,30,GDMZElevator,%d, comments", m_nGDMZElevatorCase);
+			m_sLog.Format("MCC,30,GDMZElevator,%d, Information Process", m_nGDMZElevatorCase);
 			g_objLogFile.Save_SeqLog(m_sLog);
 
 			gLot.nCarrierExist[2][nSlotNo-1] = 1;
@@ -15198,7 +15191,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 
 			m_sLog.Format("GD Carrier In MZ[%s] Car[%s] SlotNo[%d] LotID[%s] PNo[%d] LastCar[%d] SeqGd[%d] SeqNG[%d] NGMgzOut[%d]",
 							gLot.sMZID_GD[nPNo], gLot.sCarID_GD[nPNo], gLot.nSlotNo_GD[nPNo], gLot.sLotID[nPNo], nPNo+1, gLot.nMZLastCar[nPNo], m_nGDMZElevatorCase, m_nNGMZElevatorCase, gData.nNGMgzOut);
-			g_objLogFile.Save_HandlerLog(m_sLog);
+			g_objLogFile.Save_HandlerLog(m_sLog); g_objLogFile.Save_SeqLog(m_sLog);
 
 			Set_LotEnd(gLot.sLotID[nPNo], nPNo+1, gLot.sMZID_GD[nPNo], gLot.sCarID_GD[nPNo], "G");
 		}
