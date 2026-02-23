@@ -35,7 +35,7 @@ public:
 	void Save_ECMOutPut(int nPNo, int nTNo, int nMNo, int nStageNo, int nType);	//0:G, 1:NG
 	void Save_ECMDailyLot(CString sLog);
 	void Save_SeqLog(CString sLog);
-	void Save_OCAPTestLog(CString sLog);
+	
 	void Save_DailyLot(CString sLog);
 	void Save_LotLog(int nPortNo);
 	void Save_OperatingRatio(CString sLog);
@@ -43,6 +43,10 @@ public:
 	void Save_RFBarData(int nType, CString strDataID, int nCount=0);	//0:BL1F, 1:BL2F, 2:BU1F, 3:BU2F, 4:RFL, 5:RFG, 6:RFN
 	void Save_OCAPFAILog(int nIdx);
 	void Save_OCAPCosmeticLog(CString sLog);
+
+	void Save_FOCAPTestLog(CString sLog);
+	void Save_COCAPTestLog(CString sLog);
+	
 
 	void Save_HomeTrackingLog(CString sLog);
 

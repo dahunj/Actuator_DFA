@@ -451,6 +451,8 @@ void OCAPFaiDlg::AddMZOut(CString sMZid)
 		strLog.Format("[OCAP Option] MZ Out2 - Cycle[%d] Data-MZ[%s] Read-MZ[%s]", gCap.nMZCycle, gCap.sMZID[gCap.nMZCycle], sMZid);
 		g_objLogFile.Save_HandlerLog(strLog);
 	}
+
+	
 	g_objLogFile.Save_OCAPFAILog(gCap.nMZCycle);
 
 	gCap.nMZCycle++;
@@ -472,9 +474,9 @@ void OCAPFaiDlg::Set_AddDEFECT(CString sMZid, CString sCode)
 	{
 		for(int j=0; j<20; j++) 
 		{
-			if (sCode.Find(gCap.sFAICode[j]) > -1 ) 
-			//if (sCode == gCap.sFAICode[j]) 
+			if (sCode.Find(gCap.sFAICode[j]) > -1 ) //if (sCode == gCap.sFAICode[j]) 			 
 			{
+				
 				gCap.nCount[i][j]++;
 				return;
 			}

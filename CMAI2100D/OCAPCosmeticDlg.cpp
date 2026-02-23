@@ -494,7 +494,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 		gCap.nGoodCntInCarr_Cosmetic[nSlotNo]++;		
 					
 		strTemp.Format("Good, nCarrierGood:%d, nSlotNo:%d, sNGCode:%s",gCap.nGoodCntInCarr_Cosmetic[nSlotNo],nSlotNo, sNGCode);
-		g_objLogFile.Save_OCAPTestLog(strTemp);
+		g_objLogFile.Save_COCAPTestLog(strTemp);
 	}
 	else
 	{
@@ -506,7 +506,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 				{
 					gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo]++;					
 					strTemp.Format("NG, nCarrierCosmeticDefect:%d,  nSlotNo:%d,sNGCode:%s,%s", gCap.nDefectCntInCarr_Cosmetic[i][nSlotNo],nSlotNo, sNGCode, gCap.sCosmeticCode[i]);
-					g_objLogFile.Save_OCAPTestLog(strTemp);
+					g_objLogFile.Save_COCAPTestLog(strTemp);
 				}				
 			}						
 		}
@@ -532,7 +532,7 @@ void OCAPCosmeticDlg::AddModuleToCarrier(int nSlotNo, CString sType, int nJudge,
 			{
 				gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo]++;
 				strTemp.Format("NG_Vision, nCarrierCosmeticDefect:%d,nSlotNo:%d,sNGCode:%s,%s", gCap.nDefectCntInCarr_CosmeVision[i][nSlotNo],nSlotNo, sNGCodeVision, gCap.sCosmeticCode[i]);
-				g_objLogFile.Save_OCAPTestLog(strTemp);
+				g_objLogFile.Save_COCAPTestLog(strTemp);
 			}				
 		}	
 	}

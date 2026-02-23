@@ -414,7 +414,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
 				strLog.Format("INSPECT,COMPLETE, PC:%d, NORMAL_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
-				g_objLogFile.Save_OCAPTestLog(strLog);
+				g_objLogFile.Save_COCAPTestLog(strLog);
 				break;
 			}
 
@@ -434,7 +434,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 				{
 					gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCode;
 					strLog.Format("INSPECT,COMPLETE,PC:%d, OVER_CASE:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo,gLot.sNGCode_I[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
-					g_objLogFile.Save_OCAPTestLog(strLog);
+					g_objLogFile.Save_COCAPTestLog(strLog);
 					bOVerWritten = TRUE;
 				}
 				
@@ -456,7 +456,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 			{
 				gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
 				strLog.Format("INSPECT,COMPLETE,PC:%d,NORMAL_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
-				g_objLogFile.Save_OCAPTestLog(strLog);
+				g_objLogFile.Save_COCAPTestLog(strLog);
 				break;
 			}
 
@@ -477,7 +477,7 @@ void CInspector::Get_InspectComplete(int nInspector, CString sType, CString sLot
 				{
 					gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0] = sNGCodeVision;
 					strLog.Format("INSPECT,COMPLETE,PC:%d,OVER_CASE_V:%s, PortNo:%d, TrayNo:%d, CMNo:%d",nVNo, gLot.sNGCode_Vision[nPortNo-1][nTrayNo-1][nCMNo-1][0], nPortNo, nTrayNo, nCMNo);
-					g_objLogFile.Save_OCAPTestLog(strLog);
+					g_objLogFile.Save_COCAPTestLog(strLog);
 				}				 
 			}
 		}		
