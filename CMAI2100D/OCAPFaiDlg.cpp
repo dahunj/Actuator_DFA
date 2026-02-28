@@ -259,7 +259,7 @@ void OCAPFaiDlg::Display_Status()
 	int nD = 0;
 	int nS = gCap.nMZCycle;
 	if (nS < 0) nS = 49;
-	for(int i=nS; i>=0; i--) {
+	for(int i=nS-1; i > 0; i--) {
 		if (gCap.sDate[i].GetLength() < 1) break;
 		nD++;
 		Display_Grid(nD, i);
@@ -326,9 +326,9 @@ void OCAPFaiDlg::Display_Grid(int nDp, int nIx)
 	m_grdData.Set_CellFont(nDp, 11, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 11, str);
 
-	int nA1 = gCap.nFAICount[nIx][0] + gCap.nFAICount[nIx][1] + gCap.nFAICount[nIx][2] + gCap.nFAICount[nIx][3] + gCap.nFAICount[nIx][4] + gCap.nFAICount[nIx][5] + gCap.nFAICount[nIx][6];
-	int nA2 = gCap.nFAICount[nIx][7] + gCap.nFAICount[nIx][8] + gCap.nFAICount[nIx][9] + gCap.nFAICount[nIx][10] + gCap.nFAICount[nIx][11] + gCap.nFAICount[nIx][12] + gCap.nFAICount[nIx][13] + gCap.nFAICount[nIx][14];
-	int nA3 = gCap.nFAICount[nIx][15] + gCap.nFAICount[nIx][16] + gCap.nFAICount[nIx][17] + gCap.nFAICount[nIx][18] + gCap.nFAICount[nIx][19];
+	int nA1 = gCap.nFAITotCount[nIx][0] + gCap.nFAITotCount[nIx][1] + gCap.nFAITotCount[nIx][2] + gCap.nFAITotCount[nIx][3] + gCap.nFAITotCount[nIx][4] + gCap.nFAITotCount[nIx][5] + gCap.nFAITotCount[nIx][6];
+	int nA2 = gCap.nFAITotCount[nIx][7] + gCap.nFAITotCount[nIx][8] + gCap.nFAITotCount[nIx][9] + gCap.nFAITotCount[nIx][10] + gCap.nFAITotCount[nIx][11] + gCap.nFAITotCount[nIx][12] + gCap.nFAITotCount[nIx][13] + gCap.nFAITotCount[nIx][14];
+	int nA3 = gCap.nFAITotCount[nIx][15] + gCap.nFAITotCount[nIx][16] + gCap.nFAITotCount[nIx][17] + gCap.nFAITotCount[nIx][18] + gCap.nFAITotCount[nIx][19];
 	str.Format(_T("%d"), nA1 + nA2 + nA3);
 	m_grdData.Set_CellFont(nDp, 12, str, 10, FALSE);
 	m_grdData.Set_CellText(nDp, 12, str);
@@ -348,12 +348,12 @@ void OCAPFaiDlg::Display_Grid(int nDp, int nIx)
 	double dValue;
 	int	   nNo = 16;
 	for(int i=0; i<20; i++) {
-		str.Format(_T("%d"), gCap.nFAICount[nIx][i]);
+		str.Format(_T("%d"), gCap.nFAITotCount[nIx][i]);
 		m_grdData.Set_CellFont(nDp, nNo, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, nNo, str);
 		nNo++;
 
-		dValue = (gCap.nFAICount[nIx][i] * 100.0) / gCap.nTotCount[nIx];
+		dValue = (gCap.nFAITotCount[nIx][i] * 100.0) / gCap.nTotCount[nIx];
 		str.Format(_T("%0.1f%%"), dValue);
 		m_grdData.Set_CellFont(nDp, nNo, str, 10, FALSE);
 		m_grdData.Set_CellText(nDp, nNo, str);
@@ -414,7 +414,7 @@ void OCAPFaiDlg::AddMZOut(CString sMZid)
 	Check_DEFECT(3); if (m_bError) return;
 	Check_DEFECT(2); if (m_bError) return;
 	Check_DEFECT(1); if (m_bError) return;
-	Check_DEFECTF(4);
+	Check_DEFECTF(4); if (m_bError) return;
 
 	gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
 }
@@ -438,7 +438,7 @@ void OCAPFaiDlg::Check_DEFECT(int nNo)
 		for (int j=0; j<gCap.nGiMZCnt[nX]; j++) {
 			if (gCap.nTotCount[nMZno] < gCap.nGiMinCnt) continue;
 
-			dPer = (gCap.nFAICount[nMZno][i] * 100.0) / gCap.nTotCount[nMZno];
+			dPer = (gCap.nFAITotCount[nMZno][i] * 100.0) / gCap.nTotCount[nMZno];
 			if (dPer < gCap.dGiDefect[nX]) break;
 
 			nDefCount++;
@@ -456,8 +456,12 @@ void OCAPFaiDlg::Check_DEFECT(int nNo)
 		}
 	}
 
-	if (sDefect.GetLength() > 1) {
+	if (sDefect.GetLength() > 1) 
+	{
 		m_bError = TRUE;
+
+		gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
+
 		gAlm.sAlmLotID[0] = sDefect;
 		g_objCommon.Show_Error(9180 + nX+1);
 		return;
@@ -481,7 +485,7 @@ void OCAPFaiDlg::Check_DEFECTF(int nNo)
 		for (int j=0; j<gCap.nGiMZCnt[nX]; j++) {
 			if (gCap.nTotCount[nMZno] < gCap.nGiMinCnt) continue;
 
-			dPer = (gCap.nFAICount[nMZno][i] * 100.0) / gCap.nTotCount[nMZno];
+			dPer = (gCap.nFAITotCount[nMZno][i] * 100.0) / gCap.nTotCount[nMZno];
 			if (dPer < gCap.dGiDefect[nX]) break;
 
 			nDefCount++;
@@ -499,8 +503,11 @@ void OCAPFaiDlg::Check_DEFECTF(int nNo)
 		}
 	}
 
-	if (sDefect.GetLength() > 1) {
+	if (sDefect.GetLength() > 1) 
+	{
 		m_bError = TRUE;
+		gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
+
 		gAlm.sAlmLotID[0] = sDefect;
 		g_objCommon.Show_Error(9184);
 		return;
@@ -517,6 +524,7 @@ void OCAPFaiDlg::AddModuleToCarrier(CString sType, int nPNo, CString sCode)
 	{
 		//NG ¾øÀ¸¸é Good
 		gCap.nGoodCount[nPNo]++; return;
+		
 	}
 	
 	for(int j=0; j<20; j++) 
@@ -542,16 +550,18 @@ void OCAPFaiDlg::AddCarrierToMZ(CString sType, CString sToMZID, int nPortNo)
 		gCap.nCarrNo.push_back(nPortNo);
 		gCap.sMZID[nPortNo] = sToMZID;		
 		gCap.nTotCount[gCap.nMZCycle] += gCap.nGoodCount[nPortNo];
+		gCap.nGoodTotCount[gCap.nMZCycle]+= gCap.nGoodCount[nPortNo];
 	}
 	else
-	{	
+	{		
 		for (size_t i = 0; i < gCap.nCarrNo.size(); ++i)
 		{
 			for(int j=0; j< 20; j++) 
 			{		
 				gCap.nTotCount[gCap.nMZCycle] += gCap.nFAICount[gCap.nCarrNo[i]][j];
-				gCap.nTotCount[gCap.nMZCycle] += gCap.nNGCount[gCap.nCarrNo[i]];
-				
+				gCap.nFAITotCount[gCap.nMZCycle][j] += gCap.nFAICount[gCap.nCarrNo[i]][j];
+
+				gCap.nTotCount[gCap.nMZCycle] += gCap.nNGCount[gCap.nCarrNo[i]];				
 			}			
 		}
 		gCap.nCarrNo.clear();

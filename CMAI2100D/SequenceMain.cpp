@@ -5457,8 +5457,12 @@ BOOL CSequenceMain::Run_LoadStage1()
 				}
 			}
 		}
-
+#ifndef AJIN_BOARD_USE
+		return TRUE;
+#else
 		break;
+#endif
+		
 	case 5:
 		if (g_objCarrierRFID_Load.Is_RecvComplete())
 		{
@@ -6232,7 +6236,11 @@ BOOL CSequenceMain::Run_LoadStage2()
 				}
 			}
 		}
+#ifndef AJIN_BOARD_USE
+		return TRUE;
+#else
 		break;
+#endif
 	case 5:
 		if (g_objCarrierRFID_Load.Is_RecvComplete()) 
 		{

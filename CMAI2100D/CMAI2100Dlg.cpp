@@ -138,11 +138,7 @@ BOOL CCMAI2100Dlg::OnInitDialog()
 	SetTimer(TIMER_DOOR_LOCK, 1000, NULL);
 
 	gData.nSimMzCntLoaded = 0;
-
-	g_objDataManager.Reset_OCAPData();
-	if (g_objDataManager.Read_OCAPData() == FALSE) {
-		g_objCommon.Show_MsgBox(1, "OCAP Data 파일을 확인해 주세요.");
-	}
+		
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -302,6 +298,11 @@ void CCMAI2100Dlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	gData.nMZDoorOpen[0] = gData.nMZDoorOpen[1] = 0;
 
 	
+	g_objDataManager.Reset_OCAPData();
+	if (g_objDataManager.Read_OCAPData() == FALSE) {
+		g_objCommon.Show_MsgBox(1, "OCAP Data 파일을 확인해 주세요.");
+	}
+
 
 	theApp.uSleep(1000);
 

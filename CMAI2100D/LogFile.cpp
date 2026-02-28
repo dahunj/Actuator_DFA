@@ -1188,13 +1188,13 @@ void CLogFile::Save_OCAPFAILog(int nIdx)
 
 			if (file.GetLength() < 1) file.Write(sTitle, sTitle.GetLength());
 
-			int n7FAI = gCap.nFAICount[nIdx][0]+gCap.nFAICount[nIdx][1]+gCap.nFAICount[nIdx][2]+gCap.nFAICount[nIdx][3]+gCap.nFAICount[nIdx][4]+gCap.nFAICount[nIdx][5]+gCap.nFAICount[nIdx][6];
-			int nTilt = gCap.nFAICount[nIdx][7]+gCap.nFAICount[nIdx][8]+gCap.nFAICount[nIdx][9]+gCap.nFAICount[nIdx][10]+gCap.nFAICount[nIdx][11]+gCap.nFAICount[nIdx][12]+gCap.nFAICount[nIdx][13]+gCap.nFAICount[nIdx][14];
-			int nGap  = gCap.nFAICount[nIdx][15]+gCap.nFAICount[nIdx][16]+gCap.nFAICount[nIdx][17]+gCap.nFAICount[nIdx][18]+gCap.nFAICount[nIdx][19];
+			int n7FAI = gCap.nFAITotCount[nIdx][0]+gCap.nFAITotCount[nIdx][1]+gCap.nFAITotCount[nIdx][2]+gCap.nFAITotCount[nIdx][3]+gCap.nFAITotCount[nIdx][4]+gCap.nFAITotCount[nIdx][5]+gCap.nFAITotCount[nIdx][6];
+			int nTilt = gCap.nFAITotCount[nIdx][7]+gCap.nFAITotCount[nIdx][8]+gCap.nFAITotCount[nIdx][9]+gCap.nFAITotCount[nIdx][10]+gCap.nFAITotCount[nIdx][11]+gCap.nFAITotCount[nIdx][12]+gCap.nFAITotCount[nIdx][13]+gCap.nFAITotCount[nIdx][14];
+			int nGap  = gCap.nFAITotCount[nIdx][15]+gCap.nFAITotCount[nIdx][16]+gCap.nFAITotCount[nIdx][17]+gCap.nFAITotCount[nIdx][18]+gCap.nFAITotCount[nIdx][19];
 			for (int i=0; i<20; i++) 
 			{
-				double dDef = (gCap.nFAICount[nIdx][i] * 100.0) / gCap.nTotCount[nIdx];
-				sData.Format("%d,%01f%%,", gCap.nFAICount[nIdx][i], dDef);
+				double dDef = (gCap.nFAITotCount[nIdx][i] * 100.0) / gCap.nTotCount[nIdx];
+				sData.Format("%d,%01f%%,", gCap.nFAITotCount[nIdx][i], dDef);
 				sFAIData1 = sFAIData1 + sData;
 			}
 			for (int i=0; i<20; i++)
@@ -1206,7 +1206,7 @@ void CLogFile::Save_OCAPFAILog(int nIdx)
 			//완공=양품+ROS Repair
 			strSave.Format("%02d:%02d:%02d %03d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s%s\r\n", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds,
 				gCap.sMZID[nIdx], gCap.sLotID[nIdx][0], gCap.sLotID[nIdx][1], gCap.sLotID[nIdx][2], gCap.sLotID[nIdx][3], gCap.sLotID[nIdx][4], gCap.sLotID[nIdx][5], gCap.sLotID[nIdx][6], gCap.sLotID[nIdx][7],
-				gCap.nTotCount[nIdx], (gCap.nGoodCount[nIdx]+gCap.nROSRfCount[nIdx]), gCap.nGoodCount[nIdx], gCap.nROSNGCount[nIdx], gCap.nROSRfCount[nIdx],
+				gCap.nTotCount[nIdx], (gCap.nGoodTotCount[nIdx]+gCap.nROSRfCount[nIdx]), gCap.nGoodTotCount[nIdx], gCap.nROSNGCount[nIdx], gCap.nROSRfCount[nIdx],
 				(gCap.nBCRCount[nIdx]+gCap.nMESCount[nIdx]+gCap.nMCCount[nIdx]), gCap.nBCRCount[nIdx], gCap.nMESCount[nIdx], gCap.nMCCount[nIdx],
 				(n7FAI+nTilt+nGap), n7FAI, nTilt, nGap, sFAIData1, sFAIData2);
 

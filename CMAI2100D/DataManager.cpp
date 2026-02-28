@@ -198,14 +198,23 @@ void CDataManager::Reset_OCAPData()
 	gCap.nMZCycle = 0;
 	for(int i=0; i<50; i++) {
 		gCap.sDate[i] = gCap.sTime[i] = gCap.sMZID[i] = "";
-		gCap.nTotCount[i] = gCap.nGoodCount[i] = gCap.nROSNGCount[i] = gCap.nROSRfCount[i] = gCap.nBCRCount[i] = gCap.nMESCount[i] = gCap.nMCCount[i] = 0;
+		gCap.nTotCount[i] = gCap.nROSNGCount[i] = gCap.nROSRfCount[i] = gCap.nBCRCount[i] = gCap.nMESCount[i] = gCap.nMCCount[i] = 0;
 		for(int j=0; j<20; j ++) {
-			gCap.nFAICount[i][j] = gCap.nFCount[i][j] = 0;
+			gCap.nFAITotCount[i][j] = gCap.nGoodTotCount[i] = 0;
+		}		
+	}
+
+	for(int i=0; i<28; i++) {
+	
+		gCap.nGoodCount[i] = 0;
+		for(int j=0; j<20; j ++) {
+			gCap.nFAICount[i][j] = 0;
 		}
 		for(int j=0; j<8; j ++) {
 			gCap.sLotID[i][j] = "";
 		}
 	}
+
 	for(int j=0; j<20; j ++) {
 		gCap.sFAIName[j] = "";
 	}

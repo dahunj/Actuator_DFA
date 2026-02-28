@@ -520,13 +520,15 @@ typedef struct {
 	CString		sTime[50];			//시간(07:31)
 	CString		sMZID[50];			//양품MZ
 	
-	CString		sLotID[50][8];		//LotID
+	CString		sLotID[28][8];		//LotID
 	
 	int			nTotCount[50];		//투입-Module수
-	int			nGoodCount[50];		//양품수
+	int			nGoodTotCount[50];
+	int			nFAITotCount[50][20];
 
-	int			nNGCount[50];
-	int			nFAICount[50][20];		//Carrier,FAI별 발생수 50:port No, 20:FAI NG 종류
+	int			nGoodCount[28];		//양품수
+	int			nNGCount[28];
+	int			nFAICount[28][20];		//Carrier,FAI별 발생수 50:port No, 20:FAI NG 종류
 
 	std::vector<int> nCarrNo;
 

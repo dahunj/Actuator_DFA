@@ -115,6 +115,8 @@ private:
 	CString	m_sJobListTryCnt[8];
 
 private:
+	CString		m_strTemp;
+
 	int			m_nWorkEleatorCase1;
 	int			m_nWorkEleatorCase2;
 	int			m_nWorkEleatorCase3;
