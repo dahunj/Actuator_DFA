@@ -43,6 +43,7 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <vector>
 
 // Library Add
 #include "LedStatic.h"
@@ -493,21 +494,15 @@ typedef struct {
 
 
 	//기존 변수들
-	int			nMZCycle;
-	CString		sDate[50];			//날자(07/31)
-	CString		sTime[50];			//시간(07:31)
-	CString		sMZID[50];			//양품MZ
-	CString		sLotID[50][8];		//LotID
-	int			nTotCount[50];		//투입-Module수
-	int			nGoodCount[50];		//양품수
+	
+	int			nFCount[50][20];		//MZ,FAI별 발생수
 	int			nROSNGCount[50];	//ROS-NG수
 	int			nROSRfCount[50];	//ROS-Repaier수
 	int			nBCRCount[50];		//Barcode[NG수
 	int			nMESCount[50];		//MES[NG수
 	int			nMCCount[50];		//MC[NG수
-	int			nCount[50][20];		//MZ,FAI별 발생수
-	int			nFCount[50][20];	//MZ,FAI별 발생수
-
+	
+	
 	CString		sFAIName[20];		//FAI이름-Display
 	CString		sFAICode[20];		//FAI-NG-Code
 	double		dGiDefect[4];		//불량율%
@@ -518,8 +513,22 @@ typedef struct {
 	CString		sAlmFAIName;
 	double		dAlmDefect;
 	int			nAlmCount;
+	
 
+	int			nMZCycle;  //port No 랑 헷갈리면 안됨, MZ 기준으로 독립적으로 계산됨  
+	CString		sDate[50];			//날자(07/31)
+	CString		sTime[50];			//시간(07:31)
+	CString		sMZID[50];			//양품MZ
+	
+	CString		sLotID[50][8];		//LotID
+	
+	int			nTotCount[50];		//투입-Module수
+	int			nGoodCount[50];		//양품수
 
+	int			nNGCount[50];
+	int			nFAICount[50][20];		//Carrier,FAI별 발생수 50:port No, 20:FAI NG 종류
+
+	std::vector<int> nCarrNo;
 
 } GLOVAL_OCAP;
 

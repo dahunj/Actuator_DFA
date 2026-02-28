@@ -40,13 +40,18 @@ private:
 
 public:
 	void Display_Status();
-	void Set_AddMZData(int nPortNo);
-	void Set_AddDEFECT(CString sMZid, CString sCode);
+
+	
 	void Check_DEFECT(int nNo);
 	void Check_DEFECTF(int nNo);
-	void AddCarToMZ(int nPortNo, int nIndex);
+	
 	void AddMZOut(CString sMZid);
-	void DelMZData(int nMZNo);
+
+
+	void AddModuleToCarrier(CString sType, int nPNo, CString sCode);
+	void AddCarrierToMZ(CString sType, CString sToMZID, int nPortNo);
+
+
 };
 
 extern OCAPFaiDlg g_dlgOCAPFai;

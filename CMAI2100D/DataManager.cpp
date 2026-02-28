@@ -200,7 +200,7 @@ void CDataManager::Reset_OCAPData()
 		gCap.sDate[i] = gCap.sTime[i] = gCap.sMZID[i] = "";
 		gCap.nTotCount[i] = gCap.nGoodCount[i] = gCap.nROSNGCount[i] = gCap.nROSRfCount[i] = gCap.nBCRCount[i] = gCap.nMESCount[i] = gCap.nMCCount[i] = 0;
 		for(int j=0; j<20; j ++) {
-			gCap.nCount[i][j] = gCap.nFCount[i][j] = 0;
+			gCap.nFAICount[i][j] = gCap.nFCount[i][j] = 0;
 		}
 		for(int j=0; j<8; j ++) {
 			gCap.sLotID[i][j] = "";

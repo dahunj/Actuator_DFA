@@ -873,9 +873,9 @@ int CInspector::Get_VisionStatus(int nInspector)
 BOOL CInspector::Check_LotReady()
 {
 #ifndef AJIN_BOARD_USE
-	m_bLotReady1 == TRUE;
-	m_bLotReady2 == TRUE;
-	m_bLotReady3 == TRUE;
+	m_bLotReady1 = TRUE;
+	m_bLotReady2 = TRUE;
+	m_bLotReady3 = TRUE;
 	return TRUE;
 #else
 	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
