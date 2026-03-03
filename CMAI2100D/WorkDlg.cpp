@@ -233,17 +233,6 @@ void CWorkDlg::OnTimer(UINT_PTR nIDEvent)
 
 	Display_Status();
 
-
-#ifndef AJIN_BOARD_USE
-	if(nTemp < 0)
-	{
-		nTemp = 0;
-		m_rdoWorkStart.SetCheck(TRUE);
-		m_rdoWorkStop.SetCheck(FALSE);
-	}
-
-#endif
-
 	if (m_rdoWorkStart.GetCheck()) {
 		if (!m_bAutoRunning) {		// First AutoRun
 			if (!Work_Start()) { SetTimer(0, 100, NULL); m_rdoWorkStop.SetCheck(TRUE); return; }
@@ -275,31 +264,6 @@ void CWorkDlg::OnTimer(UINT_PTR nIDEvent)
 		else
 		{			
 			// Auto Running
-#ifndef AJIN_BOARD_USE
-			nTemp = 0;
-			for(int i = 0; i < 28; i++)
-			{
-
-				m_stcLotsIdS[i].GetWindowText(m_strTemp);
-				if(m_strTemp =="")
-				{
-					nTemp++;
-					if(nTemp == 28)
-					{
-						nTemp = -1;
-						m_rdoWorkStart.SetCheck(FALSE);
-						m_rdoWorkStop.SetCheck(TRUE);
-						for (int i=0; i<24; i++) {
-							m_strTemp.Format("%s-%03d", "OCAPTEST", i+1);
-							m_stcLotsIdS[i].SetWindowText(m_strTemp);
-							m_stcCmsCountS[i].SetWindowText("12");
-
-						}
-					}
-				}
-			}
-#endif
-			
 			if (!g_objSequenceMain.Is_MainThreadRun()) {
 				g_objLogFile.Save_HandlerLog("[Work Mode] Auto STOP");
 				pMainDlg->Set_MainState(STATE_INITEND);
