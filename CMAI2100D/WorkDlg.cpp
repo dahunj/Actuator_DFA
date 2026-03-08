@@ -2848,3 +2848,109 @@ void CWorkDlg::OnBnClickedBtnBuzzerOff()
 	AfxMessageBox(sLog);
 */
 }
+
+
+void CWorkDlg::Set_SimulationInfo()
+{
+	int nTemp = 0;
+	for(int i = 0; i < 28; i++)
+	{
+		m_stcLotsIdS[i].GetWindowText(m_strTemp);
+		if(m_strTemp =="")
+		{
+			nTemp++;
+			if(nTemp == 28)
+			{
+				nTemp = -1;
+				gData.nSimCount = 0;
+				gLot.nJobCycle = 0;
+				//m_rdoWorkStart.SetCheck(FALSE);
+				//m_rdoWorkStop.SetCheck(TRUE);
+				for (int i=0; i<24; i++) {
+					m_strTemp.Format("%s-%04d", "OCAPTEST", i+1);
+					m_stcLotsIdS[i].SetWindowText(m_strTemp);
+					m_stcCmsCountS[i].SetWindowText("12");
+
+				}
+			}
+		}
+	}
+
+	if (LotID_Check() == FALSE) return;
+
+	DX_DATA_16 *pDX16 = g_objAJinAXL.Get_pDX16();
+	DX_DATA_17 *pDX17 = g_objAJinAXL.Get_pDX17();
+	DX_DATA_18 *pDX18 = g_objAJinAXL.Get_pDX18();
+	DX_DATA_19 *pDX19 = g_objAJinAXL.Get_pDX19();
+	DX_DATA_20 *pDX20 = g_objAJinAXL.Get_pDX20();
+
+	EQUIP_DATA *pEquipData = g_objDataManager.Get_pEquipData();
+
+	if(nTemp == -1)
+	{
+		pDX18->iMZBufferExist = TRUE;
+		pDX18->iGDMZElevatorExist = FALSE;
+		gData.nSimCount = 0;
+		pDX16->iLDCV2FCnt1 = TRUE;
+		pDX16->iLDCV2FCnt2 = TRUE;
+		pDX16->iLDCV2FCnt3 = TRUE;
+		pDX16->iLDCV1FCnt1 = TRUE;
+		pDX16->iLDCV1FCnt2 = TRUE;
+		pDX16->iLDCV1FCnt3 = TRUE;
+
+		pDX16->iLDCV1FCnt4 = TRUE;
+		pDX16->iLDCV2FCnt4 = TRUE;
+		pDX16->iLDCV1FCnt5 = TRUE;
+		pDX16->iLDCV2FCnt5 = TRUE;
+
+		pDX16->iLDCV1FCnt6 = TRUE;
+		pDX16->iLDCV2FCnt6 = TRUE;
+		pDX16->iLDCV1FCnt7 = TRUE;
+		pDX16->iLDCV2FCnt7 = TRUE;
+
+		pDX20->iMZTransExist = FALSE;
+		g_objAJinAXL.Move_Absolute(AX_ELEVATOR_Z2, 290);
+
+
+
+		for (int i=0; i<6; i++) {
+			gLot.sRstLotID[i]   = "";
+			gLot.nRstCmCount[i] = gLot.nRstGoodCount[i] = gLot.nRstNgCount[i] = 0;
+			gLot.nUnlGdTrayCount[i] = gLot.nUnlNGTrayCount[i] = 0;
+		}
+		for (int i=0; i<6; i++) {
+			if (gLot.nCmCount[i] > 0) { gData.sLotID_Start = gLot.sLotID[i]; break; }
+		}
+
+		if (pEquipData->bUseInspectBlow) {
+			DY_DATA_04 *pDY04 = g_objAJinAXL.Get_pDY04();
+			pDY04->oBTMIonizerOn = TRUE;
+			pDY04->oBTMIonizerBlow = TRUE;
+			pDY04->oBTMSuctionOn = TRUE;
+
+			pDY04->oTOPIonizerOn = TRUE;
+			pDY04->oTOPIonizerBlow = TRUE;
+			pDY04->oTOPSuctionOn = TRUE;
+			g_objAJinAXL.Write_Output(4);
+		}
+		g_objSequenceMain.Set_MainRunCase(AUTO_ELEVATOR_2, 51);
+		gData.nLoadStageSeqNo[0] = g_objSequenceMain.Get_MainRunCase(AUTO_LOAD_STAGE_1);
+		gData.nLoadStageSeqNo[1] = g_objSequenceMain.Get_MainRunCase(AUTO_LOAD_STAGE_2);
+		gData.nLoadStageSeqNo[2] = g_objSequenceMain.Get_MainRunCase(AUTO_TRANSFER_1);
+		if (gData.nLoadStageSeqNo[2] == 0) {
+			if (gData.nLoadStageSeqNo[0] == 0 || gData.nLoadStageSeqNo[0] == 50) {
+				if (gData.nLoadStageSeqNo[1] == 0 || gData.nLoadStageSeqNo[1] == 50) {
+					gData.nLoadStageSeqNo[3] = 0;
+					g_objSequenceMain.Set_MainRunCase(AUTO_LOAD_STAGE_1, 81);
+				}
+			}
+		}
+		gLot.nJobStatus = gData.nCarrierStart = 1;
+		gLot.nJobCount = gLot.dwJobtEnd = gLot.dwJobStart = 0;
+		for(int i=0; i<3; i++) for(int j=0; j<2; j++) gNG->nTrayOX[i][j] = 0;
+
+		g_objLogFile.Save_HandlerLog("[Work Mode] Work_Start().........");
+	}
+	
+
+}

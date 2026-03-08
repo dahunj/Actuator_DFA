@@ -463,7 +463,11 @@ void OCAPFaiDlg::Check_DEFECT(int nNo)
 		gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
 
 		gAlm.sAlmLotID[0] = sDefect;
+
+#ifndef AJIN_BOARD_USE
 		g_objCommon.Show_Error(9180 + nX+1);
+#endif
+		
 		return;
 	}
 }

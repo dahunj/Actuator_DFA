@@ -319,6 +319,13 @@ BOOL CSequenceMain::Get_IsAutoRun()
 	}
 //	if (!Check_TrayEmpty()) return TRUE;
 	if (!Check_ModuleEmpty()) return TRUE;
+
+
+//#ifndef AJIN_BOARD_USE
+//	g_dlgWork.Set_SimulationInfo();
+//	return TRUE;
+//#endif
+
 	
 	return FALSE;
 }
@@ -881,7 +888,7 @@ BOOL CSequenceMain::Check_ModuleEmpty()
 	if (m_pDX18->iLDMZElevatorExist) return FALSE;
 //	if (m_pDX16->iLDVC1FStop) return FALSE;
 	if (m_nMZTransferCase > 0 || m_nLDCVElevatorCase > 0) return FALSE;
-
+	
 	return TRUE;
 }
 
@@ -5634,6 +5641,10 @@ BOOL CSequenceMain::Run_LoadStage1()
 	case 13:
 		if (!m_pEquipData->bUseAlign1)
 		{
+#ifndef AJIN_BOARD_USE
+			gNG->nTrayOX[0][0] = 1;
+#endif
+
 			if (gNG->nTrayOX[0][0] == 1) Set_AlignData(gData.nPortNo_LoadStage[nStageNo1], nStageNo1);
 			g_objCommon.Move_Position(AX_LOAD_STAGE_Y1, 5);	//Aling3
 			m_nLoadStage1Case = 19; m_tLoadStage1Loop.Set_LoopTime(30000);
@@ -12498,6 +12509,8 @@ BOOL CSequenceMain::Run_GoodStage2()
 	static int	  nGStage2No		= 1;	//1°íÁ¤
 	static int	  nGStage2YAxisNo = AX_GOOD_STAGE_Y2;
 
+	static int nTemp = 0;
+
 	switch (m_nGoodStage2Case) {
 	case 0:	// Wait
 		m_tGoodStage2Loop.Set_LoopTime(5000);
@@ -12560,7 +12573,7 @@ BOOL CSequenceMain::Run_GoodStage2()
 #ifdef AJIN_BOARD_USE
 			gData.sCarID_GoodTray[nGStage2No] = g_objCarrierRFID_Good.Get_CarrierID();
 #else
-			int nTemp = g_objCommon.Get_Random(0,9999);
+			nTemp++; 
 			gData.sCarID_GoodTray[nGStage2No].Format("GoodCarrier-%04d", nTemp);
 #endif
 			
@@ -15289,6 +15302,8 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 	static CString sMZID;
 	static int nLDMZNum;
 
+	static int nTemp = 0;
+
 	switch (m_nLD1FConveyorCase)
 	{
 	case 0:	// Wait
@@ -15367,6 +15382,10 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 			g_objLogFile.Save_SeqLog("MCC,31,LD1FConveyor,4-1,Load MZ Elevator doing something");
 			m_nLD1FConveyorCase = 0; m_tLD1FConveyorLoop.Set_LoopTime(50000);
 		}
+#ifndef AJIN_BOARD_USE
+		return TRUE;
+#endif
+
 		break;
 	case 5:	//Barcode Read
 			if (m_pEquipData->bUseMZIDLoad) 
@@ -15382,7 +15401,7 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 				/*gLot.nMZCountGD++;
 				sMZID.Format("MZID%02d-LOAD", gLot.nMZCountGD);*/
 
-				int nTemp = g_objCommon.Get_Random(1, 9999);
+				nTemp++;// = g_objCommon.Get_Random(1, 9999);
 				if(nTemp == nLDMZNum) nTemp++;
 				sMZID.Format("MZID%d-LOAD", nTemp );
 				nLDMZNum = nTemp;
@@ -15395,7 +15414,7 @@ BOOL CSequenceMain::Run_LD1FConveyor()
 #ifdef AJIN_BOARD_USE
 			sMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(2);	//1F
 #else
-			int nTemp = g_objCommon.Get_Random(0, 9999);
+			nTemp++;//int nTemp = g_objCommon.Get_Random(0, 9999);
 			sMZID.Format("TLOT-%04d", nTemp);
 #endif
 
@@ -15679,7 +15698,7 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 {
 	static int nETMZExit = 0;
 	static CString sETMZID;
-	int	nTemp = 0;
+	static int	nTemp = 0;
 
 	switch (m_nLD2FConveyorCase) {
 	case 0:	// Wait
@@ -15757,7 +15776,7 @@ BOOL CSequenceMain::Run_LD2FConveyor()
 #ifdef AJIN_BOARD_USE
 		sETMZID = g_objBarcodeLot_Cognex.Get_BarcodeLot(1);	//2F
 #else
-		nTemp = g_objCommon.Get_Random(0, 9999);
+		nTemp++;// = g_objCommon.Get_Random(0, 9999);
 		sETMZID.Format("NGMZ-%04d", nTemp);
 #endif
 					
@@ -16079,13 +16098,17 @@ BOOL CSequenceMain::Run_Simulation()
 	} 
 	else
 	{
-		if (m_nLDMZElevatorCase == 9) {
+		if (m_nLDMZElevatorCase == 9) 
+		{
+
+			g_dlgWork.Set_SimulationInfo();
+
 			int nS, nE, nX;
 			if (gData.nSimCount == 0 || gData.nSimCount == 4) { nS =  0; nE =  8; }
 			if (gData.nSimCount == 1 || gData.nSimCount == 5) { nS =  8; nE = 16; }
 			if (gData.nSimCount == 2 || gData.nSimCount == 6) { nS = 16; nE = 24; }
 			if (gData.nSimCount == 3 || gData.nSimCount == 7) { nS = 24; nE = 28; }
-			if (gData.nSimCount > 7) 
+			if (gData.nSimCount > 2) 
 			{
 				gData.nSimCount = 0;
 				nS =  0; nE =  8;
@@ -16123,7 +16146,13 @@ BOOL CSequenceMain::Run_Simulation()
 	if (m_nGDMZElevatorCase ==  0) { Sleep(SIM_WAITTIMES); m_pDX18->iGDMZElevatorExist = FALSE; }
 	if (m_nGDMZElevatorCase ==  1) { Sleep(SIM_WAITTIMES); m_pDX18->iGDMZElevatorExist = TRUE; }
 	if (m_nGDMZElevatorCase == 51) { Sleep(SIM_WAITTIMES); m_pDX18->iGDMZElevatorExist = FALSE; }
-	if (m_nGDMZElevatorCase == 71) { Sleep(SIM_WAITTIMES); m_pDX15->iGDRailCarrierChk1 = FALSE; m_pDX15->iGDRailCarrierChk2 = TRUE; }
+	if (m_nGDMZElevatorCase == 71) 
+	{ 
+		Sleep(SIM_WAITTIMES); 
+		m_pDX18->iGDMZElevatorExist = TRUE;
+		m_pDX15->iGDRailCarrierChk1 = FALSE; 
+		m_pDX15->iGDRailCarrierChk2 = TRUE; 
+	}
 	if (m_nGDMZElevatorCase == 75) { Sleep(SIM_WAITTIMES); m_pDX15->iGDRailCarrierChk1 = FALSE; m_pDX15->iGDRailCarrierChk2 = FALSE; }
 
 	return TRUE;
