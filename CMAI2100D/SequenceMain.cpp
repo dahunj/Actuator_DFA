@@ -4086,6 +4086,7 @@ BOOL CSequenceMain::Run_Transfer1()
 		break;
 	case 37:
 			gData.sMZID_Tansfer  = gData.sMZID[4];
+			
 			gData.nSlotNo_Tansfer = gData.nSlotNo_LDMZ; gData.nSlotNo_LDMZ = 0;
 			gData.sLotID_Tansfer[0]  = "";
 			gData.nTrayNo_Tansfer[0] = gData.nPortNo_Tansfer[0] = 0;
@@ -4200,6 +4201,7 @@ BOOL CSequenceMain::Run_Transfer1()
 			m_sLog.Format("Transfer1 To LoadStage No %d, MZ ID:%s",nToTran1Pos, gTracking.sMZID_LoadStage[nToTran1Pos-1]);
 			g_objLogFile.Save_HomeTrackingLog(m_sLog);
 
+			gCap.sMZID[gData.nPortNo_Tansfer[0]] = gData.sMZID_Tansfer;//ocap port number insert 
 			gData.sMZID_LoadStage[nToTran1Pos-1] = gData.sMZID_Tansfer; gData.sMZID_Tansfer = "";
 			gData.nSlotNo_LoadStage[nToTran1Pos-1] = gData.nSlotNo_Tansfer; gData.nSlotNo_Tansfer = 0;
 			gData.nLastCar_LoadStage[nToTran1Pos-1] = gData.nLDMZ_LastCarrier[1];
@@ -13380,6 +13382,7 @@ BOOL CSequenceMain::Run_MZTransfer()
 			if (nTo == 2) {	//Load-MZ
 				gData.nMZSlotNo[0] = gData.nMZSlotNo[3] = 0;
 				gData.sMZID[4] = gData.sMZID[3]; gData.sMZID[3] = "";
+				
 				m_sLog.Format("[MZTransfer: Down] Load-MZ => MZID(%s)", gData.sMZID[4]);
 				m_nMZTransferCase = 44;
 			}
@@ -14091,7 +14094,8 @@ BOOL CSequenceMain::Run_LDMZElevator()
 			if (nSlotNo == nLastSlotNo) gData.nLDMZ_LastCarrier[0] = 1;
 			else						gData.nLDMZ_LastCarrier[0] = 0;
 						
-			gTracking.sMZID_LoadMZElev = gData.sMZID[4];
+			gTracking.sMZID_LoadMZElev = gData.sMZID[4];			
+
 			m_sLog.Format("sMZID_LoadMZElev, %s", gTracking.sMZID_LoadMZElev);
 			g_objLogFile.Save_HomeTrackingLog(m_sLog);
 		

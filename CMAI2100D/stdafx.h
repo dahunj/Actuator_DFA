@@ -518,8 +518,9 @@ typedef struct {
 	int			nMZCycle;  //port No 랑 헷갈리면 안됨, MZ 기준으로 독립적으로 계산됨  
 	CString		sDate[50];			//날자(07/31)
 	CString		sTime[50];			//시간(07:31)
-	CString		sMZID[50];			//양품MZ
 	
+
+	CString		sMZID[28];			//양품MZ
 	CString		sLotID[28][8];		//LotID
 	
 	int			nTotCount[50];		//투입-Module수

@@ -259,7 +259,7 @@ void OCAPFaiDlg::Display_Status()
 	int nD = 0;
 	int nS = gCap.nMZCycle;
 	if (nS < 0) nS = 49;
-	for(int i=nS-1; i > 0; i--) {
+	for(int i=nS-1; i >= 0; i--) {
 		if (gCap.sDate[i].GetLength() < 1) break;
 		nD++;
 		Display_Grid(nD, i);
@@ -387,37 +387,6 @@ void OCAPFaiDlg::Display_Grid(int nDp, int nIx)
 
 
 
-void OCAPFaiDlg::AddMZOut(CString sMZid)
-{
-	CString strLog;
-	if (gCap.sMZID[gCap.nMZCycle].GetLength() < 1) {
-		strLog.Format("[OCAP Option] MZ Out1 - Cycle[%d] Data-MZ[%s] Read-MZ[%s]", gCap.nMZCycle, gCap.sMZID[gCap.nMZCycle], sMZid);
-		g_objLogFile.Save_HandlerLog(strLog);
-		return;
-	}
-
-	SYSTEMTIME time;
-	GetLocalTime(&time);
-
-	gCap.sDate[gCap.nMZCycle].Format("%02d/%02d", time.wMonth, time.wDay);
-	gCap.sTime[gCap.nMZCycle].Format("%02d:%02d", time.wHour,  time.wMinute);
-
-	if (gCap.sMZID[gCap.nMZCycle] != sMZid) {
-		strLog.Format("[OCAP Option] MZ Out2 - Cycle[%d] Data-MZ[%s] Read-MZ[%s]", gCap.nMZCycle, gCap.sMZID[gCap.nMZCycle], sMZid);
-		g_objLogFile.Save_HandlerLog(strLog);
-	}
-
-	
-	g_objLogFile.Save_OCAPFAILog(gCap.nMZCycle);
-		
-	m_bError = FALSE;
-	Check_DEFECT(3); if (m_bError) return;
-	Check_DEFECT(2); if (m_bError) return;
-	Check_DEFECT(1); if (m_bError) return;
-	Check_DEFECTF(4); if (m_bError) return;
-
-	gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
-}
 
 
 
@@ -545,26 +514,79 @@ void OCAPFaiDlg::AddModuleToCarrier(CString sType, int nPNo, CString sCode)
 
 void OCAPFaiDlg::AddCarrierToMZ(CString sType, CString sToMZID, int nPortNo)
 {
-	if(sType == "Good")
+	gCap.sMZID[nPortNo] = sToMZID;
+	
+	/*if(sType == "Good")
 	{
-		gCap.nCarrNo.push_back(nPortNo);
-		gCap.sMZID[nPortNo] = sToMZID;		
-		gCap.nTotCount[gCap.nMZCycle] += gCap.nGoodCount[nPortNo];
-		gCap.nGoodTotCount[gCap.nMZCycle]+= gCap.nGoodCount[nPortNo];
+	gCap.nCarrNo.push_back(nPortNo);
+	gCap.sMZID[nPortNo] = sToMZID;		
+	gCap.nTotCount[gCap.nMZCycle] += gCap.nGoodCount[nPortNo];
+	gCap.nGoodTotCount[gCap.nMZCycle]+= gCap.nGoodCount[nPortNo];
 	}
 	else
 	{		
-		for (size_t i = 0; i < gCap.nCarrNo.size(); ++i)
+	for (size_t i = 0; i < gCap.nCarrNo.size(); ++i)
+	{
+	for(int j=0; j< 20; j++) 
+	{		
+	gCap.nTotCount[gCap.nMZCycle] += gCap.nFAICount[gCap.nCarrNo[i]][j];
+	gCap.nFAITotCount[gCap.nMZCycle][j] += gCap.nFAICount[gCap.nCarrNo[i]][j];
+
+	gCap.nTotCount[gCap.nMZCycle] += gCap.nNGCount[gCap.nCarrNo[i]];				
+	}			
+	}
+	gCap.nCarrNo.clear();
+	}*/
+		
+}
+
+
+void OCAPFaiDlg::AddMZOut(CString sMZid)
+{
+	for(int nPNo = 0; nPNo < 28; nPNo++)
+	{
+		if(gCap.sMZID[nPNo] == sMZid)
 		{
+			gCap.nTotCount[gCap.nMZCycle] += gCap.nGoodCount[nPNo];
+			gCap.nGoodTotCount[gCap.nMZCycle]+= gCap.nGoodCount[nPNo];
+
 			for(int j=0; j< 20; j++) 
 			{		
-				gCap.nTotCount[gCap.nMZCycle] += gCap.nFAICount[gCap.nCarrNo[i]][j];
-				gCap.nFAITotCount[gCap.nMZCycle][j] += gCap.nFAICount[gCap.nCarrNo[i]][j];
+				gCap.nTotCount[gCap.nMZCycle] += gCap.nFAICount[nPNo][j];
+				gCap.nFAITotCount[gCap.nMZCycle][j] += gCap.nFAICount[nPNo][j];
 
-				gCap.nTotCount[gCap.nMZCycle] += gCap.nNGCount[gCap.nCarrNo[i]];				
-			}			
+				gCap.nTotCount[gCap.nMZCycle] += gCap.nNGCount[nPNo];				
+			}
 		}
-		gCap.nCarrNo.clear();
 	}
-		
+
+
+	CString strLog;
+	if (gCap.sMZID[gCap.nMZCycle].GetLength() < 1) {
+		strLog.Format("[OCAP Option] MZ Out1 - Cycle[%d] Data-MZ[%s] Read-MZ[%s]", gCap.nMZCycle, gCap.sMZID[gCap.nMZCycle], sMZid);
+		g_objLogFile.Save_HandlerLog(strLog);
+		return;
+	}
+
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+
+	gCap.sDate[gCap.nMZCycle].Format("%02d/%02d", time.wMonth, time.wDay);
+	gCap.sTime[gCap.nMZCycle].Format("%02d:%02d", time.wHour,  time.wMinute);
+
+	if (gCap.sMZID[gCap.nMZCycle] != sMZid) {
+		strLog.Format("[OCAP Option] MZ Out2 - Cycle[%d] Data-MZ[%s] Read-MZ[%s]", gCap.nMZCycle, gCap.sMZID[gCap.nMZCycle], sMZid);
+		g_objLogFile.Save_HandlerLog(strLog);
+	}
+
+
+	g_objLogFile.Save_OCAPFAILog(gCap.nMZCycle);
+
+	m_bError = FALSE;
+	Check_DEFECT(3); if (m_bError) return;
+	Check_DEFECT(2); if (m_bError) return;
+	Check_DEFECT(1); if (m_bError) return;
+	Check_DEFECTF(4); if (m_bError) return;
+
+	gCap.nMZCycle++; if(gCap.nMZCycle > 49) gCap.nMZCycle = 0;
 }
