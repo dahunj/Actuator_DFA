@@ -15068,7 +15068,7 @@ BOOL CSequenceMain::Run_GDMZElevator()
 			}
 			if (nFound == 0) 
 			{	
-				m_sLog.Format("MCC,30,GDMZElevator,%d, Check_LotEndLast", m_nGDMZElevatorCase);
+				m_sLog.Format("MCC,30,GDMZElevator,%d, LotEndLast = TRUE", m_nGDMZElevatorCase);
 				g_objLogFile.Save_SeqLog(m_sLog);
 				m_nNGMZElevatorCase = 40;				
 			}

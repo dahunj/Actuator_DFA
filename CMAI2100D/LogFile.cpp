@@ -1204,10 +1204,13 @@ void CLogFile::Save_OCAPFAILog(int nIdx)
 				sFAIData2 = sFAIData2 + sData;
 			}
 			//완공=양품+ROS Repair
-			strSave.Format("%02d:%02d:%02d %03d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s%s\r\n", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds,
-				gCap.sMZID[nIdx], gCap.sLotID[nIdx][0], gCap.sLotID[nIdx][1], gCap.sLotID[nIdx][2], gCap.sLotID[nIdx][3], gCap.sLotID[nIdx][4], gCap.sLotID[nIdx][5], gCap.sLotID[nIdx][6], gCap.sLotID[nIdx][7],
-				gCap.nTotCount[nIdx], (gCap.nGoodTotCount[nIdx]+gCap.nROSRfCount[nIdx]), gCap.nGoodTotCount[nIdx], gCap.nROSNGCount[nIdx], gCap.nROSRfCount[nIdx],
-				(gCap.nBCRCount[nIdx]+gCap.nMESCount[nIdx]+gCap.nMCCount[nIdx]), gCap.nBCRCount[nIdx], gCap.nMESCount[nIdx], gCap.nMCCount[nIdx],
+			strSave.Format("%02d:%02d:%02d %03d,%s,%s,%s,%s, %s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%s%s\r\n", time.wHour, time.wMinute, time.wSecond, time.wMilliseconds,
+				gCap.sMZID[nIdx], gCap.sLotID[nIdx][0], gCap.sLotID[nIdx][1], gCap.sLotID[nIdx][2],
+				gCap.sLotID[nIdx][3], gCap.sLotID[nIdx][4], gCap.sLotID[nIdx][5], gCap.sLotID[nIdx][6],
+				gCap.sLotID[nIdx][7],
+				gCap.nTotCount[nIdx], gCap.nTotCount[nIdx], gCap.nGoodTotCount[nIdx], gCap.nROSNGCount[nIdx],
+				gCap.nROSRfCount[nIdx],	(gCap.nBCRCount[nIdx]+gCap.nMESCount[nIdx]+gCap.nMCCount[nIdx]), gCap.nBCRCount[nIdx], gCap.nMESCount[nIdx], 
+				gCap.nMCCount[nIdx],
 				(n7FAI+nTilt+nGap), n7FAI, nTilt, nGap, sFAIData1, sFAIData2);
 
 /*
